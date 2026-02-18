@@ -59,6 +59,1368 @@
  * --------------------------------------------------------------------------
  */
 const LESSONS_DB = {
+    "past-tense-regular": {
+        id: "past-tense-regular",
+        grade: 2,
+        menuTitle: "一般動詞の過去形 (ed形)",
+        intro: {
+            title: "一般動詞の過去形",
+            subtitle: "意味：〜した（過去の動作・状態）",
+            goals: ["過去形の作り方（ed）を覚える", "「〜した」という文を作る", "過去を表す語句（yesterday等）を知る"]
+        },
+        grammar: {
+            formula: [
+                { text: "主語", type: "box" },
+                { text: "+", type: "text" },
+                { text: "動詞の過去形", type: "red" },
+                { text: "(edなど)", type: "text" }
+            ],
+            text: "「（主語が）〜した」と過去のことを表すときは、動詞の語尾に ed をつけます。",
+            items: [
+                { title: "基本のed", desc: "多くの動詞はそのまま ed をつける (play→played)", icon: "edit", color: "blue" },
+                { title: "eで終わる", desc: "d だけをつける (use→used, live→lived)", icon: "smile", color: "rose" },
+                { title: "過去の語句", desc: "yesterday, last night などと一緒に使う", icon: "calendar", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I play soccer yesterday.",
+            goodExample: "I <strong>played</strong> soccer yesterday.",
+            description: "過去の文では、主語が三人称単数でも -s ではなく -ed を使います。"
+        },
+        examples: [
+            { engDisplay: 'I <span class="text-red-600 font-bold">watched</span> TV last night.', engRead: "I watched TV last night.", jp: "私は昨夜、テレビを見ました。", icon: "tv", color: "blue" },
+            { engDisplay: 'He <span class="text-red-600 font-bold">lived</span> in Tokyo two years ago.', engRead: "He lived in Tokyo two years ago.", jp: "彼は2年前、東京に住んでいました。", icon: "home", color: "rose" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "I (　　　) tennis yesterday.", options: ["play", "plays", "played", "playing"], correctIndex: 2, explanation: "yesterday（昨日）があるので過去形playedにします。" },
+            { id: "qA2", subQuestion: "She (　　　) lunch for us.", options: ["cook", "cooks", "cooked", "cooking"], correctIndex: 2, explanation: "「料理した」という過去の動作はcookedです。" },
+            { id: "qA3", subQuestion: "They (　　　) to music last night.", options: ["listen", "listened", "listens", "listening"], correctIndex: 1, explanation: "last nightがあるので過去形を選びます。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "私は昨日、その箱を使いました。", sentenceParts: ["I", "{slot}", "the box", "{slot}"], words: ["used", "yesterday", "use", "last"], correctOrder: ["used", "yesterday"], explanation: "useはeで終わるのでdだけをつけます。" },
+            { id: "qB2", subQuestion: "彼は一晩中勉強しました。", sentenceParts: ["He", "{slot}", "all night."], words: ["studied", "study", "studies"], correctOrder: ["studied"], explanation: "studyはyをiに変えてedをつけます。" },
+            { id: "qB3", subQuestion: "私たちは放課後、サッカーを練習しました。", sentenceParts: ["We", "{slot}", "soccer after school."], words: ["practiced", "practice", "practices"], correctOrder: ["practiced"], explanation: "「練習した」という過去の形にします。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "私は昨夜、手紙を書きました。", words: ["I", "wrote", "a", "letter", "last", "night"], explanation: "writeの過去形は不規則変化のwroteです。" },
+            { id: "qC2", subQuestion: "彼らはその公園を歩きました。", words: ["They", "walked", "in", "the", "park"], explanation: "walkにedをつけて過去形にします。" }
+        ],
+        summary: ["過去形は動詞に ed をつけるのが基本", "「〜した」という過去の動作を表す", "yesterday や last 〜 とセットで使うことが多い"]
+    },
+    "past-continuous": {
+        id: "past-continuous",
+        grade: 2,
+        menuTitle: "過去進行形",
+        intro: {
+            title: "過去進行形",
+            subtitle: "意味：〜しているところでした",
+            goals: ["過去進行形の形（was/were + 〜ing）を覚える", "「その時〜していた」という状態を表現する", "否定文・疑問文の作り方を理解する"]
+        },
+        grammar: {
+            formula: [
+                { text: "主語", type: "box" },
+                { text: "+", type: "text" },
+                { text: "was / were", type: "red" },
+                { text: "+", type: "text" },
+                { text: "動詞のing形", type: "blue" }
+            ],
+            text: "「（過去のある時点で）〜していた」という動作の最中を表します。",
+            items: [
+                { title: "be動詞の過去形", desc: "主語に合わせて was か were を選ぶ", icon: "refresh-cw", color: "rose" },
+                { title: "ing形", desc: "動詞の語尾にingをつける（作り方は現在進行形と同じ）", icon: "edit", color: "blue" },
+                { title: "then / at that time", desc: "「その時」という言葉と一緒に使われやすい", icon: "clock", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I playing tennis then.",
+            goodExample: "I <strong>was playing</strong> tennis then.",
+            description: "be動詞（was/were）を忘れないように注意しましょう。"
+        },
+        examples: [
+            { engDisplay: 'I <span class="text-red-600 font-bold">was studying</span> math then.', engRead: "I was studying math then.", jp: "私はその時、数学を勉強していました。", icon: "book-open", color: "blue" },
+            { engDisplay: 'They <span class="text-red-600 font-bold">were running</span> in the park.', engRead: "They were running in the park.", jp: "彼らは公園で走っていました。", icon: "user", color: "rose" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "He (　　　) breakfast then.", options: ["is eating", "was eating", "eaten", "were eating"], correctIndex: 1, explanation: "主語がHeで、then（その時）があるのでwas＋ing形にします。" },
+            { id: "qA2", subQuestion: "We (　　　) soccer at that time.", options: ["was playing", "were playing", "played", "playing"], correctIndex: 1, explanation: "主語がWeなのでwereを使います。" },
+            { id: "qA3", subQuestion: "(　　　) you taking a bath then?", options: ["Was", "Did", "Were", "Are"], correctIndex: 2, explanation: "Youの過去進行形の疑問文はWereで始めます。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "彼女はその時、ピアノを弾いていましたか？", sentenceParts: ["{slot}", "she", "{slot}", "the piano then?"], words: ["Was", "playing", "Were", "play"], correctOrder: ["Was", "playing"], explanation: "Sheが主語なのでWasを使い、動詞をing形にします。" },
+            { id: "qB2", subQuestion: "私はその時、眠っていませんでした。", sentenceParts: ["I", "{slot}", "{slot}", "then."], words: ["was", "not", "sleeping", "were"], correctOrder: ["was", "not", "sleeping"], explanation: "be動詞の後にnotを置き、その後にing形を続けます。" },
+            { id: "qB3", subQuestion: "彼らは夕食を作っていました。", sentenceParts: ["They", "{slot}", "{slot}", "dinner."], words: ["were", "making", "was", "make"], correctOrder: ["were", "making"], explanation: "Theyに合わせてwereを選び、makeのeを取ってingをつけます。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "あなたは何をしていましたか？", words: ["What", "were", "you", "doing", "?"], explanation: "「何をしていましたか」はWhat were you doing?となります。" },
+            { id: "qC2", subQuestion: "雨が降っていました。", words: ["It", "was", "raining"], explanation: "天候のItを主語にして、was rainingとします。" }
+        ],
+        summary: ["過去進行形は「was/were ＋ ing形」", "意味は「（その時）〜していた」", "否定文・疑問文のルールはbe動詞と同じ"]
+    },
+    "sensory-verbs": {
+        id: "sensory-verbs",
+        grade: 2,
+        menuTitle: "感覚を表す動詞 (SVC)",
+        intro: {
+            title: "五感を表す動詞",
+            subtitle: "意味：〜の感じがする／〜な味がする",
+            goals: ["look, sound, taste, feel, smell の意味を覚える", "「動詞 + 形容詞」の形をマスターする", "五感を使った表現を身につける"]
+        },
+        grammar: {
+            formula: [
+                { text: "主語", type: "box" },
+                { text: "+", type: "text" },
+                { text: "感覚動詞", type: "red" },
+                { text: "+", type: "text" },
+                { text: "形容詞", type: "blue" }
+            ],
+            text: "「主語 ＝ 形容詞」の状態を、目・耳・舌・肌・鼻の五感を通して説明する文です。",
+            items: [
+                { title: "look / sound", desc: "見て「〜に見える」／聞いて「〜に聞こえる」", icon: "eye", color: "rose" },
+                { title: "taste / smell", desc: "食べて「〜な味がする」／嗅いで「〜な匂いがする」", icon: "utensils", color: "orange" },
+                { title: "feel", desc: "触れて・心で「〜な感じがする」", icon: "smile", color: "blue" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "This soup tastes saltily.",
+            goodExample: "This soup <strong>tastes salty</strong>.",
+            description: "「〜に」と訳しても、後ろには必ず形容詞（salty, happy等）を置きます。"
+        },
+        examples: [
+            { engDisplay: 'This flower <span class="text-red-600 font-bold">smells sweet</span>.', engRead: "This flower smells sweet.", jp: "この花は甘い香りがします。", icon: "flower", color: "rose" },
+            { engDisplay: 'I <span class="text-blue-600 font-bold">feel happy</span> today.', engRead: "I feel happy today.", jp: "今日は幸せな気分です。", icon: "smile", color: "blue" },
+            { engDisplay: 'That story <span class="text-orange-600 font-bold">sounds interesting</span>.', engRead: "That story sounds interesting.", jp: "その話は面白そうに聞こえます。", icon: "message-circle", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "The lemon (　　　) sour.", options: ["tastes", "sounds", "looks at", "looks like"], correctIndex: 0, explanation: "レモンの「味がする」なのでtastesを選びます。" },
+            { id: "qA2", subQuestion: "His story (　　　) strange.", options: ["listens", "hears", "sounds", "feels"], correctIndex: 2, explanation: "話を聞いて「〜に聞こえる（思える）」ときはsoundsです。" },
+            { id: "qA3", subQuestion: "The silk (　　　) smooth.", options: ["smells", "feels", "tastes", "looks at"], correctIndex: 1, explanation: "手触りが「〜な感じがする」ときはfeelsを使います。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "そのケーキはとても美味しそうな匂いがします。", sentenceParts: ["The cake smells", "very", "{slot}."], words: ["good", "well", "nice"], correctOrder: ["good"], explanation: "「匂いがする」はsmells、その後に形容詞のgoodを置きます。" },
+            { id: "qB2", subQuestion: "あなたの考えは素晴らしく聞こえます（名案ですね）。", sentenceParts: ["Your idea sounds", "{slot}."], words: ["great", "greatly", "nice"], correctOrder: ["great"], explanation: "三人称単数のsを付けたsoundsの後に形容詞を置きます。" },
+            { id: "qB3", subQuestion: "このスープは少し苦い味がします。", sentenceParts: ["This soup tastes", "a little", "{slot}."], words: ["bitter", "bitterly", "hot"], correctOrder: ["bitter"], explanation: "「味がする」はtastesを使い、後ろに形容詞のbitter（苦い）を置きます。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "彼女は今日、悲しそうに見えます。", words: ["She", "looks", "sad", "today"], explanation: "look + 形容詞の語順です。" },
+            { id: "qC2", subQuestion: "この布団は柔らかい感じがします。", words: ["This", "futon", "feels", "soft"], explanation: "感触を表すときはfeelを使います。" }
+        ],
+        summary: ["五感（見る・聞く・味わう・嗅ぐ・感じる）を表す動詞", "後ろには「形容詞」を置くのがルール", "主語が三人称単数のときの s に注意"]
+    },
+    "be-going-to": {
+        id: "be-going-to",
+        grade: 2,
+        menuTitle: "be going to (未来の文)",
+        intro: {
+            title: "未来を表す表現",
+            subtitle: "意味：〜するつもりです／〜しそうです",
+            goals: ["be going to の形を理解する", "予定や計画を英語で言えるようにする", "否定文・疑問文の形を覚える"]
+        },
+        grammar: {
+            formula: [
+                { text: "主語", type: "box" },
+                { text: "+", type: "text" },
+                { text: "am/is/are", type: "red" },
+                { text: "going to", type: "blue" },
+                { text: "+", type: "text" },
+                { text: "動詞の原形", type: "red" }
+            ],
+            text: "「〜する予定だ」という、すでに心に決めている未来の計画を表します。",
+            items: [
+                { title: "be動詞", desc: "主語に合わせて am / is / are を選ぶ", icon: "refresh-cw", color: "rose" },
+                { title: "going to", desc: "セットで未来を表す。go（行く）という意味ではない", icon: "fast-forward", color: "blue" },
+                { title: "動詞の原形", desc: "to の後ろは必ず元の形（s や ed をつけない）", icon: "edit", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I going to play soccer tomorrow.",
+            goodExample: "I <strong>am going to play</strong> soccer tomorrow.",
+            description: "be動詞を忘れがちなので注意！また、toの後ろは必ず「原形」にします。"
+        },
+        examples: [
+            { engDisplay: 'I <span class="text-red-600 font-bold">am going to visit</span> Kyoto next week.', engRead: "I am going to visit Kyoto next week.", jp: "私は来週、京都を訪れるつもりです。", icon: "map-pin", color: "rose" },
+            { engDisplay: 'He <span class="text-blue-600 font-bold">is going to cook</span> dinner tonight.', engRead: "He is going to cook dinner tonight.", jp: "彼は今夜、夕食を作る予定です。", icon: "utensils", color: "blue" },
+            { engDisplay: 'It <span class="text-orange-600 font-bold">is going to rain</span> tomorrow.', engRead: "It is going to rain tomorrow.", jp: "明日は雨が降るでしょう。", icon: "cloud-rain", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "We (　　　) going to play tennis this afternoon.", options: ["is", "are", "am", "be"], correctIndex: 1, explanation: "主語がWeなのでbe動詞はareを使います。" },
+            { id: "qA2", subQuestion: "She is going to (　　　) a new car.", options: ["buy", "buys", "bought", "buying"], correctIndex: 0, explanation: "be going to の後ろは動詞の原形です。" },
+            { id: "qA3", subQuestion: "(　　　) you going to study tonight?", options: ["Is", "Do", "Are", "Will"], correctIndex: 2, explanation: "Youが主語の疑問文なのでAreで始めます。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "私は明日、勉強するつもりはありません。", sentenceParts: ["I", "{slot}", "{slot}", "{slot}", "tomorrow."], words: ["am", "not", "going to study", "is"], correctOrder: ["am", "not", "going to study"], explanation: "否定文はbe動詞の後にnotを置きます。" },
+            { id: "qB2", subQuestion: "あなたは何をする予定ですか？", sentenceParts: ["What", "{slot}", "you", "{slot}", "to do?"], words: ["are", "going", "is", "go"], correctOrder: ["are", "going"], explanation: "疑問詞の後は「be動詞＋主語」の順です。" },
+            { id: "qB3", subQuestion: "彼は日本に来る予定です。", sentenceParts: ["He", "{slot}", "{slot}", "{slot}", "Japan."], words: ["is", "going", "to visit", "visited"], correctOrder: ["is", "going", "to visit"], explanation: "Heに合わせてisを使い、toの後は原形にします。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "私たちは明日、海に行くつもりです。", words: ["We", "are", "going", "to", "go", "to", "the", "sea", "tomorrow"], explanation: "「行くつもり」はgoing to goと表現します。" },
+            { id: "qC2", subQuestion: "それはもうすぐ始まります。", words: ["It", "is", "going", "to", "start", "soon"], explanation: "soon（すぐに）などの語句と相性が良いです。" }
+        ],
+        summary: ["be going to ＋ 動詞の原形で「〜するつもり」", "否定文は be動詞の後ろに not", "疑問文は be動詞を主語の前に出す"]
+    },
+    "svoo-sentence": {
+        id: "svoo-sentence",
+        grade: 2,
+        menuTitle: "give / show など (SVOO)",
+        intro: {
+            title: "「AにBを〜する」文",
+            subtitle: "意味：〜に…をあげる／見せる／教える",
+            goals: ["「人 + 物」の語順をマスターする", "give や show などの動詞の使い方を覚える", "書き換え（to や for を使う形）を理解する"]
+        },
+        grammar: {
+            formula: [
+                { text: "主語", type: "box" },
+                { text: "+", type: "text" },
+                { text: "動詞", type: "red" },
+                { text: "+", type: "text" },
+                { text: "人", type: "blue" },
+                { text: "+", type: "text" },
+                { text: "物", type: "orange" }
+            ],
+            text: "「（人）に（物）を〜する」という、対象が2つある文の形です。",
+            items: [
+                { title: "語順が重要", desc: "必ず「人」が先で「物」が後にくる", icon: "arrow-right-left", color: "rose" },
+                { title: "give / show", desc: "相手に何かが移動する動詞（tell, teachも）", icon: "gift", color: "blue" },
+                { title: "buy / make", desc: "相手のために何かをする動詞", icon: "shopping-cart", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I gave a present my mother.",
+            goodExample: "I gave <strong>my mother a present</strong>.",
+            description: "「人に物を」の順番を逆にしてはいけません。逆にしたい場合は to や for が必要です。"
+        },
+        examples: [
+            { engDisplay: 'My father <span class="text-red-600 font-bold">gave me this watch</span>.', engRead: "My father gave me this watch.", jp: "父は私にこの時計をくれました。", icon: "watch", color: "rose" },
+            { engDisplay: 'She <span class="text-blue-600 font-bold">showed us some pictures</span>.', engRead: "She showed us some pictures.", jp: "彼女は私たちに何枚かの写真を見せてくれました。", icon: "image", color: "blue" },
+            { engDisplay: 'He <span class="text-orange-600 font-bold">bought her a flower</span>.', engRead: "He bought her a flower.", jp: "彼は彼女に花を買ってあげました。", icon: "flower", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "I will (　　　) you my notebook.", options: ["show", "look", "see", "watch"], correctIndex: 0, explanation: "「あなたにノートを見せる」なのでshowを使います。" },
+            { id: "qA2", subQuestion: "Mr. Tanaka teaches (　　　) English.", options: ["we", "our", "us", "ours"], correctIndex: 2, explanation: "動詞の後ろなので、目的格のus（私たちに）を置きます。" },
+            { id: "qA3", subQuestion: "My mother made (　　　) a cake.", options: ["to me", "me", "for me", "I"], correctIndex: 1, explanation: "「動詞 ＋ 人 ＋ 物」の語順なので、直接meを置きます。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "私にあなたの辞書を貸してください。", sentenceParts: ["Please", "{slot}", "{slot}", "your dictionary."], words: ["lend", "me", "to me", "lent"], correctOrder: ["lend", "me"], explanation: "「人に物を貸す」は lend ＋ 人 ＋ 物 です。" },
+            { id: "qB2", subQuestion: "彼は私に面白い話をしました。", sentenceParts: ["He", "{slot}", "{slot}", "a funny story."], words: ["told", "me", "tell", "to me"], correctOrder: ["told", "me"], explanation: "「人に話す」はtellを使います。過去形なのでtoldです。" },
+            { id: "qB3", subQuestion: "彼女は私に素敵なバッグを買ってくれました。", sentenceParts: ["She", "{slot}", "{slot}", "a nice bag."], words: ["bought", "me", "buy", "for me"], correctOrder: ["bought", "me"], explanation: "「人に物を買う」は buy ＋ 人 ＋ 物 です。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "私は母に手紙を書きました。", words: ["I", "wrote", "my", "mother", "a", "letter"], explanation: "wrote ＋ 人（my mother）＋ 物（a letter）の順です。" },
+            { id: "qC2", subQuestion: "その質問を私に教えてください。", words: ["Please", "tell", "me", "the", "answer"], explanation: "「教えて」は教える内容によって tell や teach を使い分けます。" }
+        ],
+        summary: ["基本は「動詞 ＋ 人 ＋ 物」の語順", "give, show, tell, teach などが代表的", "buy, make などもこの形をとれる"]
+    },
+    "infinitive-noun": {
+        id: "infinitive-noun",
+        grade: 2,
+        menuTitle: "不定詞(1) 名詞的用法",
+        intro: {
+            title: "不定詞：名詞的用法",
+            subtitle: "意味：〜すること",
+            goals: ["「to + 動詞の原形」の形を覚える", "「〜すること」という訳し方をマスターする", "主語や目的語としての使い方を理解する"]
+        },
+        grammar: {
+            formula: [
+                { text: "to", type: "red" },
+                { text: "+", type: "text" },
+                { text: "動詞の原形", type: "blue" }
+            ],
+            text: "動詞を「〜すること」という名詞のカタマリに変える使い方です。",
+            items: [
+                { title: "目的語になる", desc: "want to 〜（〜したい）などの形でよく使う", icon: "heart", color: "rose" },
+                { title: "主語になる", desc: "文の最初に置いて「〜することは…だ」と言う", icon: "star", color: "blue" },
+                { title: "原形が鉄則", desc: "to の後は s や ed をつけない元の形", icon: "edit", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I like to playing soccer.",
+            goodExample: "I like <strong>to play</strong> soccer.",
+            description: "like to 〜 の後は必ず動詞の原形（play）にします。ing形と混ぜないよう注意。"
+        },
+        examples: [
+            { engDisplay: 'I want <span class="text-red-600 font-bold">to be</span> a teacher.', engRead: "I want to be a teacher.", jp: "私は先生になりたいです。", icon: "user", color: "rose" },
+            { engDisplay: '<span class="text-blue-600 font-bold">To speak</span> English is fun.', engRead: "To speak English is fun.", jp: "英語を話すことは楽しいです。", icon: "message-circle", color: "blue" },
+            { engDisplay: 'He likes <span class="text-orange-600 font-bold">to cook</span> dinner.', engRead: "He likes to cook dinner.", jp: "彼は夕食を作ることが好きです。", icon: "utensils", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "I hope (　　　) you again.", options: ["see", "seeing", "to see", "saw"], correctIndex: 2, explanation: "hope to 〜 で「〜することを望む」という名詞的用法になります。" },
+            { id: "qA2", subQuestion: "(　　　) tennis is my hobby.", options: ["To play", "Play", "Plays", "Played"], correctIndex: 0, explanation: "文の主語にするには「To ＋ 動詞の原形」の形にします。" },
+            { id: "qA3", subQuestion: "She decided (　　　) a doctor.", options: ["become", "to become", "becoming", "became"], correctIndex: 1, explanation: "decide to 〜 で「〜することに決める」となります。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "私はピアノを弾くことが好きです。", sentenceParts: ["I like", "{slot}", "{slot}", "the piano."], words: ["to", "play", "playing", "plays"], correctOrder: ["to", "play"], explanation: "like to ＋ 原形で「〜することが好き」と表します。" },
+            { id: "qB2", subQuestion: "あなたは将来、何になりたいですか？", sentenceParts: ["What do you", "{slot}", "{slot}", "{slot}", "in the future?"], words: ["want", "to", "be", "is"], correctOrder: ["want", "to", "be"], explanation: "「何になりたいか」は want to be を使います。" },
+            { id: "qB3", subQuestion: "早く起きることは大切です。", sentenceParts: ["{slot}", "{slot}", "up early is important."], words: ["To", "get", "Getting", "Got"], correctOrder: ["To", "get"], explanation: "「起きること」を主語にするために To get とします。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "私の夢は世界を旅することです。", words: ["My", "dream", "is", "to", "travel", "around", "the", "world"], explanation: "「〜することです」は is to 〜 で表現できます。" },
+            { id: "qC2", subQuestion: "彼らはテレビを見始めました。", words: ["They", "started", "to", "watch", "TV"], explanation: "start to 〜 で「〜し始める」となります。" }
+        ],
+        summary: ["不定詞の名詞的用法は「〜すること」と訳す", "want to / like to / hope to などでよく使われる", "文の主語（〜することは…だ）にもなれる"]
+    },
+    "infinitive-adjective": {
+        id: "infinitive-adjective",
+        grade: 2,
+        menuTitle: "不定詞(2) 形容詞的用法",
+        intro: {
+            title: "不定詞：形容詞的な役割",
+            subtitle: "意味：〜するための／〜すべき",
+            goals: ["「名詞 + to + 原形」の語順を理解する", "前の名詞を詳しく説明する感覚をつかむ", "something to drink などの定番表現を覚える"]
+        },
+        grammar: {
+            formula: [
+                { text: "名詞", type: "box" },
+                { text: "+", type: "text" },
+                { text: "to", type: "red" },
+                { text: "+", type: "text" },
+                { text: "動詞の原形", type: "blue" }
+            ],
+            text: "直前の名詞を後ろから修飾して、「どんな（名詞）か」を詳しく説明します。",
+            items: [
+                { title: "後ろから説明", desc: "日本語と違い、to以下が名詞の後にくる（後置修飾）", icon: "arrow-left", color: "rose" },
+                { title: "something 〜", desc: "something to eat（食べるもの）の形は超重要", icon: "utensils", color: "blue" },
+                { title: "役割", desc: "「〜するための」や「〜すべき」と訳すとスムーズ", icon: "book-open", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I have to read many books.",
+            goodExample: "I have <strong>many books to read</strong>.",
+            description: "「読むべき本」と言いたい時は、名詞(books)をtoの前に置きます。have to（〜しなければならない）と混同しないように。"
+        },
+        examples: [
+            { engDisplay: 'I want <span class="text-blue-600 font-bold">something to drink</span>.', engRead: "I want something to drink.", jp: "私は何か飲むものが欲しいです。", icon: "smile", color: "rose" },
+            { engDisplay: 'He has <span class="text-blue-600 font-bold">a lot of homework to do</span>.', engRead: "He has a lot of homework to do.", jp: "彼にはやるべき宿題がたくさんあります。", icon: "edit", color: "blue" },
+            { engDisplay: 'I have <span class="text-blue-600 font-bold">no time to watch</span> TV.', engRead: "I have no time to watch TV.", jp: "私にはテレビを見る時間がありません。", icon: "clock", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "I have a lot of things (　　　) today.", options: ["do", "doing", "to do", "done"], correctIndex: 2, explanation: "things（こと）を修飾して「すべきこと」とする不定詞です。" },
+            { id: "qA2", subQuestion: "Give me something (　　　). I'm hungry.", options: ["to eat", "to drink", "eat", "drinking"], correctIndex: 0, explanation: "空腹（hungry）なので「食べるための何か」を選びます。" },
+            { id: "qA3", subQuestion: "There are many places (　　　) in Kyoto.", options: ["visit", "visiting", "to visit", "visited"], correctIndex: 2, explanation: "places（場所）を修飾して「訪れるべき場所」となります。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "何か温かい飲み物が欲しいです。", sentenceParts: ["I want", "{slot}", "{slot}", "{slot}."], words: ["something", "hot", "to drink", "anything"], correctOrder: ["something", "hot", "to drink"], explanation: "something + 形容詞 + to不定詞 の語順に注意しましょう。" },
+            { id: "qB2", subQuestion: "私には英語を勉強するための友達が必要です。", sentenceParts: ["I need", "{slot}", "{slot}", "{slot}", "English."], words: ["friends", "to", "study", "studied"], correctOrder: ["friends", "to", "study"], explanation: "「勉強するための友達」は friends to study です。" },
+            { id: "qB3", subQuestion: "彼は書くためのペンを持っていません。", sentenceParts: ["He has", "{slot}", "{slot}", "{slot}."], words: ["no", "pen", "to write", "with"], correctOrder: ["no", "pen", "to write"], explanation: "「書くためのペン」という形容詞的用法です。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "あなたは何か話すことがありますか？", words: ["Do", "you", "have", "anything", "to", "talk", "about", "?"], explanation: "anything to talk about で「話すべきこと」となります。" },
+            { id: "qC2", subQuestion: "私には今日、するべきことが何もありません。", words: ["I", "have", "nothing", "to", "do", "today"], explanation: "nothing to do で「することが何もない」という意味です。" }
+        ],
+        summary: ["「名詞 ＋ to ＋ 原形」で、後ろから名詞を詳しく説明する", "訳し方は「〜するための」「〜すべき」", "something hot to drink の語順（形容詞の位置）に注意"]
+    },
+    "infinitive-adverb-purpose": {
+        id: "infinitive-adverb-purpose",
+        grade: 2,
+        menuTitle: "不定詞(3) 副詞的用法（目的）",
+        intro: {
+            title: "不定詞：目的を表す",
+            subtitle: "意味：〜するために",
+            goals: ["「〜するために」という目的の付け加え方を覚える", "文のメイン部分とのつながりを理解する", "go to ... to 〜 などのよく使うパターンを身につける"]
+        },
+        grammar: {
+            formula: [
+                { text: "文のメイン部分", type: "box" },
+                { text: "+", type: "text" },
+                { text: "to", type: "red" },
+                { text: "+", type: "text" },
+                { text: "動詞の原形", type: "blue" }
+            ],
+            text: "動作の理由や目的を説明するために、文の後ろに情報を付け足す使い方です。",
+            items: [
+                { title: "目的を説明", desc: "「なぜそこへ行ったのか？」などの理由を表す", icon: "help-circle", color: "rose" },
+                { title: "置く場所", desc: "基本的には文の終わり（動詞の後ろ側）に置く", icon: "align-left", color: "blue" },
+                { title: "副詞の役割", desc: "動詞（行く、勉強するなど）を詳しく説明する", icon: "fast-forward", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I went to the library for study English.",
+            goodExample: "I went to the library <strong>to study</strong> English.",
+            description: "「〜するために」と言う時は for ではなく to + 原形を使います。"
+        },
+        examples: [
+            { engDisplay: 'I get up early <span class="text-red-600 font-bold">to cook</span> breakfast.', engRead: "I get up early to cook breakfast.", jp: "私は朝食を作るために早く起きます。", icon: "sun", color: "orange" },
+            { engDisplay: 'He went to the park <span class="text-blue-600 font-bold">to play</span> soccer.', engRead: "He went to the park to play soccer.", jp: "彼はサッカーをするために公園へ行きました。", icon: "award", color: "blue" },
+            { engDisplay: 'They use computers <span class="text-rose-600 font-bold">to study</span> math.', engRead: "They use computers to study math.", jp: "彼らは数学を勉強するためにコンピュータを使います。", icon: "monitor", color: "rose" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "I went to the kitchen (　　　) some water.", options: ["drink", "to drink", "drinking", "drank"], correctIndex: 1, explanation: "「水を飲むために」という目的を表す不定詞を選びます。" },
+            { id: "qA2", subQuestion: "She studied hard (　　　) a doctor.", options: ["to become", "become", "becomes", "became"], correctIndex: 0, explanation: "「医者になるために」勉強した、という目的を付け加えます。" },
+            { id: "qA3", subQuestion: "We use English (　　　) with people.", options: ["talk", "talking", "to talk", "talks"], correctIndex: 2, explanation: "「話すために」英語を使う、という副詞的用法です。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "彼は本を買うために本屋へ行きました。", sentenceParts: ["He went to the bookstore", "{slot}", "{slot}", "a book."], words: ["to", "buy", "buying", "for"], correctOrder: ["to", "buy"], explanation: "「〜するために」は to ＋ 原形で表します。" },
+            { id: "qB2", subQuestion: "私はテニスをするために放課後残りました。", sentenceParts: ["I stayed after school", "{slot}", "{slot}", "tennis."], words: ["to", "play", "playing", "plays"], correctOrder: ["to", "play"], explanation: "動作の目的を後ろに付け足します。" },
+            { id: "qB3", subQuestion: "母を助けるために家に帰りました。", sentenceParts: ["I went home", "{slot}", "{slot}", "my mother."], words: ["to", "help", "helping", "helped"], correctOrder: ["to", "help"], explanation: "「助けるために」という目的の不定詞です。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "彼女はカメラを買うためにお金を貯めています。", words: ["She", "is", "saving", "money", "to", "buy", "a", "camera"], explanation: "saving money（お金を貯めている）の後に目的を続けます。" },
+            { id: "qC2", subQuestion: "私はあなたに会うためにここへ来ました。", words: ["I", "came", "here", "to", "see", "you"], explanation: "came here（ここに来た）＋ to see you（あなたに会うために）の順です。" }
+        ],
+        summary: ["不定詞の副詞的用法は「〜するために」と訳す", "動作を行う「目的」を説明する役割", "文のメイン部分の後ろに to ＋ 原形を置く"]
+    },
+    "infinitive-adverb-emotion": {
+        id: "infinitive-adverb-emotion",
+        grade: 2,
+        menuTitle: "不定詞(4) 副詞的用法（感情の原因）",
+        intro: {
+            title: "不定詞：感情の理由",
+            subtitle: "意味：〜して（嬉しい、驚くなど）",
+            goals: ["感情を表す形容詞との組み合わせを覚える", "「〜して…だ」という心の動きを表現する", "happy, glad, sorry などの定番語句をマスターする"]
+        },
+        grammar: {
+            formula: [
+                { text: "主語", type: "box" },
+                { text: "+", type: "text" },
+                { text: "be動詞", type: "text" },
+                { text: "+", type: "text" },
+                { text: "感情の形容詞", type: "red" },
+                { text: "+", type: "text" },
+                { text: "to", type: "red" },
+                { text: "+", type: "text" },
+                { text: "動詞の原形", type: "blue" }
+            ],
+            text: "なぜそのような気持ちになったのか、その「原因」を不定詞で説明します。",
+            items: [
+                { title: "感情の単語", desc: "happy, glad, sad, surprised, sorry などがくる", icon: "smile", color: "rose" },
+                { title: "訳し方のコツ", desc: "「〜して（嬉しい）」のように、原因から先に訳すと自然", icon: "message-circle", color: "blue" },
+                { title: "セットで覚える", icon: "link", color: "orange", desc: "I am happy to meet you.（会えて嬉しい）は超定番" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I am happy to meeting you.",
+            goodExample: "I am happy <strong>to meet</strong> you.",
+            description: "「会えて」という原因も、不定詞(to + 原形)の形を崩してはいけません。"
+        },
+        examples: [
+            { engDisplay: 'I am <span class="text-rose-600 font-bold">happy to see</span> you.', engRead: "I am happy to see you.", jp: "あなたに会えて嬉しいです。", icon: "smile", color: "rose" },
+            { engDisplay: 'She was <span class="text-blue-600 font-bold">surprised to hear</span> the news.', engRead: "She was surprised to hear the news.", jp: "彼女はそのニュースを聞いて驚きました。", icon: "message-circle", color: "blue" },
+            { engDisplay: 'I am <span class="text-orange-600 font-bold">sorry to be</span> late.', engRead: "I am sorry to be late.", jp: "遅れてしまってすみません（遅れて残念に思う）。", icon: "clock", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "We were very glad (　　　) your letter.", options: ["receive", "to receive", "receiving", "received"], correctIndex: 1, explanation: "glad（嬉しい）の原因を「受け取って」と不定詞で説明します。" },
+            { id: "qA2", subQuestion: "I was sad (　　　) the movie.", options: ["to watch", "watch", "watches", "watched"], correctIndex: 0, explanation: "「見て（悲しかった）」という感情の原因を表す不定詞です。" },
+            { id: "qA3", subQuestion: "He was (　　　) to win the game.", options: ["happy", "happily", "happiness", "happier"], correctIndex: 0, explanation: "to不定詞の前に来るのは「感情を表す形容詞」です。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "その話を聞いて驚きました。", sentenceParts: ["I was", "{slot}", "{slot}", "{slot}", "the story."], words: ["surprised", "to", "hear", "hearing"], correctOrder: ["surprised", "to", "hear"], explanation: "感情(surprised) + 不定詞(to hear) の順です。" },
+            { id: "qB2", subQuestion: "あなたにまた会えて嬉しいです。", sentenceParts: ["I am", "{slot}", "{slot}", "{slot}", "you again."], words: ["glad", "to", "see", "seen"], correctOrder: ["glad", "to", "see"], explanation: "glad to see you は「会えて嬉しい」の決まり文句です。" },
+            { id: "qB3", subQuestion: "その知らせを知って悲しいです。", sentenceParts: ["I am", "{slot}", "{slot}", "{slot}", "the news."], words: ["sad", "to", "know", "knowing"], correctOrder: ["sad", "to", "know"], explanation: "「知って悲しい」という感情の原因を表します。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "彼女はあなたに会えてとても幸せでした。", words: ["She", "was", "very", "happy", "to", "meet", "you"], explanation: "感情を表す形容詞の後に to + 原形を続けます。" },
+            { id: "qC2", subQuestion: "ご迷惑をおかけしてすみません。", words: ["I", "am", "sorry", "to", "trouble", "you"], explanation: "sorry to 〜 で「〜して申し訳ない」という定型表現です。" }
+        ],
+        summary: ["感情を表す単語（happy, glad等）＋ to ＋ 原形", "意味は「〜して（嬉しい、驚くなど）」", "感情が湧き上がった「原因」を後ろから説明する"]
+    },
+    "future-will": {
+        id: "future-will",
+        grade: 2,
+        menuTitle: "未来形 will",
+        intro: {
+            title: "助動詞 will",
+            subtitle: "意味：〜するつもりだ／〜でしょう",
+            goals: ["will の基本形（will + 原形）を覚える", "「その場での決心」や「予測」の表現を学ぶ", "be going to との違いを理解する"]
+        },
+        grammar: {
+            formula: [
+                { text: "主語", type: "box" },
+                { text: "+", type: "text" },
+                { text: "will", type: "red" },
+                { text: "+", type: "text" },
+                { text: "動詞の原形", type: "blue" }
+            ],
+            text: "未来のことを表す助動詞です。主語に関わらず、後ろの動詞は必ず「原形」になります。",
+            items: [
+                { title: "意志", desc: "「（その場で決めて）〜するよ」という強い意志", icon: "zap", color: "orange" },
+                { title: "推量", desc: "「（おそらく）〜だろう」という未来の予測", icon: "cloud-sun", color: "blue" },
+                { title: "短縮形", desc: "I will → I'll, He will → He'll のように短縮される", icon: "scissors", color: "rose" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I will plays soccer tomorrow.",
+            goodExample: "I will <strong>play</strong> soccer tomorrow.",
+            description: "will は助動詞（canなどと同じ仲間）なので、後ろの動詞に s や ed をつけてはいけません。"
+        },
+        examples: [
+            { engDisplay: 'I <span class="text-red-600 font-bold">will help</span> you.', engRead: "I will help you.", jp: "私があなたを手伝いましょう（手伝うよ）。", icon: "smile", color: "rose" },
+            { engDisplay: 'It <span class="text-blue-600 font-bold">will be</span> sunny tomorrow.', engRead: "It will be sunny tomorrow.", jp: "明日は晴れるでしょう。", icon: "sun", color: "orange" },
+            { engDisplay: 'We <span class="text-orange-600 font-bold">will visit</span> Okinawa next month.', engRead: "We will visit Okinawa next month.", jp: "私たちは来月、沖縄を訪れるつもりです。", icon: "map-pin", color: "blue" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "He (　　　) arrive here soon.", options: ["will", "is", "be", "do"], correctIndex: 0, explanation: "未来の予測「〜するだろう」なので will を使います。" },
+            { id: "qA2", subQuestion: "I will (　　　) my best.", options: ["do", "does", "did", "doing"], correctIndex: 0, explanation: "助動詞 will の後は必ず動詞の原形です。" },
+            { id: "qA3", subQuestion: "The movie (　　　) start at seven.", options: ["will", "going to", "is", "will be"], correctIndex: 0, explanation: "未来の予測を表す will を使い、動詞は原形 start にします。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "私は今夜、手紙を書くつもりです。", sentenceParts: ["I", "{slot}", "{slot}", "a letter tonight."], words: ["will", "write", "writes", "going"], correctOrder: ["will", "write"], explanation: "「〜するつもり」という意志を will + 原形で表します。" },
+            { id: "qB2", subQuestion: "明日は寒くなるでしょう。", sentenceParts: ["It", "{slot}", "{slot}", "cold tomorrow."], words: ["will", "be", "is", "get"], correctOrder: ["will", "be"], explanation: "「〜になるだろう」は will be を使います。" },
+            { id: "qB3", subQuestion: "彼女はすぐに戻ってきます。", sentenceParts: ["She", "{slot}", "{slot}", "back soon."], words: ["will", "come", "comes", "be"], correctOrder: ["will", "come"], explanation: "未来の動作を表す will を使い、動詞は原形にします。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "私が窓を開けましょう。", words: ["I", "will", "open", "the", "window"], explanation: "その場で決めた意志（〜しましょう）は will で表現します。" },
+            { id: "qC2", subQuestion: "あなたは有名な歌手になるでしょう。", words: ["You", "will", "be", "a", "famous", "singer"], explanation: "未来の予測「〜になるだろう」は will be 〜 です。" }
+        ],
+        summary: ["will ＋ 動詞の原形で「〜するつもり／〜だろう」", "主語が何であっても動詞は原形", "その場での決心や、根拠に基づかない予測に使う"]
+    },
+    "will-negative-and-question": {
+        id: "will-negative-and-question",
+        grade: 2,
+        menuTitle: "willの否定文・疑問文",
+        intro: {
+            title: "willの否定と疑問",
+            subtitle: "意味：〜しないだろう／〜してくれますか",
+            goals: ["否定形 won't (will not) を使いこなす", "疑問文の語順（Will + 主語）をマスターする", "依頼と予測の答え方を練習する"]
+        },
+        grammar: {
+            formula: [
+                { text: "否定：won't", type: "red" },
+                { text: "+ 原形", type: "text" },
+                { text: " / ", type: "text" },
+                { text: "疑問：Will + 主語", type: "blue" },
+                { text: "+ 原形", type: "text" }
+            ],
+            text: "否定文では not を入れ、疑問文では Will を主語の前に出します。どちらも動詞は「原形」です。",
+            items: [
+                { title: "否定 (won't)", desc: "「〜しないだろう」「〜しないつもりだ」", icon: "minus-circle", color: "rose" },
+                { title: "疑問 (Will ...?)", desc: "「〜でしょうか」または「〜してくれますか」", icon: "help-circle", color: "blue" },
+                { title: "答え方", desc: "Yes, ~ will. / No, ~ won't. で答える", icon: "message-square", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "Will you helping me? / I will not plays.",
+            goodExample: "Will you <strong>help</strong> me? / I <strong>won't play</strong>.",
+            description: "否定でも疑問でも、willがある文の動詞は常に「原形」であることを忘れないでください。"
+        },
+        examples: [
+            { engDisplay: 'I <span class="text-red-600 font-bold">won\'t forget</span> your help.', engRead: "I won't forget your help.", jp: "あなたの助けを忘れません。", icon: "smile", color: "rose" },
+            { engDisplay: '<span class="text-blue-600 font-bold">Will it be</span> cold tomorrow?', engRead: "Will it be cold tomorrow?", jp: "明日は寒くなるでしょうか？", icon: "thermometer", color: "blue" },
+            { engDisplay: '<span class="text-orange-600 font-bold">Will you close</span> the window?', engRead: "Will you close the window?", jp: "窓を閉めてくれませんか？", icon: "door-closed", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "(　　　) you show me your picture?", options: ["Will", "Do", "Are", "Is"], correctIndex: 0, explanation: "相手に依頼（見せてくれませんか）をするので Will を使います。" },
+            { id: "qA2", subQuestion: "It (　　　) rain this evening.", options: ["won't", "isn't", "not will", "won't be"], correctIndex: 0, explanation: "「降らないだろう」という未来の否定予測は won't + 原形です。" },
+            { id: "qA3", subQuestion: "Will he come soon? --- No, he (　　　).", options: ["won't", "doesn't", "isn't", "not"], correctIndex: 0, explanation: "Will の疑問文には won't (will not) で答えます。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "私はその秘密を誰にも言わないつもりです。", sentenceParts: ["I", "{slot}", "{slot}", "anyone the secret."], words: ["won't", "tell", "tell not", "will"], correctOrder: ["won't", "tell"], explanation: "「〜しないつもり」という強い意志の否定は won't です。" },
+            { id: "qB2", subQuestion: "手伝ってくれませんか？ --- もちろん。", sentenceParts: ["{slot}", "you", "{slot}", "me? --- Sure."], words: ["Will", "help", "Do", "helping"], correctOrder: ["Will", "help"], explanation: "依頼の Will you + 原形 の形です。" },
+            { id: "qB3", subQuestion: "明日は晴れないでしょう。", sentenceParts: ["It", "{slot}", "{slot}", "sunny tomorrow."], words: ["won't", "be", "not", "is"], correctOrder: ["won't", "be"], explanation: "未来の状態の否定は won't be を使います。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "あなたは明日、暇でしょうか？", words: ["Will", "you", "be", "free", "tomorrow", "?"], explanation: "未来の状態を尋ねる疑問文の語順です。" },
+            { id: "qC2", subQuestion: "彼らはパーティーに来ないでしょう。", words: ["They", "won't", "come", "to", "the", "party"], explanation: "won't ＋ 動詞の原形を置きます。" }
+        ],
+        summary: ["否定は won't + 原形（〜しないだろう）", "疑問は Will + 主語 + 原形？（〜でしょうか／〜してくれますか）", "答え方は will / won't を使って短く答える"]
+    },
+    "have-to": {
+        id: "have-to",
+        grade: 2,
+        menuTitle: "have to (義務)",
+        intro: {
+            title: "have to / has to",
+            subtitle: "意味：〜しなければならない",
+            goals: ["have to + 動詞の原形の形を覚える", "主語による have と has の使い分けを理解する", "「義務」を表す表現をマスターする"]
+        },
+        grammar: {
+            formula: [
+                { text: "主語", type: "box" },
+                { text: "+", type: "text" },
+                { text: "have / has to", type: "red" },
+                { text: "+", type: "text" },
+                { text: "動詞の原形", type: "blue" }
+            ],
+            text: "「〜する必要がある」「〜しなければならない」という義務や必要性を表します。",
+            items: [
+                { title: "has to", desc: "主語が三人称単数（he, she, Tanaka-san等）の時に使う", icon: "user", color: "rose" },
+                { title: "動詞の原形", desc: "to の後ろの動詞は常に元の形にする", icon: "edit", color: "blue" },
+                { title: "must との入れ替え", desc: "助動詞 must とほぼ同じ意味で使える", icon: "refresh-cw", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "He have to study math.",
+            goodExample: "He <strong>has to study</strong> math.",
+            description: "主語が三人称単数のときは have ではなく has を使う点に注意しましょう。"
+        },
+        examples: [
+            { engDisplay: 'I <span class="text-red-600 font-bold">have to go</span> home now.', engRead: "I have to go home now.", jp: "私はもう家に帰らなければなりません。", icon: "home", color: "rose" },
+            { engDisplay: 'She <span class="text-blue-600 font-bold">has to help</span> her mother.', engRead: "She has to help her mother.", jp: "彼女は母親を手伝わなければなりません。", icon: "smile", color: "blue" },
+            { engDisplay: 'We <span class="text-orange-600 font-bold">have to wash</span> the dishes.', engRead: "We have to wash the dishes.", jp: "私たちは皿を洗わなければなりません。", icon: "utensils", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "I (　　　) to study for the test.", options: ["have", "has", "must", "am"], correctIndex: 0, explanation: "I が主語なので have to を使います。" },
+            { id: "qA2", subQuestion: "Ken (　　　) to practice the piano.", options: ["have", "has", "do", "is"], correctIndex: 1, explanation: "Ken は三人称単数なので has to になります。" },
+            { id: "qA3", subQuestion: "You have to (　　　) early.", options: ["get up", "gets up", "got up", "getting up"], correctIndex: 0, explanation: "to の後は動詞の原形です。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "彼は明日、早く起きなければなりません。", sentenceParts: ["He", "{slot}", "{slot}", "up early tomorrow."], words: ["has", "to get", "have", "gets"], correctOrder: ["has", "to get"], explanation: "主語がHeなのでhas toを使います。" },
+            { id: "qB2", subQuestion: "私は靴を脱がなければなりませんか？", sentenceParts: ["Do I", "{slot}", "{slot}", "off my shoes?"], words: ["have", "to take", "has", "take"], correctOrder: ["have", "to take"], explanation: "疑問文でも have to ＋ 原形の形は変わりません。" },
+            { id: "qB3", subQuestion: "私たちは今日、学校へ行かなければなりません。", sentenceParts: ["We", "{slot}", "{slot}", "to school today."], words: ["have", "to go", "has", "go"], correctOrder: ["have", "to go"], explanation: "「〜しなければならない」は have to ＋ 原形です。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "あなたはここで待たなければなりません。", words: ["You", "have", "to", "wait", "here"], explanation: "have to + 動詞の原形の語順です。" },
+            { id: "qC2", subQuestion: "彼女は今、昼食を作らなければなりません。", words: ["She", "has", "to", "make", "lunch", "now"], explanation: "三人称単数のhasを忘れずに使いましょう。" }
+        ],
+        summary: ["have to / has to ＋ 動詞の原形で「〜しなければならない」", "主語が三人称単数のときは has to を使う", "客観的な必要性や義務を表す"]
+    },
+    "have-to-negative-and-question": {
+        id: "have-to-negative-and-question",
+        grade: 2,
+        menuTitle: "have to の否定文・疑問文",
+        intro: {
+            title: "have to の否定と疑問",
+            subtitle: "意味：〜する必要はない／〜しなければなりませんか",
+            goals: ["don't have to（〜する必要はない）の意味を覚える", "疑問文の作り方（Do/Does + 主語 + have to）をマスターする", "否定文での「禁止（must not）」との違いを理解する"]
+        },
+        grammar: {
+            formula: [
+                { text: "否定：don't/doesn't", type: "red" },
+                { text: "have to", type: "text" },
+                { text: " / ", type: "text" },
+                { text: "疑問：Do/Does + 主語", type: "blue" },
+                { text: "have to", type: "text" }
+            ],
+            text: "一般動詞と同じように do / does を使って否定文や疑問文を作ります。三人称単数でも否定・疑問では have に戻ります。",
+            items: [
+                { title: "don't have to", desc: "「〜する必要はない（しなくてもよい）」という意味になる", icon: "slash", color: "rose" },
+                { title: "疑問文", desc: "Do / Does を文頭に置く。答えは Yes, I do. / No, I don't. など", icon: "help-circle", color: "blue" },
+                { title: "s の脱落", desc: "does を使うときは has ではなく have に戻る", icon: "refresh-cw", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "Does he has to go? / You must not have to go.",
+            goodExample: "Does he <strong>have to</strong> go? / You <strong>don't have to</strong> go.",
+            description: "否定文 don't have to は「禁止（ダメ）」ではなく「不要（しなくていい）」という意味になるのが最大のポイントです。"
+        },
+        examples: [
+            { engDisplay: 'You <span class="text-red-600 font-bold">don\'t have to hurry</span>.', engRead: "You don't have to hurry.", jp: "急ぐ必要はありません。", icon: "zap-off", color: "rose" },
+            { engDisplay: '<span class="text-blue-600 font-bold">Does she have to</span> cook tonight?', engRead: "Does she have to cook tonight?", jp: "彼女は今夜、料理をしなければなりませんか？", icon: "utensils", color: "blue" },
+            { engDisplay: 'He <span class="text-orange-600 font-bold">doesn\'t have to wash</span> the car.', engRead: "He doesn't have to wash the car.", jp: "彼は車を洗う必要はありません。", icon: "truck", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "You (　　　) have to come tomorrow. You can rest.", options: ["don't", "doesn't", "not", "must not"], correctIndex: 0, explanation: "「（休めるから）来る必要はない」とするには don't have to です。" },
+            { id: "qA2", subQuestion: "(　　　) he have to study now?", options: ["Do", "Does", "Is", "Has"], correctIndex: 1, explanation: "主語がheの疑問文なので Does を使い、has は have に戻します。" },
+            { id: "qA3", subQuestion: "Do I have to do this? --- No, you (　　　).", options: ["don't", "doesn't", "mustn't", "haven't"], correctIndex: 0, explanation: "Do で聞かれたら do / don't で答えます。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "彼女は今日、働く必要はありません。", sentenceParts: ["She", "{slot}", "{slot}", "{slot}", "today."], words: ["doesn't", "have", "to work", "has"], correctOrder: ["doesn't", "have", "to work"], explanation: "「〜する必要はない」は doesn't have to + 原形です。" },
+            { id: "qB2", subQuestion: "私たちは靴を脱がなければなりませんか？", sentenceParts: ["{slot}", "we", "{slot}", "{slot}", "off our shoes?"], words: ["Do", "have", "to take", "Does"], correctOrder: ["Do", "have", "to take"], explanation: "Do + 主語 + have to 〜? の語順です。" },
+            { id: "qB3", subQuestion: "あなたはそれを買う必要はありません。", sentenceParts: ["You", "{slot}", "{slot}", "{slot}", "it."], words: ["don't", "have", "to buy", "buy"], correctOrder: ["don't", "have", "to buy"], explanation: "don't have to で「不必要」を表します。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "彼は明日、ここに来なければなりませんか？", words: ["Does", "he", "have", "to", "come", "here", "tomorrow", "?"], explanation: "Does で始めたら have to (has ではない) を使います。" },
+            { id: "qC2", subQuestion: "あなたは何も言う必要はありません。", words: ["You", "don't", "have", "to", "say", "anything"], explanation: "don't have to say anything で「何も言う必要はない」となります。" }
+        ],
+        summary: ["don't have to ＝ 〜する必要はない（不要）", "Do/Does ＋ 主語 ＋ have to 〜? ＝ 〜しなければなりませんか（疑問）", "否定文・疑問文では三人称単数でも have を使う"]
+    },
+    "auxiliary-must": {
+        id: "auxiliary-must",
+        grade: 2,
+        menuTitle: "助動詞 must (義務)",
+        intro: {
+            title: "助動詞 must",
+            subtitle: "意味：〜しなければならない",
+            goals: ["must の基本形（must + 原形）を覚える", "have to とのニュアンスの違いを理解する", "話し手の強い意志や圧力を表現する"]
+        },
+        grammar: {
+            formula: [
+                { text: "主語", type: "box" },
+                { text: "+", type: "text" },
+                { text: "must", type: "red" },
+                { text: "+", type: "text" },
+                { text: "動詞の原形", type: "blue" }
+            ],
+            text: "強い義務や命令を表す助動詞です。have to よりも「どうしても〜すべきだ」という強制力が強くなります。",
+            items: [
+                { title: "助動詞のルール", desc: "主語が誰でも形は変わらず、後ろは必ず原形", icon: "shield-check", color: "rose" },
+                { title: "強い義務", desc: "規則や法律、または話し手の強い命令を表す", icon: "alert-circle", color: "orange" },
+                { title: "書き換え", desc: "多くの場合 have to / has to で書き換えが可能", icon: "refresh-cw", color: "blue" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "You must to go home.",
+            goodExample: "You <strong>must go</strong> home.",
+            description: "must は助動詞なので、to をつけてはいけません。直接動詞の原形を置きます。"
+        },
+        examples: [
+            { engDisplay: 'You <span class="text-red-600 font-bold">must be</span> quiet here.', engRead: "You must be quiet here.", jp: "ここでは静かにしなければなりません。", icon: "volume-x", color: "rose" },
+            { engDisplay: 'I <span class="text-blue-600 font-bold">must finish</span> my homework.', engRead: "I must finish my homework.", jp: "私は宿題を終わらせなければなりません。", icon: "edit", color: "blue" },
+            { engDisplay: 'We <span class="text-orange-600 font-bold">must help</span> each other.', engRead: "We must help each other.", jp: "私たちは互いに助け合わなければなりません。", icon: "users", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "You (　　　) follow the rules.", options: ["must", "has to", "are", "must to"], correctIndex: 0, explanation: "義務を表す助動詞 must を使います。to は不要です。" },
+            { id: "qA2", subQuestion: "She must (　　　) early tomorrow.", options: ["gets up", "get up", "got up", "getting up"], correctIndex: 1, explanation: "must の後は必ず動詞の原形です。" },
+            { id: "qA3", subQuestion: "We (　　　) study hard.", options: ["must", "have", "are", "musts"], correctIndex: 0, explanation: "助動詞に s がつくことはありません。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "あなたは今日、そこへ行かなければなりません。", sentenceParts: ["You", "{slot}", "{slot}", "there today."], words: ["must", "go", "to go", "goes"], correctOrder: ["must", "go"], explanation: "must + 動詞の原形の形にします。" },
+            { id: "qB2", subQuestion: "私は今、寝なければなりません。", sentenceParts: ["I", "{slot}", "{slot}", "now."], words: ["must", "sleep", "must to", "sleeping"], correctOrder: ["must", "sleep"], explanation: "「〜しなければならない」という強い義務です。" },
+            { id: "qB3", subQuestion: "彼は車を運転する時、注意しなければなりません。", sentenceParts: ["He", "{slot}", "{slot}", "careful when he drives."], words: ["must", "be", "is", "was"], correctOrder: ["must", "be"], explanation: "状態（〜である）を表す場合は must be とします。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "あなたは靴を脱がなければなりません。", words: ["You", "must", "take", "off", "your", "shoes"], explanation: "must + 動詞の原形（take off）の順です。" },
+            { id: "qC2", subQuestion: "私たちはこの川を守らなければなりません。", words: ["We", "must", "protect", "this", "river"], explanation: "主語 + must + 動詞の原形を並べます。" }
+        ],
+        summary: ["must ＋ 動詞の原形で「〜しなければならない」", "have to よりも強制力が強い響きがある", "主語が何であっても形は変わらない"]
+    },
+    "must-negative-and-question": {
+        id: "must-negative-and-question",
+        grade: 2,
+        menuTitle: "must の否定文・疑問文",
+        intro: {
+            title: "must の否定と疑問",
+            subtitle: "意味：〜してはいけない／〜すべきですか",
+            goals: ["禁止を表す must not (mustn't) をマスターする", "疑問文 Must ~? とその答え方を覚える", "don't have to との意味の違いを理解する"]
+        },
+        grammar: {
+            formula: [
+                { text: "否定：must not", type: "red" },
+                { text: "+ 原形", type: "text" },
+                { text: " / ", type: "text" },
+                { text: "疑問：Must + 主語", type: "blue" },
+                { text: "+ 原形", type: "text" }
+            ],
+            text: "否定文は「強い禁止」、疑問文は「義務の確認」を表します。助動詞なので主語の前に Must を出します。",
+            items: [
+                { title: "must not", desc: "「〜してはいけない」という強い禁止を表す", icon: "slash", color: "rose" },
+                { title: "Must ~?", desc: "「〜しなければなりませんか」と義務を尋ねる", icon: "help-circle", color: "blue" },
+                { title: "Noの答え方", desc: "No, you don't have to.（その必要はない）と答えるのが一般的", icon: "message-square", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "You must not to run. / Must you running?",
+            goodExample: "You <strong>must not run</strong>. / <strong>Must you go</strong>?",
+            description: "must not は「〜する必要はない」ではなく「〜してはダメ！」という強い禁止です。to は不要です。"
+        },
+        examples: [
+            { engDisplay: 'You <span class="text-red-600 font-bold">must not use</span> your phone here.', engRead: "You must not use your phone here.", jp: "ここで電話を使ってはいけません。", icon: "phone-off", color: "rose" },
+            { engDisplay: '<span class="text-blue-600 font-bold">Must I finish</span> this today?', engRead: "Must I finish this today?", jp: "私は今日、これを終わらせなければなりませんか？", icon: "calendar", color: "blue" },
+            { engDisplay: 'We <span class="text-orange-600 font-bold">mustn\'t forget</span> our promise.', engRead: "We mustn't forget our promise.", jp: "私たちは約束を忘れてはいけません。", icon: "lock", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "You (　　　) eat too much candy. It's bad for you.", options: ["must not", "don't have to", "must", "not must"], correctIndex: 0, explanation: "「食べてはいけない」という禁止なので must not を選びます。" },
+            { id: "qA2", subQuestion: "Must I go there? --- No, you (　　　).", options: ["don't have to", "mustn't", "not must", "doesn't have to"], correctIndex: 0, explanation: "Must I ~? への否定の答えは「しなくてよい」という意味の don't have to が自然です。" },
+            { id: "qA3", subQuestion: "(　　　) we be quiet in the library?", options: ["Must", "Do", "Are", "Will"], correctIndex: 0, explanation: "「静かにしなければなりませんか」という義務を尋ねる Must を使います。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "ここで泳いではいけません。", sentenceParts: ["You", "{slot}", "{slot}", "here."], words: ["must", "not swim", "don't", "swimming"], correctOrder: ["must", "not swim"], explanation: "「〜してはいけない」は must not ＋ 原形です。" },
+            { id: "qB2", subQuestion: "私は今、行かなければなりませんか？", sentenceParts: ["{slot}", "I", "{slot}", "now?"], words: ["Must", "go", "Do", "going"], correctOrder: ["Must", "go"], explanation: "Must ＋ 主語 ＋ 原形の語順にします。" },
+            { id: "qB3", subQuestion: "嘘をついてはいけません。", sentenceParts: ["You", "{slot}", "{slot}", "lies."], words: ["must", "not tell", "don't", "telling"], correctOrder: ["must", "not tell"], explanation: "強い禁止を表す must not を使います。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "このボタンを押してはいけません。", words: ["You", "must", "not", "push", "this", "button"], explanation: "must not ＋ 動詞の原形を並べます。" },
+            { id: "qC2", subQuestion: "私たちはそこへ行かなければなりませんか？", words: ["Must", "we", "go", "there", "?"], explanation: "義務を確認する疑問文の形です。" }
+        ],
+        summary: ["must not ＝ 〜してはいけない（禁止）", "Must ＋ 主語 ＋ 原形？ ＝ 〜しなければなりませんか", "疑問への答えが「いいえ」なら No, you don't have to."]
+    },
+    "auxiliary-may": {
+        id: "auxiliary-may",
+        grade: 2,
+        menuTitle: "助動詞 may",
+        intro: {
+            title: "助動詞 may",
+            subtitle: "意味：〜してもよい／〜かもしれない",
+            goals: ["「許可」と「推量」の2つの意味を理解する", "May I ~? を使った丁寧な依頼を覚える", "助動詞の基本（後ろは原形）を再確認する"]
+        },
+        grammar: {
+            formula: [
+                { text: "主語", type: "box" },
+                { text: "+", type: "text" },
+                { text: "may", type: "red" },
+                { text: "+", type: "text" },
+                { text: "動詞の原形", type: "blue" }
+            ],
+            text: "「〜してもよい」という許可と、「〜かもしれない」という推測を表します。canよりも丁寧で、可能性は少し低めなニュアンスです。",
+            items: [
+                { title: "許可", desc: "May I ~? で「〜してもよろしいですか」と丁寧に尋ねる", icon: "user-check", color: "rose" },
+                { title: "推量", desc: "「（ひょっとすると）〜かもしれない」という控えめな予想", icon: "help-circle", color: "blue" },
+                { title: "否定形", desc: "may not で「〜してはいけない」または「〜ではないかも」", icon: "slash", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "May I helping you?",
+            goodExample: "May I <strong>help</strong> you?",
+            description: "may の後ろも必ず「動詞の原形」です。進行形や過去形にしないよう注意しましょう。"
+        },
+        examples: [
+            { engDisplay: '<span class="text-red-600 font-bold">May I come</span> in?', engRead: "May I come in?", jp: "入ってもよろしいですか？", icon: "log-in", color: "rose" },
+            { engDisplay: 'It <span class="text-blue-600 font-bold">may rain</span> tonight.', engRead: "It may rain tonight.", jp: "今夜は雨が降るかもしれません。", icon: "cloud-rain", color: "blue" },
+            { engDisplay: 'He <span class="text-orange-600 font-bold">may be</span> busy now.', engRead: "He may be busy now.", jp: "彼は今、忙しいかもしれません。", icon: "clock", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "(　　　) I use your pen? --- Sure.", options: ["May", "Must", "Do", "Are"], correctIndex: 0, explanation: "相手に丁寧に許可を求めているので May を使います。" },
+            { id: "qA2", subQuestion: "She may (　　　) late for the meeting.", options: ["be", "is", "was", "being"], correctIndex: 0, explanation: "may の後は動詞の原形なので be を置きます。" },
+            { id: "qA3", subQuestion: "That story (　　　) be true.", options: ["may", "is", "can't", "must to"], correctIndex: 0, explanation: "「本当かもしれない」という推測の表現です。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "あなたの名前を伺ってもよろしいですか？", sentenceParts: ["{slot}", "I", "{slot}", "your name?"], words: ["May", "ask", "Do", "asking"], correctOrder: ["May", "ask"], explanation: "丁寧な質問の形 May I + 原形 です。" },
+            { id: "qB2", subQuestion: "彼女は明日、ここに来るかもしれません。", sentenceParts: ["She", "{slot}", "{slot}", "here tomorrow."], words: ["may", "come", "comes", "be"], correctOrder: ["may", "come"], explanation: "「〜かもしれない」という推測の may + 原形です。" },
+            { id: "qB3", subQuestion: "窓を開けてもいいですか？", sentenceParts: ["{slot}", "I", "{slot}", "the window?"], words: ["May", "open", "opening", "Can't"], correctOrder: ["May", "open"], explanation: "許可を求める丁寧な表現です。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "ここで写真を撮ってもいいですか？", words: ["May", "I", "take", "pictures", "here", "?"], explanation: "May I ＋ 動詞の原形 の語順にします。" },
+            { id: "qC2", subQuestion: "そのニュースは本当ではないかもしれません。", words: ["The", "news", "may", "not", "be", "true"], explanation: "推測の否定は may の後に not を置きます。" }
+        ],
+        summary: ["May I ~? で「〜してもよいですか」という丁寧な許可", "「〜かもしれない」という可能性（推量）を表す", "助動詞なので後ろは常に動詞の原形"]
+    },
+    "auxiliary-should": {
+        id: "auxiliary-should",
+        grade: 2,
+        menuTitle: "助動詞 should",
+        intro: {
+            title: "助動詞 should",
+            subtitle: "意味：〜すべきだ／〜したほうがよい",
+            goals: ["「〜すべきだ」というアドバイスの表現を覚える", "must ほど強くない、マイルドな義務を理解する", "否定形 should not (shouldn't) をマスターする"]
+        },
+        grammar: {
+            formula: [
+                { text: "主語", type: "box" },
+                { text: "+", type: "text" },
+                { text: "should", type: "red" },
+                { text: "+", type: "text" },
+                { text: "動詞の原形", type: "blue" }
+            ],
+            text: "相手にアドバイスをしたり、「そうするのが当然だ」というマイルドな義務を伝えたりするときに使います。",
+            items: [
+                { title: "アドバイス", desc: "「〜したほうがいいよ」と親切に勧める", icon: "message-circle", color: "rose" },
+                { title: "否定 (shouldn't)", desc: "「〜すべきではない」とたしなめる", icon: "slash", color: "blue" },
+                { title: "強さのイメージ", desc: "must（絶対） ＞ should（すべき・おすすめ）", icon: "activity", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "You should to study English.",
+            goodExample: "You <strong>should study</strong> English.",
+            description: "should も助動詞なので、後ろに to を置いてはいけません。直接動詞の原形を置きます。"
+        },
+        examples: [
+            { engDisplay: 'You <span class="text-red-600 font-bold">should go</span> to bed early.', engRead: "You should go to bed early.", jp: "あなたは早く寝るべきです（寝たほうがいいですよ）。", icon: "moon", color: "rose" },
+            { engDisplay: 'We <span class="text-blue-600 font-bold">should help</span> him.', engRead: "We should help him.", jp: "私たちは彼を助けるべきです。", icon: "smile", color: "blue" },
+            { engDisplay: 'You <span class="text-orange-600 font-bold">shouldn\'t eat</span> too much.', engRead: "You shouldn't eat too much.", jp: "食べ過ぎてはいけません（食べ過ぎるべきではありません）。", icon: "utensils", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "You (　　　) be kind to old people.", options: ["should", "should to", "are", "do"], correctIndex: 0, explanation: "「〜すべきだ」というアドバイスの should を使います。" },
+            { id: "qA2", subQuestion: "You shouldn't (　　　) late for school.", options: ["be", "is", "was", "being"], correctIndex: 0, explanation: "否定文でも should の後ろは動詞の原形 be を使います。" },
+            { id: "qA3", subQuestion: "(　　　) I call him now?", options: ["Should", "Do", "Am", "Will to"], correctIndex: 0, explanation: "「今彼に電話すべき（したほうがいい）ですか？」と尋ねる文です。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "あなたはもっと野菜を食べるべきです。", sentenceParts: ["You", "{slot}", "{slot}", "more vegetables."], words: ["should", "eat", "eats", "to eat"], correctOrder: ["should", "eat"], explanation: "should ＋ 動詞の原形でアドバイスを表します。" },
+            { id: "qB2", subQuestion: "私たちは毎日英語を練習すべきです。", sentenceParts: ["We", "{slot}", "{slot}", "English every day."], words: ["should", "practice", "practices", "should to"], correctOrder: ["should", "practice"], explanation: "「〜すべき」は should ＋ 原形です。" },
+            { id: "qB3", subQuestion: "ここで走ってはいけません（すべきではない）。", sentenceParts: ["You", "{slot}", "{slot}", "here."], words: ["should", "not run", "should to", "not running"], correctOrder: ["should", "not run"], explanation: "「すべきでない」は should not (shouldn't) を使います。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "あなたは医者に診てもらうべきです。", words: ["You", "should", "see", "a", "doctor"], explanation: "should ＋ 動詞の原形（see）の語順です。" },
+            { id: "qC2", subQuestion: "私は何を買うべきですか？", words: ["What", "should", "I", "buy", "?"], explanation: "疑問詞の後は「should ＋ 主語 ＋ 原形」の順になります。" }
+        ],
+        summary: ["should ＋ 動詞の原形で「〜すべきだ／〜したほうがよい」", "否定形 shouldn't は「〜すべきではない」", "must よりも柔らかい、アドバイスや提案にぴったりの言葉"]
+    },
+    "conjunction-when": {
+        id: "conjunction-when",
+        grade: 2,
+        menuTitle: "接続詞 when",
+        intro: {
+            title: "接続詞 when",
+            subtitle: "意味：〜する時",
+            goals: ["when が作る「文のカタマリ」を理解する", "カンマ（,）を使う位置とルールを覚える", "時を表す節（副詞節）の語順をマスターする"]
+        },
+        grammar: {
+            formula: [
+                { text: "when", type: "red" },
+                { text: "+ 主語 + 動詞", type: "blue" },
+                { text: ", (カンマ)", type: "text" },
+                { text: "メインの文", type: "box" }
+            ],
+            text: "「〜する時、…だ」と、2つの文をつなげて時を表す役割をします。",
+            items: [
+                { title: "カタマリで考える", desc: "when ＋ 主語 ＋ 動詞 で「〜する時」という大きな副詞の役割をする", icon: "package", color: "rose" },
+                { title: "カンマのルール", desc: "whenの節が前に来る時は、文の途中にカンマを置く", icon: "edit", color: "blue" },
+                { title: "入れ替え可能", desc: "メインの文を先に書くこともできる（その場合はカンマ不要）", icon: "refresh-cw", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "When I was a child I liked apples.",
+            goodExample: "When I was a child<strong>,</strong> I liked apples.",
+            description: "whenが文頭に来る場合は、区切りを示すカンマを忘れないようにしましょう。"
+        },
+        examples: [
+            { engDisplay: '<span class="text-red-600 font-bold">When I arrived</span> home, it was raining.', engRead: "When I arrived home, it was raining.", jp: "私が家に着いた時、雨が降っていました。", icon: "cloud-rain", color: "blue" },
+            { engDisplay: 'I was happy <span class="text-blue-600 font-bold">when I saw</span> her.', engRead: "I was happy when I saw her.", jp: "彼女に会った時、私は幸せでした。", icon: "smile", color: "rose" },
+            { engDisplay: '<span class="text-orange-600 font-bold">When you are</span> free, please help me.', engRead: "When you are free, please help me.", jp: "暇な時、手伝ってください。", icon: "hand", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "(　　　) I was a child, I lived in Tokyo.", options: ["When", "If", "Because", "But"], correctIndex: 0, explanation: "「子供だった時」という時を表す接続詞 when を使います。" },
+            { id: "qA2", subQuestion: "Call me when you (　　　) home.", options: ["get", "gets", "got", "getting"], correctIndex: 0, explanation: "接続詞 when の後ろも、主語に合わせて動詞を正しく置きます。" },
+            { id: "qA3", subQuestion: "I was watching TV when he (　　　).", options: ["came", "come", "comes", "coming"], correctIndex: 0, explanation: "「彼が来た時」という過去の時点を表すので過去形にします。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "私が起きた時、父は台所にいました。", sentenceParts: ["{slot}", "I", "{slot}", "up, my father was in the kitchen."], words: ["When", "got", "Get", "Is"], correctOrder: ["When", "got"], explanation: "When ＋ 主語 ＋ 動詞 の形にします。" },
+            { id: "qB2", subQuestion: "暇な時にこの本を読んでください。", sentenceParts: ["Please read this book", "{slot}", "you", "{slot}", "free."], words: ["when", "are", "is", "were"], correctOrder: ["when", "are"], explanation: "文の後半に when 節を置く場合はカンマがいりません。" },
+            { id: "qB3", subQuestion: "彼女はとても忙しい時、音楽を聴きます。", sentenceParts: ["{slot}", "she is very busy, she", "{slot}", "to music."], words: ["When", "listens", "Listen", "Is"], correctOrder: ["When", "listens"], explanation: "時を表すカタマリ(When節)とメインの文をつなぎます。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "私が彼を見た時、彼は走っていました。", words: ["When", "I", "saw", "him", ",", "he", "was", "running"], explanation: "When ＋ 文 , ＋ 文 の語順です。" },
+            { id: "qC2", subQuestion: "あなたは日本に来た時、何を食べましたか？", words: ["What", "did", "you", "eat", "when", "you", "came", "to", "Japan", "?"], explanation: "疑問文の最後に when 節を付け加える形です。" }
+        ],
+        summary: ["「when ＋ 主語 ＋ 動詞」で「〜する時」", "文頭に when が来たら途中にカンマ（,）が必要", "メインの文と when 節は前後を入れ替えられる"]
+    },
+    "there-is-are": {
+        id: "there-is-are",
+        grade: 2,
+        menuTitle: "There is / are (存在)",
+        intro: {
+            title: "There is / are 〜",
+            subtitle: "意味：〜がある、〜がいる",
+            goals: ["「〜がある／いる」という存在の表し方を覚える", "単数(is)と複数(are)の使い分けを理解する", "否定文・疑問文の形をマスターする"]
+        },
+        grammar: {
+            formula: [
+                { text: "There", type: "text" },
+                { text: "+", type: "text" },
+                { text: "is / are", type: "red" },
+                { text: "+", type: "text" },
+                { text: "物・人", type: "blue" },
+                { text: "+", type: "text" },
+                { text: "場所", type: "orange" }
+            ],
+            text: "新しい情報を相手に伝えるときの「〜があるよ」という表現です。主語はbe動詞の直後にくる「物・人」になります。",
+            items: [
+                { title: "is と are", desc: "後ろにくる名詞が単数なら is、複数なら are を選ぶ", icon: "refresh-cw", color: "rose" },
+                { title: "場所の語句", desc: "in the room, on the table など場所を表す言葉を最後に置く", icon: "map-pin", color: "blue" },
+                { title: "疑問文", desc: "Is there 〜? / Are there 〜? とbe動詞を前に出す", icon: "help-circle", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "There are a book on the desk.",
+            goodExample: "There <strong>is a book</strong> on the desk.",
+            description: "There is/are の文では、be動詞の「後ろ」にある名詞を見て is か are かを決めます。"
+        },
+        examples: [
+            { engDisplay: 'There <span class="text-red-600 font-bold">is a cat</span> under the table.', engRead: "There is a cat under the table.", jp: "テーブルの下に猫が1匹います。", icon: "smile", color: "rose" },
+            { engDisplay: 'There <span class="text-blue-600 font-bold">are many trees</span> in the park.', engRead: "There are many trees in the park.", jp: "公園にはたくさんの木があります。", icon: "tree-pine", color: "blue" },
+            { engDisplay: 'There <span class="text-orange-600 font-bold">are some pictures</span> on the wall.', engRead: "There are some pictures on the wall.", jp: "壁に何枚か写真が掛かっています。", icon: "image", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "There (　　　) a big tree in my garden.", options: ["is", "are", "be", "am"], correctIndex: 0, explanation: "後ろの名詞が a big tree（単数）なので is を使います。" },
+            { id: "qA2", subQuestion: "(　　　) there any students in the classroom?", options: ["Is", "Are", "Do", "Does"], correctIndex: 1, explanation: "any students（複数）を尋ねる疑問文なので Are で始めます。" },
+            { id: "qA3", subQuestion: "There (　　　) any cookies in the box.", options: ["isn't", "aren't", "don't", "not"], correctIndex: 1, explanation: "cookies（複数）の否定文なので aren't を使います。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "この近くに図書館はありますか？", sentenceParts: ["{slot}", "{slot}", "a library near here?"], words: ["Is", "there", "Are", "it"], correctOrder: ["Is", "there"], explanation: "「〜はありますか？」という疑問文は Is there 〜? です。" },
+            { id: "qB2", subQuestion: "私のバッグの中にペンが3本あります。", sentenceParts: ["{slot}", "{slot}", "three pens in my bag."], words: ["There", "are", "is", "Has"], correctOrder: ["There", "are"], explanation: "3本のペン（複数）なので There are になります。" },
+            { id: "qB3", subQuestion: "公園には誰もいませんでした。", sentenceParts: ["There", "{slot}", "{slot}", "anyone in the park."], words: ["was", "not", "were", "no"], correctOrder: ["was", "not"], explanation: "過去の存在を否定する場合は There was not 〜 とします。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "机の上にリンゴがいくつかあります。", words: ["There", "are", "some", "apples", "on", "the", "desk"], explanation: "There are ＋ 複数名詞 ＋ 場所 の順です。" },
+            { id: "qC2", subQuestion: "この町には古いお寺がたくさんあります。", words: ["There", "are", "many", "old", "temples", "in", "this", "town"], explanation: "場所を表す語句は文の最後に置きます。" }
+        ],
+        summary: ["There is / are 〜 で「〜がある／いる」を表す", "be動詞の後ろにくる名詞に合わせて is か are を選ぶ", "否定文は be動詞 ＋ not、疑問文は be動詞を文頭に置く"]
+    },
+    "conjunction-because": {
+        id: "conjunction-because",
+        grade: 2,
+        menuTitle: "接続詞 because",
+        intro: {
+            title: "接続詞 because",
+            subtitle: "意味：〜なので／なぜなら〜だから",
+            goals: ["理由を説明する because の使い方を覚える", "「because + 主語 + 動詞」のカタマリを理解する", "Why? に対する答え方をマスターする"]
+        },
+        grammar: {
+            formula: [
+                { text: "メインの文", type: "box" },
+                { text: "+", type: "text" },
+                { text: "because", type: "red" },
+                { text: "+ 主語 + 動詞", type: "blue" }
+            ],
+            text: "「なぜなら〜だから」と、はっきりと理由を付け加えるときに使います。",
+            items: [
+                { title: "理由を後付け", desc: "メインの文の後ろに because 節を置くのが一般的", icon: "message-circle", color: "orange" },
+                { title: "文頭の because", desc: "文頭に置く場合は途中にカンマ（,）が必要", icon: "edit", color: "rose" },
+                { title: "Why とのセット", desc: "Why...?（なぜ？）と聞かれたら Because... で答える", icon: "help-circle", color: "blue" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I like him because kind.",
+            goodExample: "I like him <strong>because he is kind</strong>.",
+            description: "because の後ろには必ず「主語 ＋ 動詞」が必要です。単語だけを置いてはいけません。"
+        },
+        examples: [
+            { engDisplay: 'I was late <span class="text-red-600 font-bold">because it rained</span>.', engRead: "I was late because it rained.", jp: "雨が降ったので、私は遅れました。", icon: "cloud-rain", color: "blue" },
+            { engDisplay: 'He is happy <span class="text-blue-600 font-bold">because he won</span> the game.', engRead: "He is happy because he won the game.", jp: "試合に勝ったので、彼は幸せです。", icon: "award", color: "rose" },
+            { engDisplay: 'I stayed home <span class="text-orange-600 font-bold">because I was</span> sick.', engRead: "I stayed home because I was sick.", jp: "病気だったので、私は家にいました。", icon: "frown", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "I ate an apple (　　　) I was hungry.", options: ["because", "if", "when", "that"], correctIndex: 0, explanation: "「お腹が空いていたから」という理由を表す because を使います。" },
+            { id: "qA2", subQuestion: "She studied hard (　　　) she wanted to be a teacher.", options: ["because", "but", "if", "so"], correctIndex: 0, explanation: "勉強した「理由」を説明する接続詞を選びます。" },
+            { id: "qA3", subQuestion: "Why were you late? --- (　　　) I missed the bus.", options: ["Because", "If", "When", "That"], correctIndex: 0, explanation: "Why に対する返答は Because で始めます。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "疲れていたので、早く寝ました。", sentenceParts: ["I went to bed early", "{slot}", "I", "{slot}", "tired."], words: ["because", "was", "is", "were"], correctOrder: ["because", "was"], explanation: "理由を表す because と、過去の文なので was を使います。" },
+            { id: "qB2", subQuestion: "暑かったので、窓を開けました。", sentenceParts: ["I opened the window", "{slot}", "it", "{slot}", "hot."], words: ["because", "was", "is", "so"], correctOrder: ["because", "was"], explanation: "「〜なので」は because です。天候の it が主語になります。" },
+            { id: "qB3", subQuestion: "忙しかったので、そこへ行けませんでした。", sentenceParts: ["I couldn't go there", "{slot}", "I", "{slot}", "busy."], words: ["because", "was", "am", "if"], correctOrder: ["because", "was"], explanation: "because + 主語 + 動詞 の形を崩さないようにしましょう。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "雪が降っていたので、彼女は来ませんでした。", words: ["She", "didn't", "come", "because", "it", "was", "snowing"], explanation: "メインの文の後に because 節を続けます。" },
+            { id: "qC2", subQuestion: "彼は親切なので、みんな彼が好きです。", words: ["Everyone", "likes", "him", "because", "he", "is", "kind"], explanation: "「〜だから」という理由を文の後半に置きます。" }
+        ],
+        summary: ["because ＋ 主語 ＋ 動詞 で「〜なので」", "Why...? に対する答えとして使われる", "動作の「はっきりした理由」を付け加える"]
+    },
+    "conjunction-if": {
+        id: "conjunction-if",
+        grade: 2,
+        menuTitle: "接続詞 if",
+        intro: {
+            title: "接続詞 if",
+            subtitle: "意味：もし〜ならば",
+            goals: ["条件を表す if の使い方を覚える", "カンマ（,）を使う位置のルールを理解する", "if節の中では未来のことでも現在形を使うルールを知る"]
+        },
+        grammar: {
+            formula: [
+                { text: "if", type: "red" },
+                { text: "+ 主語 + 現在形動詞", type: "blue" },
+                { text: ", (カンマ)", type: "text" },
+                { text: "メインの文", type: "box" }
+            ],
+            text: "「もし〜なら、…だ」と、ある条件のもとで起こることを表します。",
+            items: [
+                { title: "条件の if", desc: "「もし〜なら」という前提条件を作る", icon: "help-circle", color: "blue" },
+                { title: "カンマの有無", desc: "if が文頭ならカンマが必要。文の中央なら不要", icon: "edit", color: "rose" },
+                { title: "時制のルール", desc: "未来のことでも if の中では現在形を使うのが鉄則", icon: "calendar", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "If it will rain tomorrow, I will stay home.",
+            goodExample: "If it <strong>rains</strong> tomorrow, I will stay home.",
+            description: "「もし明日〜なら」という未来の話でも、if の中は will を使わず現在形にします。"
+        },
+        examples: [
+            { engDisplay: '<span class="text-red-600 font-bold">If it is</span> sunny tomorrow, let\'s go.', engRead: "If it is sunny tomorrow, let's go.", jp: "もし明日晴れたら、行きましょう。", icon: "sun", color: "orange" },
+            { engDisplay: 'I will help you <span class="text-blue-600 font-bold">if you are</span> busy.', engRead: "I will help you if you are busy.", jp: "もしあなたが忙しいなら、手伝います。", icon: "hand", color: "blue" },
+            { engDisplay: '<span class="text-rose-600 font-bold">If you have</span> time, please call me.', engRead: "If you have time, please call me.", jp: "もし時間があれば、電話してください。", icon: "phone", color: "rose" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "(　　　) it rains tomorrow, I will stay home.", options: ["If", "When", "Because", "That"], correctIndex: 0, explanation: "「もし雨なら」という条件の if を使います。" },
+            { id: "qA2", subQuestion: "If you (　　　) tired, you can sleep.", options: ["are", "will be", "is", "be"], correctIndex: 0, explanation: "if 節の中では主語(you)に合わせた現在形を使います。" },
+            { id: "qA3", subQuestion: "Tell me (　　　) you need any help.", options: ["if", "that", "because", "but"], correctIndex: 0, explanation: "「もし助けが必要なら」という意味の if です。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "もし明日暇なら、買い物に行きましょう。", sentenceParts: ["{slot}", "you", "{slot}", "free tomorrow, let's go shopping."], words: ["If", "are", "will be", "is"], correctOrder: ["If", "are"], explanation: "If + 主語 + 現在形 で条件を表します。" },
+            { id: "qB2", subQuestion: "もし彼が来たら、私に教えてください。", sentenceParts: ["{slot}", "he", "{slot}", ", please tell me."], words: ["If", "comes", "come", "will come"], correctOrder: ["If", "comes"], explanation: "三人称単数の s (comes) を忘れないようにしましょう。" },
+            { id: "qB3", subQuestion: "もし良ければ、私の辞書を使っていいですよ。", sentenceParts: ["You can use my dictionary", "{slot}", "you", "{slot}", "."], words: ["if", "like", "will like", "liked"], correctOrder: ["if", "like"], explanation: "if you like で「もし良ければ」という定番表現です。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "もし質問があれば、私に聞いてください。", words: ["If", "you", "have", "any", "questions", ",", "please", "ask", "me"], explanation: "If が前にあるので途中にカンマが必要です。" },
+            { id: "qC2", subQuestion: "雨が降ったら、私たちは野球をしません。", words: ["We", "won't", "play", "baseball", "if", "it", "rains"], explanation: "if it rains は未来のことでも現在形にします。" }
+        ],
+        summary: ["if ＋ 主語 ＋ 現在形 で「もし〜ならば」", "文頭ならカンマ（,）が必要。文の後半なら不要", "未来の話でも if 節の中は will を使わない"]
+    },
+    "comparative": {
+        id: "comparative",
+        grade: 2,
+        menuTitle: "比較級 (Comparative)",
+        intro: {
+            title: "比較級",
+            subtitle: "意味：AはBより〜だ",
+            goals: ["比較級の作り方（-er / more）を覚える", "than を使った比較の語順をマスターする", "「もっと〜」という変化の付け方を理解する"]
+        },
+        grammar: {
+            formula: [
+                { text: "A", type: "box" },
+                { text: "+ be動詞 +", type: "text" },
+                { text: "形容詞・副詞の比較級", type: "red" },
+                { text: "+", type: "text" },
+                { text: "than", type: "blue" },
+                { text: "+ B", type: "box" }
+            ],
+            text: "2つのものを比べて「Aの方がBよりも〜だ」と言う時の形です。",
+            items: [
+                { title: "-er形", desc: "短い単語は語尾に er をつける (old → older)", icon: "trending-up", color: "rose" },
+                { title: "more形", desc: "長い単語は前に more を置く (more famous)", icon: "plus-circle", color: "blue" },
+                { title: "than", desc: "「〜よりも」という意味。比較対象(B)の前に置く", icon: "arrow-right", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "This pen is more cheap than that one.",
+            goodExample: "This pen is <strong>cheaper than</strong> that one.",
+            description: "短い単語に more をつけてはいけません。基本は -er、長い語(目安は3音節以上)は more と使い分けましょう。"
+        },
+        examples: [
+            { engDisplay: 'This apple <span class="text-red-600 font-bold">is bigger than</span> that one.', engRead: "This apple is bigger than that one.", jp: "このリンゴはあのリンゴよりも大きいです。", icon: "apple", color: "rose" },
+            { engDisplay: 'English <span class="text-blue-600 font-bold">is more interesting than</span> math.', engRead: "English is more interesting than math.", jp: "英語は数学よりもおもしろいです。", icon: "book", color: "blue" },
+            { engDisplay: 'He <span class="text-orange-600 font-bold">runs faster than</span> Ken.', engRead: "He runs faster than Ken.", jp: "彼はケンよりも速く走ります。", icon: "award", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "Kyoto is (　　　) than Nara.", options: ["old", "older", "oldest", "more old"], correctIndex: 1, explanation: "than があるので比較級(older)を使います。" },
+            { id: "qA2", subQuestion: "This book is (　　　) difficult than that one.", options: ["more", "most", "er", "very"], correctIndex: 0, explanation: "difficult は長い単語なので前に more を置きます。" },
+            { id: "qA3", subQuestion: "Tom is taller (　　　) Bob.", options: ["than", "that", "then", "to"], correctIndex: 0, explanation: "「〜よりも」は than で表します。綴りに注意。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "この車はあの車よりも新しいです。", sentenceParts: ["This car is ", "{slot}", " ", "{slot}", " that one."], words: ["newer", "than", "new", "more new"], correctOrder: ["newer", "than"], explanation: "new の比較級は newer です。" },
+            { id: "qB2", subQuestion: "テニスはサッカーよりも人気があります。", sentenceParts: ["Tennis is ", "{slot}", " ", "{slot}", " ", "{slot}", " soccer."], words: ["more", "popular", "than", "er"], correctOrder: ["more", "popular", "than"], explanation: "popular は長い単語なので more ＋ 原形 ＋ than になります。" },
+            { id: "qB3", subQuestion: "私は弟よりも早く起きます。", sentenceParts: ["I get up ", "{slot}", " ", "{slot}", " my brother."], words: ["earlier", "than", "early", "more early"], correctOrder: ["earlier", "than"], explanation: "early は y を i に変えて er をつけます。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "ケンはトムよりも背が高いです。", words: ["Ken", "is", "taller", "than", "Tom"], explanation: "A + be動詞 + 比較級 + than + B の語順です。" },
+            { id: "qC2", subQuestion: "健康は、お金よりも大切です。", words: ["Health", "is", "more", "important", "than", "money"], explanation: "important のような長い語は more を使います。" }
+        ],
+        summary: ["比較級（-er / more） ＋ than で「〜よりも…」", "短い単語は -er、長い単語は more を使う", "than の綴りを then と間違えないように注意"]
+    },
+    "comparative-rules": {
+        id: "comparative-rules",
+        grade: 2,
+        menuTitle: "比較級の変化ルール",
+        intro: {
+            title: "比較級のつくりかた",
+            subtitle: "語尾の変化 5種 ＋ more",
+            goals: ["単語に合わせた変化（-er）を完璧にする", "more を使う長い単語の見分け方を知る", "不規則に変化する重要語を覚える"]
+        },
+        grammar: {
+            formula: [
+                { text: "形容詞・副詞", type: "box" },
+                { text: "→", type: "text" },
+                { text: "比較級 (-er / more)", type: "red" }
+            ],
+            text: "比較級の形を作るときは、単語のスペルによって以下の6つのルールを使い分けます。",
+            items: [
+                { title: "基本 (-er)", desc: "そのまま er をつける (old → older)", icon: "plus", color: "blue" },
+                { title: "eで終わる (-r)", desc: "r だけをつける (large → larger)", icon: "edit", color: "rose" },
+                { title: "yで終わる (-ier)", desc: "y を i に変えて er (happy → happier)", icon: "scissors", color: "orange" },
+                { title: "重ねる (-er)", desc: "最後の一文字を重ねる (big → bigger / hot → hotter)", icon: "copy", color: "blue" },
+                { title: "不規則 (betterなど)", desc: "形が大きく変わる (good → better / bad → worse)", icon: "star", color: "rose" },
+                { title: "長い語 (more)", desc: "前に more を置く (popular → more popular)", icon: "plus-circle", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "hoter / biger / easyer",
+            goodExample: "<strong>hotter</strong> / <strong>bigger</strong> / <strong>easier</strong>",
+            description: "「重ねる」ルールは big や hot のような「短母音＋子音字」の単語が対象です。yをiに変えるルールと混同しないようにしましょう。"
+        },
+        examples: [
+            { engDisplay: 'It is <span class="text-red-600 font-bold">hotter</span> today than yesterday.', engRead: "It is hotter today than yesterday.", jp: "今日は昨日より暑いです。（hot → hotter）", icon: "sun", color: "orange" },
+            { engDisplay: 'This box is <span class="text-blue-600 font-bold">bigger</span> than that one.', engRead: "This box is bigger than that one.", jp: "この箱はあの箱より大きいです。（big → bigger）", icon: "package", color: "blue" },
+            { engDisplay: 'Soccer is <span class="text-rose-600 font-bold">more popular</span> than tennis.', engRead: "Soccer is more popular than tennis.", jp: "サッカーはテニスより人気があります。（more）", icon: "award", color: "rose" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "Which is correct? 'hot' → (　　　)", options: ["hotter", "hoter", "more hot", "hottest"], correctIndex: 0, explanation: "hotはtを重ねてerをつけます。" },
+            { id: "qA2", subQuestion: "Which is correct? 'big' → (　　　)", options: ["biger", "bigger", "more big", "bigest"], correctIndex: 1, explanation: "bigはgを重ねてerをつけます。" },
+            { id: "qA3", subQuestion: "The comparative of 'good' is (　　　).", options: ["gooder", "better", "best", "more good"], correctIndex: 1, explanation: "goodは不規則変化でbetterになります。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "今日は昨日より暑い(hot)です。", sentenceParts: ["It is ", "{slot}", " today than yesterday."], words: ["hotter", "hoter", "more hot"], correctOrder: ["hotter"], explanation: "hotはtを重ねてerをつけます。" },
+            { id: "qB2", subQuestion: "このカバンはあのカバンより大きい(big)です。", sentenceParts: ["This bag is ", "{slot}", " than that one."], words: ["bigger", "biger", "more big"], correctOrder: ["bigger"], explanation: "bigはgを重ねてerをつけます。" },
+            { id: "qB3", subQuestion: "この本はあの本より簡単(easy)です。", sentenceParts: ["This book is ", "{slot}", " than that one."], words: ["easier", "easyer", "more easy"], correctOrder: ["easier"], explanation: "easyはyをiに変えてerをつけます。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "昨日は今日より暑かったです。", words: ["Yesterday", "was", "hotter", "than", "today"], explanation: "hotの比較級はhotterです。" },
+            { id: "qC2", subQuestion: "私の犬はあなたの犬より大きいです。", words: ["My", "dog", "is", "bigger", "than", "yours"], explanation: "bigの比較級はbiggerです。" }
+        ],
+        summary: ["基本は -er、yは -ier、短母音＋子音(big, hot)は重ねる", "good → better / bad → worse は不規則", "長い単語は -er をつけずに more を前に置く"]
+    },
+    "superlative": {
+        id: "superlative",
+        grade: 2,
+        menuTitle: "最上級 (Superlative)",
+        intro: {
+            title: "最上級",
+            subtitle: "意味：〜の中で一番…だ",
+            goals: ["最上級の作り方（the -est / the most）を覚える", "「in」と「of」の使い分けを理解する", "「the」を忘れない習慣をつける"]
+        },
+        grammar: {
+            formula: [
+                { text: "主語", type: "box" },
+                { text: "+ be動詞 +", type: "text" },
+                { text: "the", type: "red" },
+                { text: "+", type: "text" },
+                { text: "最上級 (-est / most)", type: "red" },
+                { text: "+", type: "text" },
+                { text: "in / of", type: "blue" },
+                { text: "+ 範囲", type: "box" }
+            ],
+            text: "3つ以上のものを比べて「もっとも〜だ」と言う時の形です。形容詞の前には必ず the を置きます。",
+            items: [
+                { title: "-est形", desc: "短い単語は語尾に est をつける (young → youngest)", icon: "trending-up", color: "rose" },
+                { title: "most形", desc: "長い単語は前に most を置く (the most beautiful)", icon: "plus-circle", color: "blue" },
+                { title: "in と of", desc: "場所や集団（in Japan）なら in、数字や同類（of all）なら of を使う", icon: "map-pin", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "He is youngest in the class.",
+            goodExample: "He is <strong>the youngest</strong> in the class.",
+            description: "最上級の前には原則として <strong>the</strong> が必要です。スペルのルール（yをiに変える等）は比較級と同じです。"
+        },
+        examples: [
+            { engDisplay: 'Mt. Fuji is <span class="text-red-600 font-bold">the highest</span> mountain in Japan.', engRead: "Mt. Fuji is the highest mountain in Japan.", jp: "富士山は日本で一番高い山です。", icon: "mountain", color: "blue" },
+            { engDisplay: 'This is <span class="text-blue-600 font-bold">the most expensive</span> watch in this shop.', engRead: "This is the most expensive watch in this shop.", jp: "これはこの店で一番高価な時計です。", icon: "watch", color: "rose" },
+            { engDisplay: 'He is <span class="text-orange-600 font-bold">the best</span> player of the five.', engRead: "He is the best player of the five.", jp: "彼は5人の中で最高の選手です。", icon: "award", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "Shinano River is the (　　　) river in Japan.", options: ["longer", "long", "longest", "more long"], correctIndex: 2, explanation: "「日本で一番長い」とするには最上級の longest を使います。" },
+            { id: "qA2", subQuestion: "Tennis is the (　　　) popular sport in our school.", options: ["more", "most", "est", "best"], correctIndex: 1, explanation: "popular は長い単語なので the most popular とします。" },
+            { id: "qA3", subQuestion: "He is the fastest (　　　) all the students.", options: ["in", "of", "than", "to"], correctIndex: 1, explanation: "all the students（全員の中で）と複数を並べる時は of を使います。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "これは世界で一番古い建物です。", sentenceParts: ["This is ", "{slot}", " ", "{slot}", " building in the world."], words: ["the", "oldest", "old", "more old"], correctOrder: ["the", "oldest"], explanation: "最上級には the ＋ -est が必要です。" },
+            { id: "qB2", subQuestion: "彼女は私のクラスで一番親切です。", sentenceParts: ["She is ", "{slot}", " ", "{slot}", " ", "{slot}", " our class."], words: ["the", "kindest", "in", "most"], correctOrder: ["the", "kindest", "in"], explanation: "kind は kindest（短い単語）になり、場所・範囲には in を使います。" },
+            { id: "qB3", subQuestion: "私は3人の中で一番早く起きます。", sentenceParts: ["I get up ", "{slot}", " ", "{slot}", " the three."], words: ["the", "earliest", "of", "in"], correctOrder: ["the", "earliest", "of"], explanation: "early を y→i＋est に変え、数字の前なので of を置きます。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "野球は日本で一番人気のあるスポーツです。", words: ["Baseball", "is", "the", "most", "popular", "sport", "in", "Japan"], explanation: "the most ＋ 形容詞 ＋ 名詞 ＋ in 範囲 の語順です。" },
+            { id: "qC2", subQuestion: "彼は家族の中で一番背が高いです。", words: ["He", "is", "the", "taller", "tallest", "in", "his", "family"], explanation: "「一番〜」は tallest です。the を忘れないように。" }
+        ],
+        summary: ["the ＋ 最上級（-est / most）で「一番〜」", "in ＋ 場所・単数名詞（in Japan, in my class）", "of ＋ 数字・複数名詞（of all, of the three）"]
+    },
+    "superlative-rules": {
+        id: "superlative-rules",
+        grade: 2,
+        menuTitle: "最上級の変化ルール",
+        intro: {
+            title: "最上級のつくりかた",
+            subtitle: "語尾の変化 5種 ＋ most",
+            goals: ["単語に合わせた変化（-est）を完璧にする", "most を使う長い単語の見分け方を知る", "the を忘れない癖をつける"]
+        },
+        grammar: {
+            formula: [
+                { text: "the", type: "red" },
+                { text: "+", type: "text" },
+                { text: "最上級 (-est / most)", type: "red" }
+            ],
+            text: "最上級の形を作るときは、形容詞や副詞の語尾を以下のように変化させ、前に the を置きます。",
+            items: [
+                { title: "基本 (-est)", desc: "そのまま est をつける (old → oldest)", icon: "plus", color: "blue" },
+                { title: "eで終わる (-st)", desc: "st だけをつける (large → largest)", icon: "edit", color: "rose" },
+                { title: "yで終わる (-iest)", desc: "y を i に変えて est (happy → happiest)", icon: "scissors", color: "orange" },
+                { title: "重ねる (-est)", desc: "最後の一文字を重ねる (big → biggest / hot → hottest)", icon: "copy", color: "blue" },
+                { title: "不規則 (bestなど)", desc: "形が大きく変わる (good → best / bad → worst)", icon: "star", color: "rose" },
+                { title: "長い語 (most)", desc: "前に most を置く (popular → most popular)", icon: "plus-circle", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "the hotest / the bigest / the most fastest",
+            goodExample: "the <strong>hottest</strong> / the <strong>biggest</strong> / the <strong>fastest</strong>",
+            description: "「重ねる」ルールは big や hot のように「短母音＋子音字」で終わる短い語に適用されます。"
+        },
+        examples: [
+            { engDisplay: 'August is <span class="text-red-600 font-bold">the hottest</span> month.', engRead: "August is the hottest month.", jp: "8月は一番暑い月です。（hot → hottest）", icon: "sun", color: "orange" },
+            { engDisplay: 'This is <span class="text-blue-600 font-bold">the biggest</span> city in Japan.', engRead: "This is the biggest city in Japan.", jp: "これは日本で一番大きな都市です。（big → biggest）", icon: "map-pin", color: "blue" },
+            { engDisplay: 'This is <span class="text-rose-600 font-bold">the most interesting</span> book.', engRead: "This is the most interesting book.", jp: "これは一番おもしろい本です。（most）", icon: "book", color: "rose" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "Which is correct? 'hot' → the (　　　)", options: ["hottest", "hotest", "most hot", "hottier"], correctIndex: 0, explanation: "hotはtを重ねてestをつけます。" },
+            { id: "qA2", subQuestion: "Which is correct? 'big' → the (　　　)", options: ["bigest", "biggest", "most big", "biger"], correctIndex: 1, explanation: "bigはgを重ねてestをつけます。" },
+            { id: "qA3", subQuestion: "The superlative of 'bad' is (　　　).", options: ["baddest", "worst", "worse", "most bad"], correctIndex: 1, explanation: "badは不規則変化でworstになります。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "今日は一年で一番暑い(hot)日です。", sentenceParts: ["It is ", "{slot}", " ", "{slot}", " day of the year."], words: ["the", "hottest", "hoter", "hotest"], correctOrder: ["the", "hottest"], explanation: "hotはtを重ねてestをつけます。" },
+            { id: "qB2", subQuestion: "これは世界で一番大きい(big)動物です。", sentenceParts: ["This is ", "{slot}", " ", "{slot}", " animal in the world."], words: ["the", "biggest", "bigest", "most big"], correctOrder: ["the", "biggest"], explanation: "bigはgを重ねてestをつけます。" },
+            { id: "qB3", subQuestion: "彼女はクラスで一番幸せ(happy)です。", sentenceParts: ["She is ", "{slot}", " ", "{slot}", " in her class."], words: ["the", "happiest", "happyest", "most happy"], correctOrder: ["the", "happiest"], explanation: "happyはyをiに変えてestをつけます。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "これがこの店で一番大きなケーキです。", words: ["This", "is", "the", "biggest", "cake", "in", "this", "shop"], explanation: "bigの最上級はbiggestです。" },
+            { id: "qC2", subQuestion: "一年で一番暑い月はいつですか？", words: ["What", "is", "the", "hottest", "month", "of", "the", "year", "?"], explanation: "hotの最上級はhottestです。" }
+        ],
+        summary: ["基本は -est、yは -iest、短母音＋子音(big, hot)は重ねる", "good → best / bad → worst は不規則", "長い単語は -est をつけずに most を前に置く"]
+    },
+    "as-as-comparison": {
+        id: "as-as-comparison",
+        grade: 2,
+        menuTitle: "as 〜 as (同等比較)",
+        intro: {
+            title: "as 〜 as B",
+            subtitle: "意味：Bと同じくらい〜だ",
+            goals: ["as 〜 as の間に「原形」を置くルールを覚える", "否定形 not as 〜 as（Bほど〜ない）をマスターする", "比較級・最上級との形の違いを理解する"]
+        },
+        grammar: {
+            formula: [
+                { text: "A", type: "box" },
+                { text: "+ be動詞 +", type: "text" },
+                { text: "as", type: "red" },
+                { text: "+", type: "text" },
+                { text: "形容詞・副詞の原形", type: "blue" },
+                { text: "+", type: "text" },
+                { text: "as", type: "red" },
+                { text: "+ B", type: "box" }
+            ],
+            text: "2つのものを比べて「同じくらいだ」と言う時に使います。形容詞や副詞は er をつけない元の形（原形）のまま挟みます。",
+            items: [
+                { title: "原形が鉄則", desc: "as と as の間は taller ではなく tall を使う", icon: "check-circle", color: "blue" },
+                { title: "否定形", desc: "not as 〜 as B で「Bほど〜ではない」となる", icon: "minus-circle", color: "rose" },
+                { title: "副詞もOK", desc: "形容詞だけでなく、fast などの副詞も挟める", icon: "zap", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "He is as taller as Ken. / He is not as tall than Ken.",
+            goodExample: "He is <strong>as tall as</strong> Ken. / He is <strong>not as tall as</strong> Ken.",
+            description: "「同じくらい」の時は than ではなく as を使います。また、比較級の -er 形にしてはいけません。"
+        },
+        examples: [
+            { engDisplay: 'I am <span class="text-red-600 font-bold">as tall as</span> my father.', engRead: "I am as tall as my father.", jp: "私は父と同じくらいの背の高さです。", icon: "user", color: "blue" },
+            { engDisplay: 'This book is <span class="text-blue-600 font-bold">as interesting as</span> that one.', engRead: "This book is as interesting as that one.", jp: "この本はあの本と同じくらいおもしろいです。", icon: "book", color: "rose" },
+            { engDisplay: 'He runs <span class="text-orange-600 font-bold">as fast as</span> a rabbit.', engRead: "He runs as fast as a rabbit.", jp: "彼はウサギと同じくらい速く走ります。", icon: "award", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "Soccer is as (　　　) as baseball in Japan.", options: ["popular", "more popular", "popularer", "most popular"], correctIndex: 0, explanation: "as 〜 as の間には形容詞の原形（popular）を置きます。" },
+            { id: "qA2", subQuestion: "This movie is not (　　　) as that one.", options: ["as", "than", "so as", "more"], correctIndex: 0, explanation: "否定文でも「Bほど〜ない」は not as 〜 as です。" },
+            { id: "qA3", subQuestion: "Ken can swim as (　　　) as his brother.", options: ["fast", "faster", "fastest", "fastly"], correctIndex: 0, explanation: "副詞の fast も原形のまま挟みます。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "私の犬はあなたの犬と同じくらい大きいです。", sentenceParts: ["My dog is ", "{slot}", " ", "{slot}", " ", "{slot}", " yours."], words: ["as", "big", "as", "bigger"], correctOrder: ["as", "big", "as"], explanation: "as ＋ 原形 ＋ as の語順です。" },
+            { id: "qB2", subQuestion: "今日は昨日ほど暑くありません。", sentenceParts: ["It is not ", "{slot}", " ", "{slot}", " ", "{slot}", " yesterday."], words: ["as", "hot", "as", "hotter"], correctOrder: ["as", "hot", "as"], explanation: "not as 〜 as で「〜ほど…ない」という否定を表します。" },
+            { id: "qB3", subQuestion: "私はトムと同じくらい早く起きます。", sentenceParts: ["I get up ", "{slot}", " ", "{slot}", " ", "{slot}", " Tom."], words: ["as", "early", "as", "earlier"], correctOrder: ["as", "early", "as"], explanation: "副詞 early の原形を挟みます。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "この車はあの車と同じくらい古いです。", words: ["This", "car", "is", "as", "old", "as", "that", "one"], explanation: "as old as で「同じくらい古い」となります。" },
+            { id: "qC2", subQuestion: "私はあなたほど上手にテニスができません。", words: ["I", "cannot", "play", "tennis", "as", "well", "as", "you"], explanation: "not as well as で「あなたほど上手ではない」という意味です。" }
+        ],
+        summary: ["as ＋ 原形 ＋ as で「〜と同じくらい…」", "否定形 not as 〜 as は「〜ほど…ない」", "er や est は絶対につけない"]
+    },
     "want-ask-tell": {
         id: "want-ask-tell",
         grade: 2,
@@ -108,6 +1470,312 @@ const LESSONS_DB = {
             { id: "qC2", subQuestion: "私はあなたに英語を勉強してほしい。", words: ["I", "want", "you", "to", "study", "English"], explanation: "語順：want + 人 + to + 動詞" }
         ],
         summary: ["動詞 + 人 + to + 動詞の原形", "want=〜してほしい / ask=頼む / tell=言う", "人は必須"]
+    },
+    "svoc-make-call": {
+        id: "svoc-make-call",
+        grade: 2,
+        menuTitle: "SVOC (make / call / name)",
+        intro: {
+            title: "SVOC (make / call / name)",
+            subtitle: "意味：〜を…にする／〜を…と呼ぶ・名づける",
+            goals: [
+                "make / call / name を使った SVOC文型 を理解する",
+                "「OをCにする」という形を作れるようになる",
+                "自分や友だちについて英語で言えるようになる"
+            ]
+        },
+        grammar: {
+            formula: [
+                { text: "make / call / name", type: "red" },
+                { text: "+", type: "text" },
+                { text: "O (目的語)", type: "box" },
+                { text: "+", type: "text" },
+                { text: "C (補語)", type: "blue" }
+            ],
+            text: "「誰・何を(O)」「どうする・何と呼ぶ(C)」という説明を加える形です。",
+            items: [
+                { title: "make + O + C", desc: "OをCにする(状態)", icon: "smile", color: "rose" },
+                { title: "call + O + C", desc: "OをCと呼ぶ", icon: "phone", color: "blue" },
+                { title: "name + O + C", desc: "OをCと名づける", icon: "tag", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "The news made happy me.",
+            goodExample: "The news made <strong>me sad</strong>.",
+            description: "語順が命！「誰を(O)」のあとに「どんな状態・名前に(C)」を置きます。Cには形容詞か名詞がきます。"
+        },
+        examples: [
+            {
+                engDisplay: 'Music <span class="text-rose-500 font-bold">makes</span> me <span class="text-blue-500 font-bold">happy</span>.',
+                engRead: "Music makes me happy.",
+                jp: "音楽は私を幸せにします。",
+                icon: "music",
+                color: "rose"
+            },
+            {
+                engDisplay: 'We <span class="text-blue-600 font-bold">call</span> him <span class="text-blue-500 font-bold">Ken</span>.',
+                engRead: "We call him Ken.",
+                jp: "私たちは彼をケンと呼びます。",
+                icon: "user",
+                color: "blue"
+            },
+            {
+                engDisplay: 'They <span class="text-orange-500 font-bold">named</span> the dog <span class="text-blue-500 font-bold">Pochi</span>.',
+                engRead: "They named the dog Pochi.",
+                jp: "彼らはその犬をポチと名づけました。",
+                icon: "dog",
+                color: "orange"
+            }
+        ],
+        quizChoiceList: [
+            {
+                id: "qA1",
+                subQuestion: "The news made me (　　　).",
+                options: ["sad", "sadly", "to sad", "saded"],
+                correctIndex: 0,
+                explanation: "make + O + C(形容詞)の形。sad（悲しい）が正解。"
+            },
+            {
+                id: "qA2",
+                subQuestion: "We call (　　　) Ken.",
+                options: ["he", "his", "him", "himself"],
+                correctIndex: 2,
+                explanation: "目的語(O)の位置には目的格の him を入れます。"
+            },
+            {
+                id: "qA3",
+                subQuestion: "They named the baby (　　　) Yui.",
+                options: ["for", "to", "as", "（不要）"],
+                correctIndex: 3,
+                explanation: "name + O + C の間に前置詞は不要です。"
+            }
+        ],
+        quizFillList: [
+            {
+                id: "qB1",
+                subQuestion: "そのニュースは私を悲しくしました。",
+                sentenceParts: ["The news", "{slot}", "{slot}", "{slot}", "."],
+                words: ["made", "me", "sad", "make"],
+                correctOrder: ["made", "me", "sad"],
+                explanation: "「悲しくさせた」ので過去形 made を使い、SVOCの順に並べます。"
+            },
+            {
+                id: "qB2",
+                subQuestion: "私たちは彼をリーダーにしました。",
+                sentenceParts: ["We", "{slot}", "{slot}", "{slot}", "."],
+                words: ["made", "him", "leader", "call"],
+                correctOrder: ["made", "him", "leader"],
+                explanation: "make + 人 + 役職(名詞) で「〜を…にする」となります。"
+            },
+            {
+                id: "qB3",
+                subQuestion: "彼らはその赤ちゃんをユイと名づけました。",
+                sentenceParts: ["They", "{slot}", "{slot}", "{slot}", "."],
+                words: ["named", "the baby", "Yui", "name"],
+                correctOrder: ["named", "the baby", "Yui"],
+                explanation: "name + O + C の語順で「OをCと名づける」です。"
+            }
+        ],
+        quizSortList: [
+            {
+                id: "qC1",
+                subQuestion: "音楽は私を幸せにします。",
+                words: ["Music", "makes", "me", "happy"],
+                explanation: "主語がMusic（単数）なので、makeにsがついたmakesを使います。"
+            },
+            {
+                id: "qC2",
+                subQuestion: "私はその犬をポチと呼びます。",
+                words: ["I", "call", "the dog", "Pochi"],
+                explanation: "call + O（その犬）+ C（ポチ）の語順です。"
+            }
+        ],
+        summary: [
+            "SVOCは「OをCにする・呼ぶ」という形",
+            "makeは「〜にする」、call / nameは「〜と呼ぶ・名づける」",
+            "V + O + C の語順を絶対に守る（前置詞は不要）"
+        ]
+    },
+    "passive-voice": {
+        id: "passive-voice",
+        grade: 2,
+        menuTitle: "受動態 (Passive Voice)",
+        intro: {
+            title: "受動態 (Passive Voice)",
+            subtitle: "意味：〜される／〜によって…される",
+            goals: [
+                "受動態の形（be動詞＋過去分詞）を理解する",
+                "「〜される」という文を作れるようになる",
+                "by〜を使って「〜によって」を言えるようになる"
+            ]
+        },
+        grammar: {
+            formula: [
+                { text: "主語", type: "box" },
+                { text: "+", type: "text" },
+                { text: "be動詞", type: "red" },
+                { text: "+", type: "text" },
+                { text: "過去分詞", type: "blue" }
+            ],
+            text: "「（主語が）〜される」という受け身の意味を表す形です。",
+            items: [
+                { title: "be動詞", desc: "主語に合わせて am/is/are/was/were を選ぶ", icon: "refresh-cw", color: "blue" },
+                { title: "過去分詞", desc: "規則動詞はed、不規則動詞は固有の形", icon: "edit", color: "rose" },
+                { title: "by + 人", desc: "「〜によって」と動作主を表す", icon: "users", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "This book read by many people.",
+            goodExample: "This book <strong>is read</strong> by many people.",
+            description: "be動詞を絶対に忘れないこと！また、過去分詞のスペル（特に不規則動詞 speak-spoken など）に注意しましょう。"
+        },
+        examples: [
+            {
+                engDisplay: 'English <span class="text-red-600 font-bold">is spoken</span> in our class.',
+                engRead: "English is spoken in our class.",
+                jp: "英語は私たちのクラスで話されています。",
+                icon: "message-circle",
+                color: "blue"
+            },
+            {
+                engDisplay: 'This cake <span class="text-red-600 font-bold">is made</span> <span class="text-blue-500 font-bold">by</span> my mother.',
+                engRead: "This cake is made by my mother.",
+                jp: "このケーキは母によって作られます。",
+                icon: "utensils",
+                color: "rose"
+            },
+            {
+                engDisplay: 'Soccer <span class="text-red-600 font-bold">is played</span> in the park.',
+                engRead: "Soccer is played in the park.",
+                jp: "サッカーは公園で行われます。",
+                icon: "award",
+                color: "orange"
+            }
+        ],
+        quizChoiceList: [
+            {
+                id: "qA1",
+                subQuestion: "English (　　　) in many countries.",
+                options: ["speaks", "is spoken", "speaking", "spoke"],
+                correctIndex: 1,
+                explanation: "主語が「英語」なので「話されている」という受動態（be+過去分詞）にします。"
+            },
+            {
+                id: "qA2",
+                subQuestion: "This song was (　　　) by him.",
+                options: ["sing", "sang", "sung", "singing"],
+                correctIndex: 2,
+                explanation: "sing の過去分詞は sung です。不規則動詞の変化に注意。"
+            },
+            {
+                id: "qA3",
+                subQuestion: "The room is (　　　) every day.",
+                options: ["clean", "cleans", "cleaned", "cleaning"],
+                correctIndex: 2,
+                explanation: "「そうじされる」という意味なので be + 過去分詞の形を選びます。"
+            }
+        ],
+        quizFillList: [
+            {
+                id: "qB1",
+                subQuestion: "この本は多くの人に読まれています。",
+                sentenceParts: ["This book", "{slot}", "{slot}", "by many people."],
+                words: ["is", "read", "are", "reading"],
+                correctOrder: ["is", "read"],
+                explanation: "read の過去分詞はつづりは同じですが発音が「レッド」になります。"
+            },
+            {
+                id: "qB2",
+                subQuestion: "英語は世界で使われています。",
+                sentenceParts: ["English", "{slot}", "{slot}", "in the world."],
+                words: ["is", "used", "was", "use"],
+                correctOrder: ["is", "used"],
+                explanation: "「使われている（現在）」なので is used となります。"
+            },
+            {
+                id: "qB3",
+                subQuestion: "この歌は彼によって歌われました。",
+                sentenceParts: ["This song", "{slot}", "{slot}", "by him."],
+                words: ["was", "sung", "is", "sing"],
+                correctOrder: ["was", "sung"],
+                explanation: "「歌われた（過去）」なので be動詞を過去形の was にします。"
+            }
+        ],
+        quizSortList: [
+            {
+                id: "qC1",
+                subQuestion: "このケーキは母によって作られます。",
+                words: ["This cake", "is", "made", "by", "my mother"],
+                explanation: "「作り手」を表すときは by を使います。"
+            },
+            {
+                id: "qC2",
+                subQuestion: "その部屋は毎日そうじされます。",
+                words: ["The room", "is", "cleaned", "every day"],
+                explanation: "be動詞 + 過去分詞の語順で並べます。"
+            }
+        ],
+        summary: [
+            "受動態は「be動詞 ＋ 過去分詞」で「〜される」",
+            "be動詞は主語や時制（現在・過去）に合わせて変える",
+            "「〜によって」と言いたいときは by を使う"
+        ]
+    },
+    "passive-verb-rules": {
+        id: "passive-verb-rules",
+        grade: 2,
+        menuTitle: "受動態の動詞変化",
+        intro: {
+            title: "受動態の形：過去分詞",
+            subtitle: "be動詞 ＋ 過去分詞",
+            goals: ["過去分詞の作り方（規則変化）を覚える", "間違いやすいスペルルールを理解する", "不規則変化の重要語（A-B-C型など）をマスターする"]
+        },
+        grammar: {
+            formula: [
+                { text: "be動詞", type: "red" },
+                { text: "+", type: "text" },
+                { text: "過去分詞 (p.p.)", type: "blue" }
+            ],
+            text: "受動態を作るには、動詞を「過去分詞形」に変える必要があります。規則変化は過去形と同じルールですが、不規則変化は個別に覚える必要があります。",
+            items: [
+                { title: "基本 (-ed)", desc: "語尾に ed をつける (play → played / watch → watched)", icon: "plus", color: "blue" },
+                { title: "eで終わる (-d)", desc: "d だけをつける (use → used / love → loved)", icon: "edit", color: "rose" },
+                { title: "子音＋y (-ied)", desc: "y を i に変えて ed (study → studied / try → tried)", icon: "scissors", color: "orange" },
+                { title: "重ねる (-ed)", desc: "最後を重ねて ed (stop → stopped)", icon: "copy", color: "blue" },
+                { title: "不規則変化", desc: "形が大きく変わる (speak → spoken / write → written / give → given)", icon: "star", color: "rose" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "This book was writed by him. / English is speaked here.",
+            goodExample: "This book was <strong>written</strong>. / English is <strong>spoken</strong>.",
+            description: "過去分詞は、過去形と同じもの（規則変化）と、全く形が変わるもの（不規則変化）があります。受動態ではこの「不規則変化」が特に出題されます。"
+        },
+        examples: [
+            { engDisplay: 'This room <span class="text-red-600 font-bold">is cleaned</span> every day.', engRead: "This room is cleaned every day.", jp: "この部屋は毎日掃除されます。（規則変化：ed）", icon: "home", color: "blue" },
+            { engDisplay: 'The letter <span class="text-blue-600 font-bold">was written</span> in English.', engRead: "The letter was written in English.", jp: "その手紙は英語で書かれました。（不規則：write-wrote-written）", icon: "mail", color: "rose" },
+            { engDisplay: 'This song <span class="text-orange-600 font-bold">is loved</span> by many people.', engRead: "This song is loved by many people.", jp: "この歌は多くの人に愛されています。（eで終わる：d）", icon: "music", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "Which is the correct past participle of 'study'?", options: ["studyed", "studied", "studing", "studies"], correctIndex: 1, explanation: "子音字+yで終わる語はyをiに変えてedをつけます。" },
+            { id: "qA2", subQuestion: "The past participle of 'speak' is (　　　).", options: ["speaked", "spoke", "spoken", "speaking"], correctIndex: 2, explanation: "speakは不規則に変化し、過去分詞はspokenになります。" },
+            { id: "qA3", subQuestion: "Which is correct? 'stop' → (　　　)", options: ["stoped", "stopped", "stoppen", "stopping"], correctIndex: 1, explanation: "stopはpを重ねてedをつけます。" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "この寺は400年前に建てられました(build)。", sentenceParts: ["This temple was ", "{slot}", " 400 years ago."], words: ["builded", "built", "builds"], correctOrder: ["built"], explanation: "buildの過去分詞は不規則変化のbuiltです。" },
+            { id: "qB2", subQuestion: "その窓はケンによって壊されました(break)。", sentenceParts: ["The window was ", "{slot}", " by Ken."], words: ["breaked", "broken", "broke"], correctOrder: ["broken"], explanation: "break-broke-brokenの順で変化します。" },
+            { id: "qB3", subQuestion: "このコンピュータは日本で作られました(make)。", sentenceParts: ["This computer was ", "{slot}", " in Japan."], words: ["maked", "made", "makes"], correctOrder: ["made"], explanation: "makeの過去分詞はmadeです（過去形と同じ形）。" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "この写真は京都で撮られました(take)。", words: ["This", "picture", "was", "taken", "in", "Kyoto"], explanation: "take-took-takenの過去分詞を使います。" },
+            { id: "qC2", subQuestion: "米は日本で育てられています(grow)。", words: ["Rice", "is", "grown", "in", "Japan"], explanation: "grow-grew-grownの過去分詞を使います。" }
+        ],
+        summary: ["規則変化（ed）のルールは過去形と同じ", "不規則変化（written, spoken等）を優先して覚える", "be動詞を忘れずにセットで使う"]
     }
 };
 
@@ -116,6 +1784,32 @@ const LESSONS_DB = {
  * アプリロジック
  * --------------------------------------------------------------------------
  */
+const STATUS_KEY = 'english_app_status';
+
+function loadStatusMap() {
+    try {
+        const raw = localStorage.getItem(STATUS_KEY);
+        return raw ? JSON.parse(raw) : {};
+    } catch {
+        return {};
+    }
+}
+
+function saveStatusMap(map) {
+    localStorage.setItem(STATUS_KEY, JSON.stringify(map));
+}
+
+function getLessonStatus(id) {
+    const map = loadStatusMap();
+    return map[id] || null;
+}
+
+function setLessonStatus(id, status) {
+    const map = loadStatusMap();
+    map[id] = status;
+    saveStatusMap(map);
+}
+
 const state = {
     view: 'gradeSelect',
     currentLessonData: null,
@@ -173,6 +1867,7 @@ function renderLessonSelect(grade) {
     headerTitle.textContent = `${grade}年生のコース`;
     
     const lessons = Object.values(LESSONS_DB).filter(l => l.grade === grade);
+    const statusMap = loadStatusMap();
     
     wrapper.innerHTML = `
         <div class="fade-in max-w-2xl mx-auto w-full py-4">
@@ -185,7 +1880,13 @@ function renderLessonSelect(grade) {
             <div class="grid gap-3">
                 ${lessons.length > 0 ? lessons.map(lesson => `
                     <button onclick="startLesson('${lesson.id}')" class="group flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 hover:shadow-md transition-all text-left">
-                        <div><div class="text-lg font-bold text-slate-800 group-hover:text-blue-600">${lesson.menuTitle}</div><div class="text-xs text-slate-500">${lesson.intro.subtitle}</div></div>
+                        <div>
+                            <div class="text-lg font-bold text-slate-800 group-hover:text-blue-600 flex items-center gap-2">
+                                <span>${lesson.menuTitle}</span>
+                                ${statusMap[lesson.id] === 'gold' ? '<span class="text-red-500 text-4xl">💮</span>' : statusMap[lesson.id] === 'silver' ? '<span class="text-blue-500 text-lg">⭕️</span>' : ''}
+                            </div>
+                            <div class="text-xs text-slate-500">${lesson.intro.subtitle}</div>
+                        </div>
                         <i data-lucide="chevron-right" class="text-slate-300 group-hover:text-blue-500"></i>
                     </button>
                 `).join('') : `<p class="text-center py-10 text-slate-400 italic">準備中です...</p>`}
@@ -394,11 +2095,33 @@ function getExamplesHtml(l) {
 
 function selectOptionA(id, idx) { state.quizStates[id].selectedIndex = idx; renderSlide(false); }
 
+function updateLessonStatus() {
+    const l = state.currentLessonData;
+    if (!l) return;
+    const total = l.quizChoiceList.length + l.quizFillList.length + l.quizSortList.length;
+    if (!total) return;
+
+    let correct = 0;
+    l.quizChoiceList.forEach(q => { if (state.quizStates[q.id]?.isCorrect) correct++; });
+    l.quizFillList.forEach(q => { if (state.quizStates[q.id]?.isCorrect) correct++; });
+    l.quizSortList.forEach(q => { if (state.quizStates[q.id]?.isCorrect) correct++; });
+
+    if (correct === total) {
+        setLessonStatus(l.id, 'gold');
+        return;
+    }
+    if (correct > 0) {
+        const current = getLessonStatus(l.id);
+        if (current !== 'gold') setLessonStatus(l.id, 'silver');
+    }
+}
+
 function checkAllQuizA() {
     state.currentLessonData.quizChoiceList.forEach(q => {
         const s = state.quizStates[q.id];
         s.isCorrect = (s.selectedIndex === q.correctIndex);
     });
+    updateLessonStatus();
     changeSlide(1);
 }
 
@@ -445,6 +2168,7 @@ function checkAllB() {
         const s = state.quizStates[q.id];
         s.isCorrect = JSON.stringify(s.slots) === JSON.stringify(q.correctOrder);
     });
+    updateLessonStatus();
     changeSlide(1);
 }
 
@@ -507,6 +2231,7 @@ function checkAllC() {
         const s = state.quizStates[q.id];
         s.isCorrect = s.selected.join(' ') === q.words.join(' ');
     });
+    updateLessonStatus();
     changeSlide(1);
 }
 
