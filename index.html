@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中学英語 文法学習ナビ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans selection:bg-blue-200 h-screen overflow-hidden flex flex-col">
+
+    <div id="app" class="max-w-6xl mx-auto w-full h-full flex flex-col p-2 md:p-4">
+        <!-- ヘッダー -->
+        <header class="flex justify-between items-center py-2 border-b border-slate-200 mb-2 flex-shrink-0">
+            <h1 class="text-lg font-bold text-slate-700 flex items-center gap-2 cursor-pointer" onclick="goToMenu()">
+                <i data-lucide="book-open" class="w-5 h-5 text-blue-500"></i>
+                <span id="header-title">中学英語 学習ナビ</span>
+            </h1>
+            <div id="status-area" class="text-xs text-slate-500 font-medium"></div>
+        </header>
+
+        <!-- メインコンテンツ -->
+        <main id="main-container" class="flex-grow flex flex-col justify-center relative bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+            <div id="slide-wrapper" class="w-full h-full overflow-y-auto custom-scroll p-2 md:p-6 flex flex-col justify-center"></div>
+        </main>
+
+        <!-- ナビゲーション -->
+        <footer id="nav-footer" class="py-2 mt-2 flex justify-between items-center flex-shrink-0 hidden">
+            <div class="flex items-center gap-2">
+                <button id="btn-prev" class="flex items-center gap-1 px-4 py-2 rounded-full bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-sm">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>戻る</span>
+                </button>
+                <!-- リンクコピーボタン -->
+                <button id="btn-copy-link" onclick="copyCurrentLink()" class="flex items-center gap-1 px-3 py-2 rounded-full bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition-colors text-xs border border-transparent">
+                    <i data-lucide="link" class="w-3.5 h-3.5"></i>
+                    <span id="copy-text">リンクをコピー</span>
+                </button>
+            </div>
+            <div class="flex gap-1 overflow-hidden px-2" id="dots-container"></div>
+            <button id="btn-next" class="flex items-center gap-1 px-4 py-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed text-sm">
+                <span>次へ</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+        </footer>
+    </div>
+
+<script>
+/**
+ * --------------------------------------------------------------------------
+ * LESSONS_DB
+ * --------------------------------------------------------------------------
+ */
+const LESSONS_DB = {
+    "want-ask-tell": {
+        id: "want-ask-tell",
+        grade: 2,
+        menuTitle: "want / ask / tell 人 to do",
+        intro: {
+            title: "want / ask / tell 人 to do",
+            subtitle: "意味：〜に…してほしい／するように頼む・言う",
+            goals: ["「want / ask / tell + 人 + to do」の形がわかる", "「だれに」「何を」を英語で言える", "日常のお願いを英語で言える"]
+        },
+        grammar: {
+            formula: [
+                { text: "want / tell / ask", type: "red" }, { text: "+", type: "text" },
+                { text: "人", type: "box" }, { text: "+", type: "text" },
+                { text: "to", type: "text" }, { text: "+", type: "text" }, { text: "動詞の原形", type: "blue" }
+            ],
+            text: "「誰かに～してほしい」「～するように言う・頼む」形です。",
+            items: [
+                { title: "want + 人 + to ...", desc: "〜に…してほしい", icon: "heart", color: "rose" },
+                { title: "ask + 人 + to ...", desc: "〜に…するように頼む", icon: "help-circle", color: "blue" },
+                { title: "tell + 人 + to ...", desc: "〜に…するように言う", icon: "message-circle", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I want to help you.",
+            goodExample: "I want <strong>you</strong> to help me.",
+            description: "人を必ず入れること！toの後は必ず動詞の原形。"
+        },
+        examples: [
+            { engDisplay: 'I <span class="text-rose-500 font-bold">want</span> you <span class="text-blue-500 font-bold">to play</span> soccer.', engRead: "I want you to play soccer.", jp: "私はあなたにサッカーをしてほしい。", icon: "activity", color: "rose" },
+            { engDisplay: 'She <span class="text-blue-600 font-bold">asked</span> me <span class="text-blue-500 font-bold">to help</span> her.', engRead: "She asked me to help her.", jp: "彼女は私に手伝うように頼んだ。", icon: "help-circle", color: "blue" },
+            { engDisplay: 'The teacher <span class="text-orange-500 font-bold">told</span> us <span class="text-blue-500 font-bold">to be</span> quiet.', engRead: "The teacher told us to be quiet.", jp: "先生は私たちに静かにするように言った。", icon: "mic-off", color: "orange" }
+        ],
+        quizChoiceList: [
+            { id: "qA1", subQuestion: "I want you (　　　) my homework.", options: ["do", "to do", "doing", "does"], correctIndex: 1, explanation: "want + 人 + to + 原形" },
+            { id: "qA2", subQuestion: "She asked me (　　　) the window.", options: ["close", "to close", "closing", "closes"], correctIndex: 1, explanation: "ask + 人 + to + 原形" },
+            { id: "qA3", subQuestion: "My mother told me (　　　) early.", options: ["get up", "to get up", "getting up", "gets up"], correctIndex: 1, explanation: "tell + 人 + to + 原形" }
+        ],
+        quizFillList: [
+            { id: "qB1", subQuestion: "私はあなたにいっしょにテニスをしてほしい。", sentenceParts: ["I", "{slot}", "{slot}", "{slot}", "{slot}", "tennis."], words: ["want", "to", "you", "play", "asked"], correctOrder: ["want", "you", "to", "play"], explanation: "want + 人 + to + 原形" },
+            { id: "qB2", subQuestion: "彼女は私に手伝うように頼みました。", sentenceParts: ["She", "{slot}", "{slot}", "{slot}", "{slot}", "her."], words: ["asked", "me", "to", "help", "tell"], correctOrder: ["asked", "me", "to", "help"], explanation: "ask + 人 + to + 原形" },
+            { id: "qB3", subQuestion: "父は私に部屋をそうじするように言いました。", sentenceParts: ["My father", "{slot}", "{slot}", "{slot}", "{slot}", "room."], words: ["told", "me", "to", "clean", "want"], correctOrder: ["told", "me", "to", "clean"], explanation: "tell + 人 + to + 原形" }
+        ],
+        quizSortList: [
+            { id: "qC1", subQuestion: "彼女は私に手伝うように頼みました。", words: ["She", "asked", "me", "to", "help"], explanation: "語順：ask + 人 + to + 動詞" },
+            { id: "qC2", subQuestion: "私はあなたに英語を勉強してほしい。", words: ["I", "want", "you", "to", "study", "English"], explanation: "語順：want + 人 + to + 動詞" }
+        ],
+        summary: ["動詞 + 人 + to + 動詞の原形", "want=〜してほしい / ask=頼む / tell=言う", "人は必須"]
+    }
+};
+
+/**
+ * --------------------------------------------------------------------------
+ * アプリロジック
+ * --------------------------------------------------------------------------
+ */
+const state = {
+    view: 'gradeSelect',
+    currentLessonData: null,
+    currentSlide: 0,
+    slides: [],
+    quizStates: {}
+};
+
+const wrapper = document.getElementById('slide-wrapper');
+const footer = document.getElementById('nav-footer');
+const statusArea = document.getElementById('status-area');
+const headerTitle = document.getElementById('header-title');
+
+function init() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const unitId = urlParams.get('unit');
+
+    if (unitId && LESSONS_DB[unitId]) {
+        startLesson(unitId);
+    } else {
+        renderGradeSelect();
+    }
+    
+    document.getElementById('btn-prev').addEventListener('click', () => changeSlide(-1));
+    document.getElementById('btn-next').addEventListener('click', () => changeSlide(1));
+}
+
+function renderGradeSelect() {
+    state.view = 'gradeSelect';
+    footer.classList.add('hidden');
+    headerTitle.textContent = "中学英語 学習ナビ";
+    statusArea.innerHTML = "";
+    
+    wrapper.innerHTML = `
+        <div class="fade-in max-w-2xl mx-auto w-full py-4 text-center">
+            <h2 class="text-2xl font-bold mb-8 text-slate-800 flex items-center justify-center gap-2">
+                <i data-lucide="layout"></i> コース一覧
+            </h2>
+            <div class="grid gap-6">
+                ${[1, 2, 3].map(grade => `
+                    <button onclick="renderLessonSelect(${grade})" class="group relative flex items-center justify-center bg-white p-8 rounded-2xl border-2 border-slate-200 shadow-sm hover:border-blue-500 hover:shadow-md transition-all">
+                        <div class="text-3xl font-black text-blue-600 mr-4 group-hover:scale-110 transition-transform">${grade}<span class="text-sm ml-1 text-slate-400">年</span></div>
+                        <div class="text-xl font-bold text-slate-700">英語の学習をはじめる</div>
+                        <i data-lucide="chevron-right" class="absolute right-6 text-slate-300 group-hover:text-blue-500 group-hover:translate-x-1 transition-all"></i>
+                    </button>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    lucide.createIcons();
+}
+
+function renderLessonSelect(grade) {
+    state.view = 'lessonSelect';
+    headerTitle.textContent = `${grade}年生のコース`;
+    
+    const lessons = Object.values(LESSONS_DB).filter(l => l.grade === grade);
+    
+    wrapper.innerHTML = `
+        <div class="fade-in max-w-2xl mx-auto w-full py-4">
+            <div class="flex items-center gap-4 mb-8">
+                <button onclick="renderGradeSelect()" class="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-500">
+                    <i data-lucide="arrow-left"></i>
+                </button>
+                <h2 class="text-2xl font-bold text-slate-800">単元を選択</h2>
+            </div>
+            <div class="grid gap-3">
+                ${lessons.length > 0 ? lessons.map(lesson => `
+                    <button onclick="startLesson('${lesson.id}')" class="group flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 hover:shadow-md transition-all text-left">
+                        <div><div class="text-lg font-bold text-slate-800 group-hover:text-blue-600">${lesson.menuTitle}</div><div class="text-xs text-slate-500">${lesson.intro.subtitle}</div></div>
+                        <i data-lucide="chevron-right" class="text-slate-300 group-hover:text-blue-500"></i>
+                    </button>
+                `).join('') : `<p class="text-center py-10 text-slate-400 italic">準備中です...</p>`}
+            </div>
+        </div>
+    `;
+    lucide.createIcons();
+}
+
+function startLesson(id) {
+    const l = LESSONS_DB[id];
+    state.view = 'lesson';
+    state.currentLessonData = l;
+    state.currentSlide = 0;
+    state.quizStates = {};
+
+    state.slides = [{ type: 'intro' }, { type: 'grammar' }, { type: 'points' }, { type: 'examples' }];
+    if (l.quizChoiceList.length) {
+        state.slides.push({ type: 'quizA_All_Q' }, { type: 'quizA_All_A' });
+        l.quizChoiceList.forEach(q => state.quizStates[q.id] = { selectedIndex: null, isCorrect: false });
+    }
+    if (l.quizFillList.length) {
+        state.slides.push({ type: 'quizB_All_Q' }, { type: 'quizB_All_A' });
+        l.quizFillList.forEach(q => state.quizStates[q.id] = { slots: q.correctOrder.map(() => null), pool: [...q.words].sort(() => Math.random() - 0.5), isCorrect: false });
+    }
+    if (l.quizSortList.length) {
+        state.slides.push({ type: 'quizC_All_Q' }, { type: 'quizC_All_A' });
+        l.quizSortList.forEach(q => state.quizStates[q.id] = { selected: [], pool: [...q.words].sort(() => Math.random() - 0.5), isCorrect: false });
+    }
+    state.slides.push({ type: 'summary' });
+
+    footer.classList.remove('hidden');
+    headerTitle.textContent = l.intro.title;
+    createDots();
+    renderSlide(true);
+}
+
+// リンクをクリップボードにコピーする関数
+function copyCurrentLink() {
+    if (!state.currentLessonData) return;
+    const url = window.location.origin + window.location.pathname + '?unit=' + state.currentLessonData.id;
+    
+    const el = document.createElement('textarea');
+    el.value = url;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    
+    const copyBtn = document.getElementById('btn-copy-link');
+    const copyText = document.getElementById('copy-text');
+    
+    copyText.innerText = "コピーしました！";
+    copyBtn.classList.replace('text-slate-500', 'text-green-600');
+    copyBtn.classList.replace('bg-slate-100', 'bg-green-50');
+    
+    setTimeout(() => {
+        copyText.innerText = "リンクをコピー";
+        copyBtn.classList.replace('text-green-600', 'text-slate-500');
+        copyBtn.classList.replace('bg-green-50', 'bg-slate-100');
+    }, 2000);
+}
+
+function goToMenu() {
+    window.history.replaceState({}, document.title, window.location.pathname);
+    renderGradeSelect();
+}
+
+function restartLesson() {
+    startLesson(state.currentLessonData.id);
+}
+
+function changeSlide(direction) {
+    const next = state.currentSlide + direction;
+    if (next >= 0 && next < state.slides.length) {
+        state.currentSlide = next;
+        renderSlide(true);
+    }
+}
+
+function createDots() {
+    const dotsContainer = document.getElementById('dots-container');
+    dotsContainer.innerHTML = '';
+    state.slides.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = `flex-shrink-0 rounded-full transition-all duration-300 ${i === state.currentSlide ? 'bg-blue-600 w-3 h-3' : 'bg-slate-300 w-1.5 h-1.5'}`;
+        dotsContainer.appendChild(dot);
+    });
+}
+
+function updateControls() {
+    document.getElementById('btn-prev').disabled = state.currentSlide === 0;
+    document.getElementById('btn-next').disabled = state.currentSlide === state.slides.length - 1;
+    statusArea.innerHTML = `Slide <span class="text-blue-600 font-bold">${state.currentSlide + 1}</span> / ${state.slides.length}`;
+    
+    const dotsContainer = document.getElementById('dots-container');
+    Array.from(dotsContainer.children).forEach((dot, i) => {
+        dot.className = `flex-shrink-0 rounded-full transition-all duration-300 ${i === state.currentSlide ? 'bg-blue-600 w-3 h-3' : 'bg-slate-300 w-1.5 h-1.5'}`;
+    });
+}
+
+function renderSlide(animate = true) {
+    const slide = state.slides[state.currentSlide];
+    const lesson = state.currentLessonData;
+    const currentScroll = wrapper.scrollTop;
+
+    let html = "";
+    switch (slide.type) {
+        case 'intro': html = getIntroHtml(lesson); break;
+        case 'grammar': html = getGrammarHtml(lesson); break;
+        case 'points': html = getPointsHtml(lesson); break;
+        case 'examples': html = getExamplesHtml(lesson); break;
+        case 'quizA_All_Q': html = getQuizA_All_Q_Html(lesson); break;
+        case 'quizA_All_A': html = getQuizA_All_A_Html(lesson); break;
+        case 'quizB_All_Q': html = getQuizB_All_Q_Html(lesson); break;
+        case 'quizB_All_A': html = getQuizB_All_A_Html(lesson); break;
+        case 'quizC_All_Q': html = getQuizC_All_Q_Html(lesson); break;
+        case 'quizC_All_A': html = getQuizC_All_A_Html(lesson); break;
+        case 'summary': html = getSummaryHtml(lesson); break;
+    }
+
+    wrapper.innerHTML = html;
+    if (animate) {
+        wrapper.classList.remove('fade-in');
+        void wrapper.offsetWidth;
+        wrapper.classList.add('fade-in');
+        wrapper.scrollTop = 0;
+    } else {
+        wrapper.classList.remove('fade-in');
+        wrapper.scrollTop = currentScroll;
+    }
+    lucide.createIcons();
+    updateControls();
+}
+
+function speak(text) {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    const voices = window.speechSynthesis.getVoices();
+    const enVoice = voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
+    if (enVoice) utterance.voice = enVoice;
+    utterance.rate = 0.9;
+    window.speechSynthesis.speak(utterance);
+}
+
+// --- HTML Generators (Core) ---
+function getIntroHtml(l) {
+    return `<div class="flex flex-col items-center justify-center h-full text-center space-y-4">
+        <div class="p-3 bg-blue-50 rounded-full mb-2"><i data-lucide="flag" class="w-10 h-10 text-blue-600"></i></div>
+        <h2 class="text-3xl font-bold text-slate-800">${l.intro.title}</h2>
+        <p class="text-lg text-slate-500">${l.intro.subtitle}</p>
+        <div class="mt-4 bg-slate-50 p-4 rounded-xl border border-slate-200 text-left w-full max-w-xl">
+            <h3 class="text-base font-bold text-slate-700 mb-2 flex items-center gap-2"><i data-lucide="target" class="w-4 h-4 text-red-500"></i> 目標</h3>
+            <ul class="space-y-2">${l.intro.goals.map(g => `<li class="flex items-start gap-2 text-lg"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2"></span>${g}</li>`).join('')}</ul>
+        </div>
+    </div>`;
+}
+
+function getGrammarHtml(l) {
+    const fHtml = l.grammar.formula.map(item => {
+        let cls = "px-2 py-1 text-xl font-bold rounded mb-1 mx-0.5 inline-block ";
+        if (item.type === 'red') cls += "text-red-600 bg-red-50 border border-red-100";
+        else if (item.type === 'blue') cls += "text-blue-600 bg-blue-50 border border-blue-100";
+        else if (item.type === 'box') cls += "text-slate-800 border-2 border-slate-800 bg-white";
+        else cls += "text-slate-400";
+        return `<span class="${cls}">${item.text}</span>`;
+    }).join('');
+    return `<div class="flex flex-col h-full gap-4 justify-center">
+        <div class="text-center space-y-4">
+            <h3 class="text-xl font-bold text-slate-700">文の形</h3>
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 shadow-inner">${fHtml}</div>
+            <p class="text-lg text-slate-600">${l.grammar.text}</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-3">
+            ${l.grammar.items.map(i => `<div class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm flex items-center gap-3">
+                <div class="p-2 bg-${i.color}-100 rounded text-${i.color}-600"><i data-lucide="${i.icon}"></i></div>
+                <div><h4 class="text-base font-bold text-slate-800">${i.title}</h4><p class="text-slate-600 text-sm">${i.desc}</p></div>
+            </div>`).join('')}
+        </div>
+    </div>`;
+}
+
+function getPointsHtml(l) {
+    return `<div class="flex flex-col items-center justify-center h-full space-y-6 max-w-2xl mx-auto w-full text-center">
+        <div class="flex items-center gap-2 text-yellow-600 mb-2"><i data-lucide="lightbulb" class="w-8 h-8"></i><h3 class="text-2xl font-bold">${l.points.title}</h3></div>
+        <div class="w-full space-y-4">
+            <div class="p-4 bg-red-50 rounded-xl border border-red-200"><div class="text-xs font-bold text-red-600 mb-1 uppercase">Bad</div><div class="text-xl text-slate-700 line-through">${l.points.badExample}</div></div>
+            <i data-lucide="arrow-down" class="mx-auto text-slate-300"></i>
+            <div class="p-5 bg-green-50 rounded-xl border border-green-200 shadow-sm"><div class="text-xs font-bold text-green-600 mb-1 uppercase">Good</div><div class="text-2xl text-slate-800 font-bold">${l.points.goodExample}</div><p class="mt-3 text-green-800 pt-3 border-t border-green-200 text-sm font-medium">${l.points.description}</p></div>
+        </div>
+    </div>`;
+}
+
+function getExamplesHtml(l) {
+    return `<div class="space-y-4 h-full flex flex-col justify-center">
+        <h3 class="text-xl font-bold text-slate-700 flex items-center gap-2 mb-2"><i data-lucide="message-square" class="w-6 h-6 text-blue-500"></i> 例文</h3>
+        <div class="grid gap-3">
+            ${l.examples.map(ex => `<div class="bg-white p-4 rounded-lg border-l-4 border-${ex.color}-500 shadow-sm flex items-center gap-3 group hover:shadow-md transition-all">
+                <button onclick="speak('${ex.engRead.replace(/'/g, "\\'")}')" class="p-2 rounded-full bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition-colors"><i data-lucide="volume-2" class="w-5 h-5"></i></button>
+                <div class="flex-grow"><p class="text-xl text-slate-800 mb-0.5">${ex.engDisplay}</p><p class="text-slate-500 text-sm">${ex.jp}</p></div>
+            </div>`).join('')}
+        </div>
+    </div>`;
+}
+
+function selectOptionA(id, idx) { state.quizStates[id].selectedIndex = idx; renderSlide(false); }
+
+function checkAllQuizA() {
+    state.currentLessonData.quizChoiceList.forEach(q => {
+        const s = state.quizStates[q.id];
+        s.isCorrect = (s.selectedIndex === q.correctIndex);
+    });
+    changeSlide(1);
+}
+
+function getQuizA_All_Q_Html(l) {
+    return `<div class="h-full flex flex-col"><h3 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2"><i data-lucide="check-square" class="w-6 h-6 text-blue-500"></i> 練習問題 A</h3>
+    <div class="flex flex-col gap-2 flex-grow overflow-y-auto justify-center">
+        ${l.quizChoiceList.map((q, i) => `<div class="bg-white p-3 rounded-lg border border-slate-200 mb-2">
+            <div class="text-xl font-bold text-slate-800 leading-tight mb-2"><span class="text-blue-600 text-base mr-2">Q${i+1}.</span>${q.subQuestion}</div>
+            <div class="grid grid-cols-4 gap-2">${q.options.map((opt, idx) => `<button onclick="selectOptionA('${q.id}', ${idx})" class="w-full text-center px-2 py-2 rounded border transition-all font-medium ${state.quizStates[q.id].selectedIndex === idx ? 'bg-blue-600 text-white' : 'bg-white text-slate-700 hover:bg-slate-50'}">${opt}</button>`).join('')}</div>
+        </div>`).join('')}
+    </div><div class="mt-2 text-center flex-shrink-0"><button onclick="checkAllQuizA()" class="px-10 py-2 bg-blue-600 text-white font-bold rounded-full shadow-lg">答え合わせ</button></div></div>`;
+}
+
+function getQuizA_All_A_Html(l) {
+    return `<div class="h-full flex flex-col"><h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2 flex-shrink-0"><i data-lucide="award" class="w-6 h-6 text-yellow-500"></i> 解答・解説</h3>
+    <div class="flex flex-col gap-3 flex-grow overflow-y-auto justify-center">
+        ${l.quizChoiceList.map(q => {
+            const s = state.quizStates[q.id];
+            const isCorr = s.selectedIndex === q.correctIndex;
+            const sentenceToRead = q.subQuestion.split('<br>')[0].replace('(　　　)', q.options[q.correctIndex]).replace(/'/g, "\\'");
+            return `<div class="bg-white p-3 rounded-lg border border-slate-200">
+                <div class="flex items-start gap-2">
+                    <div class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 border ${isCorr ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'}"><i data-lucide="${isCorr ? 'check' : 'x'}"></i></div>
+                    <div class="flex-grow min-w-0">
+                        <div class="text-xs text-slate-500 mb-0.5">${q.subQuestion.split('<br>')[0]}</div>
+                        <div class="text-lg font-bold text-slate-800 mb-1 flex items-center gap-2">
+                            <span>正解: <span class="text-blue-600">${q.options[q.correctIndex]}</span></span>
+                            <button onclick="speak('${sentenceToRead}')" class="p-1 rounded-full bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition-colors"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+                        </div>
+                        <div class="text-slate-600 bg-slate-50 p-2 rounded text-sm border border-slate-100">${q.explanation}</div>
+                    </div>
+                </div>
+            </div>`;
+        }).join('')}
+    </div></div>`;
+}
+
+function selectWordB(id, word, poolIdx) { const s = state.quizStates[id]; const emptySlotIdx = s.slots.findIndex(v => v === null); if (emptySlotIdx !== -1) { s.slots[emptySlotIdx] = word; s.pool.splice(poolIdx, 1); renderSlide(false); } }
+function returnWordB(id, slotIdx) { const s = state.quizStates[id]; const word = s.slots[slotIdx]; if (word) { s.slots[slotIdx] = null; s.pool.push(word); renderSlide(false); } }
+function resetQuizB(id) { const q = state.currentLessonData.quizFillList.find(i => i.id === id); const s = state.quizStates[id]; s.slots = q.correctOrder.map(() => null); s.pool = [...q.words].sort(() => Math.random() - 0.5); renderSlide(false); }
+
+function checkAllB() {
+    state.currentLessonData.quizFillList.forEach(q => {
+        const s = state.quizStates[q.id];
+        s.isCorrect = JSON.stringify(s.slots) === JSON.stringify(q.correctOrder);
+    });
+    changeSlide(1);
+}
+
+function getQuizB_All_Q_Html(l) {
+    return `<div class="h-full flex flex-col"><h3 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2"><i data-lucide="edit-3" class="w-6 h-6 text-blue-500"></i> 練習問題 B</h3>
+    <div class="flex flex-col gap-1 flex-grow overflow-y-auto justify-center">
+        ${l.quizFillList.map((q, i) => {
+            const s = state.quizStates[q.id];
+            let sIdx = 0;
+            const display = q.sentenceParts.map(p => {
+                if (p === "{slot}") {
+                    const w = s.slots[sIdx]; const idx = sIdx; sIdx++;
+                    return w ? `<button onclick="returnWordB('${q.id}', ${idx})" class="inline-block px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded mx-0.5 font-bold text-lg border border-blue-300">${w}</button>` : `<span class="inline-block w-10 h-6 border-b-2 border-slate-300 mx-0.5 align-bottom bg-slate-50"></span>`;
+                }
+                return `<span class="text-lg mx-0.5">${p}</span>`;
+            }).join('');
+            return `<div class="bg-white p-2 rounded-lg border border-slate-200 shadow-sm mb-1">
+                <div class="mb-1 flex justify-between items-center">
+                    <div class="text-sm font-bold text-slate-700 truncate flex-grow"><span class="text-blue-600 mr-1">Q${i+1}.</span>${q.subQuestion.split('<br>')[0]}</div>
+                    <button onclick="resetQuizB('${q.id}')" class="text-xs text-slate-400 hover:text-slate-600 underline flex-shrink-0 ml-2">リセット</button>
+                </div>
+                <div class="mt-1 p-1 bg-slate-50 rounded border border-slate-100 text-center leading-relaxed text-lg flex items-center justify-center min-h-[40px]">${display}</div>
+                <div class="bg-slate-100 p-1 rounded flex flex-wrap gap-1 justify-center min-h-[36px] items-center mt-1">
+                    ${s.pool.map((w, pi) => `<button onclick="selectWordB('${q.id}', '${w}', ${pi})" class="px-2 py-1 bg-white border border-slate-300 shadow-sm rounded text-base hover:bg-blue-50 transition-all">${w}</button>`).join('') || '<span class="text-sm text-slate-400">選択済み</span>'}
+                </div>
+            </div>`;
+        }).join('')}
+    </div><div class="mt-2 text-center flex-shrink-0"><button onclick="checkAllB()" class="px-10 py-2 bg-blue-600 text-white font-bold rounded-full shadow-lg">答え合わせ</button></div></div>`;
+}
+
+function getQuizB_All_A_Html(l) {
+    return `<div class="h-full flex flex-col"><h3 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2 flex-shrink-0"><i data-lucide="award" class="w-6 h-6 text-yellow-500"></i> 解答・解説</h3>
+    <div class="flex-col flex gap-2 flex-grow overflow-y-auto justify-center">
+        ${l.quizFillList.map(q => {
+            const s = state.quizStates[q.id]; let sIdx = 0; let sIdxRead = 0;
+            const res = q.sentenceParts.map(p => (p === "{slot}") ? `<span class="text-blue-600 font-bold underline mx-1">${q.correctOrder[sIdx++]}</span>` : p).join('');
+            const sentenceToRead = q.sentenceParts.map(p => (p === "{slot}") ? q.correctOrder[sIdxRead++] : p).join(' ').replace(/'/g, "\\'");
+            return `<div class="bg-white p-3 rounded-lg border border-slate-200">
+                <div class="flex items-start gap-2">
+                    <div class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 border ${s.isCorrect ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'}"><i data-lucide="${s.isCorrect ? 'check' : 'x'}"></i></div>
+                    <div class="flex-grow min-w-0">
+                        <div class="text-slate-500 text-sm mb-1 truncate">${q.subQuestion.split('<br>')[0]}</div>
+                        <div class="text-lg font-bold text-slate-800 mb-1 leading-tight flex items-center gap-2">
+                            <span>${res}</span>
+                            <button onclick="speak('${sentenceToRead}')" class="p-1 rounded-full bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition-colors"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+                        </div>
+                        <div class="text-slate-600 bg-slate-50 p-2 rounded text-sm border border-slate-100">${q.explanation}</div>
+                    </div>
+                </div>
+            </div>`;
+        }).join('')}
+    </div></div>`;
+}
+
+function selectWordC(id, idx) { const s = state.quizStates[id]; s.selected.push(s.pool.splice(idx, 1)[0]); renderSlide(false); }
+function returnWordC(id, idx) { const s = state.quizStates[id]; s.pool.push(s.selected.splice(idx, 1)[0]); renderSlide(false); }
+
+function checkAllC() {
+    state.currentLessonData.quizSortList.forEach(q => {
+        const s = state.quizStates[q.id];
+        s.isCorrect = s.selected.join(' ') === q.words.join(' ');
+    });
+    changeSlide(1);
+}
+
+function getQuizC_All_Q_Html(l) {
+    return `<div class="h-full flex flex-col"><h3 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2"><i data-lucide="move" class="w-6 h-6 text-blue-500"></i> 練習問題 C</h3>
+    <div class="flex-grow overflow-y-auto justify-center flex flex-col">
+        ${l.quizSortList.map((q, i) => {
+            const s = state.quizStates[q.id];
+            return `<div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm mb-3">
+                <div class="mb-2 border-b border-slate-100 pb-1 font-bold text-slate-700">
+                    <span class="text-blue-600 mr-2">Q${i+1}.</span>${q.subQuestion}
+                </div>
+                <div class="bg-blue-50 p-2 rounded-lg flex flex-wrap gap-2 items-center min-h-[44px] mb-2 border border-blue-100">
+                    ${s.selected.map((w, si) => `<button onclick="returnWordC('${q.id}', ${si})" class="px-2 py-1 bg-blue-100 border border-blue-300 text-blue-800 shadow-sm rounded text-lg font-bold hover:bg-red-100 hover:text-red-600 transition-all">${w}</button>`).join('') || '<span class="text-slate-400 text-base">単語を選んでください</span>'}
+                </div>
+                <div class="bg-slate-100 p-2 rounded-lg flex flex-wrap gap-2 justify-center min-h-[44px] items-center">
+                    ${s.pool.map((w, pi) => `<button onclick="selectWordC('${q.id}', ${pi})" class="px-3 py-1 bg-white border border-slate-300 shadow-sm rounded text-lg font-medium text-slate-700 hover:border-blue-400 transition-all">${w}</button>`).join('') || '<span class="text-slate-400 text-base">全て選択済み</span>'}
+                </div>
+            </div>`;
+        }).join('')}
+    </div><div class="mt-2 text-center flex-shrink-0"><button onclick="checkAllC()" class="px-10 py-2 bg-blue-600 text-white font-bold rounded-full shadow-lg">答え合わせ</button></div></div>`;
+}
+
+function getQuizC_All_A_Html(l) {
+    return `<div class="h-full flex flex-col"><h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2 flex-shrink-0"><i data-lucide="award" class="w-6 h-6 text-yellow-500"></i> 解答・解説</h3>
+    <div class="flex-grow overflow-y-auto flex flex-col justify-center">
+        ${l.quizSortList.map(q => {
+            const s = state.quizStates[q.id];
+            const sentenceToRead = q.words.join(' ').replace(/'/g, "\\'");
+            return `<div class="bg-white p-3 rounded-lg border border-slate-200 mb-3 flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 border ${s.isCorrect ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'}"><i data-lucide="${s.isCorrect ? 'check' : 'x'}"></i></div>
+                <div class="flex-grow">
+                    <div class="text-slate-500 text-sm mb-1">${q.subQuestion}</div>
+                    <div class="text-lg font-bold text-slate-800 mb-1 flex items-center gap-2">
+                        <span>${q.words.join(' ')}</span>
+                        <button onclick="speak('${sentenceToRead}')" class="p-1 rounded-full bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition-colors"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+                    </div>
+                    <div class="text-slate-600 bg-slate-50 p-2 rounded text-sm border font-medium">${q.explanation}</div>
+                </div>
+            </div>`;
+        }).join('')}
+    </div></div>`;
+}
+
+function getSummaryHtml(l) {
+    return `<div class="flex flex-col items-center justify-center h-full space-y-6 max-w-2xl mx-auto w-full">
+        <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2"><i data-lucide="check-square" class="w-6 h-6 text-green-500"></i> 本日のまとめ</h2>
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 w-full overflow-hidden">
+            ${l.summary.map((t, i) => `<div class="p-4 border-b border-slate-100 last:border-0 flex items-start gap-3 hover:bg-slate-50 transition-colors"><span class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">${i+1}</span><p class="text-lg text-slate-700 font-medium">${t}</p></div>`).join('')}
+        </div>
+        <div class="text-center pt-4 flex gap-4"><button onclick="restartLesson()" class="text-slate-500 hover:text-blue-600 flex items-center gap-2 text-sm font-bold bg-white px-4 py-2 rounded-full border"><i data-lucide="rotate-ccw" class="w-4 h-4"></i> もう一度解く</button><button onclick="goToMenu()" class="text-white bg-slate-700 hover:bg-slate-800 px-4 py-2 rounded-full text-sm font-bold shadow flex items-center gap-2"><i data-lucide="list" class="w-4 h-4"></i> メニューへ戻る</button></div>
+    </div>`;
+}
+
+init();
+</script>
+</body>
+</html>
