@@ -3244,6 +3244,367 @@ const LESSONS_DB = {
             "不規則変化 (go→wentなど) は覚えるしかない！"
         ]
     },
+    "third-person-singular-affirmative": {
+        id: "third-person-singular-affirmative",
+        grade: 1,
+        menuTitle: "三単現のS (肯定文)",
+        intro: {
+            title: "主語が「3人目の単数」の時",
+            subtitle: "意味：(彼/彼女/それは)～します",
+            goals: [
+                "「三人称単数」とは何か（He, She, It, Kenなど）を理解する",
+                "動詞に s や es をつけるルールを覚える",
+                "have の三単現は has になることを覚える"
+            ]
+        },
+        grammar: {
+            formula: [
+                { text: "主語(3人称単数)", type: "box" },
+                { text: "+", type: "text" },
+                { text: "動詞 + s/es", type: "red" },
+                { text: "+", type: "text" },
+                { text: "～", type: "blue" }
+            ],
+            text: "「私(I)」と「あなた(You)」以外の「一人(一つ)」が主語で、現在のことを話す時、動詞に s をつけます。",
+            items: [
+                { title: "基本 (+s)", desc: "そのまま s をつける (play→plays, like→likes)", icon: "plus", color: "blue" },
+                { title: "es / ies", desc: "o, s, sh, ch で終わる→es / 子音字+y→ies (go→goes, study→studies)", icon: "refresh-cw", color: "rose" },
+                { title: "不規則", desc: "have は has になる（havesではない！）", icon: "alert-triangle", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "He play soccer. / My father have a car.",
+            goodExample: "He <strong>plays</strong> soccer. / My father <strong>has</strong> a car.",
+            description: "主語が I や You 以外の「ひとりぼっち」の時は、動詞に s をつけて寂しさを埋めてあげましょう。"
+        },
+        examples: [
+            {
+                engDisplay: 'My father <span class="text-red-600 font-bold">plays</span> golf.',
+                engRead: "My father plays golf.",
+                jp: "私の父はゴルフをします。",
+                icon: "activity",
+                color: "blue"
+            },
+            {
+                engDisplay: 'She <span class="text-rose-600 font-bold">studies</span> English every day.',
+                engRead: "She studies English every day.",
+                jp: "彼女は毎日英語を勉強します。",
+                icon: "book",
+                color: "rose"
+            },
+            {
+                engDisplay: 'Ken <span class="text-orange-600 font-bold">has</span> a dog.',
+                engRead: "Ken has a dog.",
+                jp: "ケンは犬を飼っています。",
+                icon: "smile",
+                color: "orange"
+            }
+        ],
+        quizChoiceList: [
+            {
+                id: "qA1",
+                subQuestion: "He (　　　) tennis.",
+                options: ["plays", "play", "playing", "player"],
+                correctIndex: 0,
+                explanation: "主語が He（三人称単数）なので s をつけます。"
+            },
+            {
+                id: "qA2",
+                subQuestion: "My mother (　　　) Japanese food.",
+                options: ["likes", "like", "liking", "likess"],
+                correctIndex: 0,
+                explanation: "My mother = She なので s がつきます。like はそのまま s です。"
+            },
+            {
+                id: "qA3",
+                subQuestion: "Tom (　　　) to school.",
+                options: ["goes", "go", "gos", "going"],
+                correctIndex: 0,
+                explanation: "go は es をつけて goes になります。"
+            }
+        ],
+        quizFillList: [
+            {
+                id: "qB1",
+                subQuestion: "彼女は速く走ります。",
+                sentenceParts: ["She", "{slot}", "fast."],
+                words: ["runs", "run", "running", "is"],
+                correctOrder: ["runs"],
+                explanation: "She なので run に s をつけます。"
+            },
+            {
+                id: "qB2",
+                subQuestion: "私の兄は東京に住んでいます。",
+                sentenceParts: ["My brother", "{slot}", "in Tokyo."],
+                words: ["lives", "live", "living", "is"],
+                correctOrder: ["lives"],
+                explanation: "My brother（一人）なので lives です。"
+            },
+            {
+                id: "qB3",
+                subQuestion: "彼は新しい自転車を持っています。",
+                sentenceParts: ["He", "{slot}", "a new bike."],
+                words: ["has", "have", "haves", "having"],
+                correctOrder: ["has"],
+                explanation: "have の三単現は has です。"
+            }
+        ],
+        quizSortList: [
+            {
+                id: "qC1",
+                subQuestion: "私の妹は一生懸命勉強します。",
+                words: ["My", "sister", "studies", "hard"],
+                explanation: "study は y を i に変えて es をつけます。"
+            },
+            {
+                id: "qC2",
+                subQuestion: "ケンは夕食後にテレビを見ます。",
+                words: ["Ken", "watches", "TV", "after", "dinner"],
+                explanation: "watch は ch で終わるので es をつけます。"
+            }
+        ],
+        summary: [
+            "主語が I, You 以外の単数なら動詞に s をつける",
+            "es をつける語（go→goes, watch→watches）に注意",
+            "have は has になる（重要！）"
+        ]
+    },
+    "third-person-singular-neg-q": {
+        id: "third-person-singular-neg-q",
+        grade: 1,
+        menuTitle: "三単現の否定文・疑問文",
+        intro: {
+            title: "Does の登場",
+            subtitle: "意味：～しません / ～しますか",
+            goals: [
+                "否定文では doesn't (does not) を使う",
+                "疑問文では Does を文頭に置く",
+                "Does/doesn't を使ったら動詞は「原形」に戻る（ここが最重要！）"
+            ]
+        },
+        grammar: {
+            formula: [
+                { text: "否定", type: "red" },
+                { text: "doesn't + 原形", type: "text" },
+                { text: " / ", type: "text" },
+                { text: "疑問", type: "blue" },
+                { text: "Does + 主語 + 原形?", type: "text" }
+            ],
+            text: "do の代わりに does を使います。does が s を吸い取ってくれるので、後ろの動詞はすっぴん（原形）に戻ります。",
+            items: [
+                { title: "否定文", desc: "doesn't (does not) を動詞の前に置く。動詞は原形へ！", icon: "x-circle", color: "rose" },
+                { title: "疑問文", desc: "Does を文の先頭に置く。動詞は原形へ！", icon: "help-circle", color: "blue" },
+                { title: "答え方", desc: "Yes, he does. / No, he doesn't. (Doesで聞かれたらDoesで返す)", icon: "message-square", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "He doesn't plays soccer. / Does she plays tennis?",
+            goodExample: "He <strong>doesn't play</strong> soccer. / <strong>Does</strong> she <strong>play</strong> tennis?",
+            description: "Does/doesn't が出てきたら、動詞の s は消えます。s の付け忘れよりも、この「sの消し忘れ」のミスが多いので注意！"
+        },
+        examples: [
+            {
+                engDisplay: 'He <span class="text-rose-600 font-bold">doesn\'t like</span> natto.',
+                engRead: "He doesn't like natto.",
+                jp: "彼は納豆が好きではありません。",
+                icon: "frown",
+                color: "rose"
+            },
+            {
+                engDisplay: '<span class="text-blue-600 font-bold">Does</span> Ken <span class="text-blue-600 font-bold">play</span> soccer?',
+                engRead: "Does Ken play soccer?",
+                jp: "ケンはサッカーをしますか？",
+                icon: "help-circle",
+                color: "blue"
+            },
+            {
+                engDisplay: 'She <span class="text-rose-600 font-bold">doesn\'t have</span> a car.',
+                engRead: "She doesn't have a car.",
+                jp: "彼女は車を持っていません（has ではなく have に戻る）。",
+                icon: "car",
+                color: "rose"
+            }
+        ],
+        quizChoiceList: [
+            {
+                id: "qA1",
+                subQuestion: "She (　　　) speak English.",
+                options: ["doesn't", "don't", "isn't", "aren't"],
+                correctIndex: 0,
+                explanation: "主語が She なので don't ではなく doesn't を使います。"
+            },
+            {
+                id: "qA2",
+                subQuestion: "(　　　) he live in Japan?",
+                options: ["Does", "Do", "Is", "Are"],
+                correctIndex: 0,
+                explanation: "一般動詞(live)の疑問文で、主語が He なので Does で始めます。"
+            },
+            {
+                id: "qA3",
+                subQuestion: "Does Tom like sushi? --- Yes, he (　　　).",
+                options: ["does", "do", "is", "likes"],
+                correctIndex: 0,
+                explanation: "Does で聞かれたら does で答えます。"
+            }
+        ],
+        quizFillList: [
+            {
+                id: "qB1",
+                subQuestion: "父はコーヒーを飲みません。",
+                sentenceParts: ["My father", "{slot}", "{slot}", "coffee."],
+                words: ["doesn't", "drink", "don't", "drinks"],
+                correctOrder: ["doesn't", "drink"],
+                explanation: "doesn't の後ろは動詞の原形(drink)です。drinks にしてはいけません。"
+            },
+            {
+                id: "qB2",
+                subQuestion: "彼女は中国語を話しますか？",
+                sentenceParts: ["{slot}", "she", "{slot}", "Chinese?"],
+                words: ["Does", "speak", "Do", "speaks"],
+                correctOrder: ["Does", "speak"],
+                explanation: "Does で始めて、動詞は原形(speak)にします。"
+            },
+            {
+                id: "qB3",
+                subQuestion: "ケンはその本を持っていません。",
+                sentenceParts: ["Ken", "{slot}", "{slot}", "the book."],
+                words: ["doesn't", "have", "has", "haven't"],
+                correctOrder: ["doesn't", "have"],
+                explanation: "has は原形の have に戻ります。"
+            }
+        ],
+        quizSortList: [
+            {
+                id: "qC1",
+                subQuestion: "あなたの母は魚が好きですか？",
+                words: ["Does", "your", "mother", "like", "fish", "?"],
+                explanation: "Does ＋ 主語(your mother) ＋ 原形(like)...? の語順です。"
+            },
+            {
+                id: "qC2",
+                subQuestion: "彼は日曜日には働きません。",
+                words: ["He", "doesn't", "work", "on", "Sundays"],
+                explanation: "doesn't の後ろは原形 work です。"
+            }
+        ],
+        summary: [
+            "否定は doesn't、疑問は Does を使う",
+            "Does/doesn't があると、動詞の s は消える（原形に戻る）",
+            "has も have に戻ることを忘れずに！"
+        ]
+    },
+    "identifying-third-person": {
+        id: "identifying-third-person",
+        grade: 1,
+        menuTitle: "三人称単数の見分け方",
+        intro: {
+            title: "「s」をつける主語はどれ？",
+            subtitle: "自分と相手以外の「ひとり/ひとつ」",
+            goals: [
+                "一人称(I)、二人称(You)を覚える",
+                "三人称でも「複数」ならsはいらないことを知る",
+                "「s」が必要な主語を瞬時に見分けられるようにする"
+            ]
+        },
+        grammar: {
+            formula: [
+                { text: "私(I)", type: "text" },
+                { text: "・", type: "text" },
+                { text: "あなた(You)", type: "text" },
+                { text: "・", type: "text" },
+                { text: "複数", type: "text" },
+                { text: "以外", type: "red" }
+            ],
+            text: "世界を3つのグループに分けて考えます。sがつくのは「グループ3の1人」だけです。",
+            items: [
+                { title: "グループ1 (一人称)", desc: "私 (I) / 私たち (We) → sはいらない", icon: "user", color: "blue" },
+                { title: "グループ2 (二人称)", desc: "あなた・あなたたち (You) → sはいらない", icon: "users", color: "blue" },
+                { title: "グループ3 (三人称)", desc: "それ以外すべて。He, She, Ken, My dog など、数えて「1」なら sが必要！", icon: "search", color: "rose" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "Ken and Meg plays / My friends likes",
+            goodExample: "Ken <strong>plays</strong> / My friend <strong>likes</strong>",
+            description: "主語に「and」があったり、名詞に「s(複数形)」がついている場合は、三人称ですが「複数」なので動詞にsはつけません。"
+        },
+        examples: [
+            {
+                engDisplay: '<span class="text-rose-600 font-bold">Ken</span> runs.',
+                engRead: "Ken runs.",
+                jp: "ケンは走る（Group3の1人 → sが必要）",
+                icon: "user",
+                color: "rose"
+            },
+            {
+                engDisplay: '<span class="text-blue-600 font-bold">Ken and I</span> run.',
+                engRead: "Ken and I run.",
+                jp: "ケンと私は走る（2人なので複数 → sはいらない）",
+                icon: "users",
+                color: "blue"
+            },
+            {
+                engDisplay: '<span class="text-rose-600 font-bold">This cat</span> sleeps.',
+                engRead: "This cat sleeps.",
+                jp: "この猫は眠る（Group3の1匹 → sが必要）",
+                icon: "smile",
+                color: "rose"
+            }
+        ],
+        quizChoiceList: [
+            {
+                id: "qA1",
+                subQuestion: "三人称単数はどれ？",
+                options: ["He", "I", "You", "They"],
+                correctIndex: 0,
+                explanation: "Iは1人称、Youは2人称、Theyは複数。Heだけが3人称単数です。"
+            },
+            {
+                id: "qA2",
+                subQuestion: "動詞に「s」をつける主語は？",
+                options: ["My mother", "We", "You", "Ken and Tom"],
+                correctIndex: 0,
+                explanation: "My motherはグループ3の1人。他は「私/あなた/複数」です。"
+            },
+            {
+                id: "qA3",
+                subQuestion: "Ken and Meg (　　　) tennis.",
+                options: ["play", "plays", "playing", "is play"],
+                correctIndex: 0,
+                explanation: "主語が2人（複数）なので、sはつけません。"
+            }
+        ],
+        quizFillList: [
+            {
+                id: "qB1",
+                subQuestion: "「私の犬(My dog)」は三人称単数？",
+                sentenceParts: ["Yes, it", "{slot}", "."],
+                words: ["is", "isn't", "are", "do"],
+                correctOrder: ["is"],
+                explanation: "My dog は「私」でも「あなた」でもない1匹なので三人称単数です。"
+            },
+            {
+                id: "qB2",
+                subQuestion: "「彼ら(They)」は三人称単数？",
+                sentenceParts: ["No, it", "{slot}", "."],
+                words: ["isn't", "is", "don't", "are"],
+                correctOrder: ["isn't"],
+                explanation: "Theyは三人称ですが、「複数」なので三人称単数ではありません。"
+            }
+        ],
+        quizSortList: [],
+        summary: [
+            "I と You 以外はすべて三人称",
+            "三人称で、かつ「1人/1つ」の時だけ動詞にsをつける",
+            "複数は「s」をつけない"
+        ]
+    },
     "passive-voice-basic": {
         id: "passive-voice-basic",
         grade: 3,
@@ -7163,6 +7524,15 @@ const state = {
     quizStates: {}
 };
 
+function shuffleArray(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
 const wrapper = document.getElementById('slide-wrapper');
 const footer = document.getElementById('nav-footer');
 const statusArea = document.getElementById('status-area');
@@ -7251,7 +7621,11 @@ function startLesson(id) {
     state.slides = [{ type: 'intro' }, { type: 'grammar' }, { type: 'points' }, { type: 'examples' }];
     if (l.quizChoiceList.length) {
         state.slides.push({ type: 'quizA_All_Q' }, { type: 'quizA_All_A' });
-        l.quizChoiceList.forEach(q => state.quizStates[q.id] = { selectedIndex: null, isCorrect: false });
+        l.quizChoiceList.forEach(q => {
+            const shuffled = shuffleArray(q.options.map((opt, idx) => ({ opt, isCorrect: idx === q.correctIndex })));
+            const correctIndex = shuffled.findIndex(o => o.isCorrect);
+            state.quizStates[q.id] = { selectedIndex: null, isCorrect: false, options: shuffled.map(o => o.opt), correctIndex };
+        });
     }
     if (l.quizFillList.length) {
         state.slides.push({ type: 'quizB_All_Q' }, { type: 'quizB_All_A' });
@@ -7464,7 +7838,7 @@ function updateLessonStatus() {
 function checkAllQuizA() {
     state.currentLessonData.quizChoiceList.forEach(q => {
         const s = state.quizStates[q.id];
-        s.isCorrect = (s.selectedIndex === q.correctIndex);
+        s.isCorrect = (s.selectedIndex === s.correctIndex);
     });
     updateLessonStatus();
     changeSlide(1);
@@ -7475,7 +7849,7 @@ function getQuizA_All_Q_Html(l) {
     <div class="flex flex-col gap-2 flex-grow overflow-y-auto justify-center">
         ${l.quizChoiceList.map((q, i) => `<div class="bg-white p-3 rounded-lg border border-slate-200 mb-2">
             <div class="text-xl font-bold text-slate-800 leading-tight mb-2"><span class="text-blue-600 text-base mr-2">Q${i+1}.</span>${q.subQuestion}</div>
-            <div class="grid grid-cols-4 gap-2">${q.options.map((opt, idx) => `<button onclick="selectOptionA('${q.id}', ${idx})" class="w-full text-center px-2 py-2 rounded border transition-all font-medium ${state.quizStates[q.id].selectedIndex === idx ? 'bg-blue-600 text-white' : 'bg-white text-slate-700 hover:bg-slate-50'}">${opt}</button>`).join('')}</div>
+            <div class="grid grid-cols-4 gap-2">${state.quizStates[q.id].options.map((opt, idx) => `<button onclick="selectOptionA('${q.id}', ${idx})" class="w-full text-center px-2 py-2 rounded border transition-all font-medium ${state.quizStates[q.id].selectedIndex === idx ? 'bg-blue-600 text-white' : 'bg-white text-slate-700 hover:bg-slate-50'}">${opt}</button>`).join('')}</div>
         </div>`).join('')}
     </div><div class="mt-2 text-center flex-shrink-0"><button onclick="checkAllQuizA()" class="px-10 py-2 bg-blue-600 text-white font-bold rounded-full shadow-lg">答え合わせ</button></div></div>`;
 }
@@ -7485,7 +7859,7 @@ function getQuizA_All_A_Html(l) {
     <div class="flex flex-col gap-3 flex-grow overflow-y-auto justify-center">
         ${l.quizChoiceList.map(q => {
             const s = state.quizStates[q.id];
-            const isCorr = s.selectedIndex === q.correctIndex;
+            const isCorr = s.selectedIndex === s.correctIndex;
             const sentenceToRead = q.subQuestion.split('<br>')[0].replace('(　　　)', q.options[q.correctIndex]).replace(/'/g, "\\'");
             return `<div class="bg-white p-3 rounded-lg border border-slate-200">
                 <div class="flex items-start gap-2">
