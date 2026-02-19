@@ -3605,6 +3605,316 @@ const LESSONS_DB = {
             "複数は「s」をつけない"
         ]
     },
+    "common-verbs-master": {
+        id: "common-verbs-master",
+        grade: 0,
+        menuTitle: "よく使う重要動詞 徹底マスター",
+        intro: {
+            title: "重要動詞 例文＆意味チェック",
+            subtitle: "これだけは覚えたい基本の動詞",
+            goals: [
+                "日常会話の核となる動詞を大量の例文で覚える",
+                "英単語を見た瞬間に日本語の意味が出るようにする",
+                "よく使われる組み合わせ（熟語的表現）を身につける"
+            ]
+        },
+        grammar: {
+            formula: [
+                { text: "主語", type: "box" },
+                { text: "+", type: "text" },
+                { text: "動詞", type: "red" },
+                { text: "+", type: "text" },
+                { text: "～", type: "blue" }
+            ],
+            text: "英語は「誰が・どうする」が一番大切です。まずは動詞のバリエーションを増やしましょう。",
+            items: [
+                { title: "動作の動詞", desc: "動きを表すもの。eat, run, go など", icon: "activity", color: "blue" },
+                { title: "状態の動詞", desc: "心や状況を表すもの。like, know, have など", icon: "heart", color: "rose" },
+                { title: "五感の動詞", desc: "感覚を表すもの。see, hear, feel など", icon: "eye", color: "orange" }
+            ]
+        },
+        verbList30: [
+            { word: "be", meaning: "～である、いる" },
+            { word: "have", meaning: "持っている、食べる" },
+            { word: "do", meaning: "する" },
+            { word: "say", meaning: "言う" },
+            { word: "go", meaning: "行く" },
+            { word: "get", meaning: "手に入れる、～になる" },
+            { word: "make", meaning: "作る" },
+            { word: "know", meaning: "知っている" },
+            { word: "take", meaning: "取る、連れて行く" },
+            { word: "see", meaning: "見る、会う" },
+            { word: "come", meaning: "来る" },
+            { word: "think", meaning: "思う、考える" },
+            { word: "look", meaning: "見る、～に見える" },
+            { word: "want", meaning: "欲しい" },
+            { word: "give", meaning: "与える、あげる" },
+            { word: "use", meaning: "使う" },
+            { word: "find", meaning: "見つける" },
+            { word: "tell", meaning: "伝える、教える" },
+            { word: "ask", meaning: "尋ねる、頼む" },
+            { word: "work", meaning: "働く、勉強する" },
+            { word: "feel", meaning: "感じる" },
+            { word: "try", meaning: "試す、やってみる" },
+            { word: "leave", meaning: "去る、出発する、残す" },
+            { word: "call", meaning: "呼ぶ、電話する" },
+            { word: "eat", meaning: "食べる" },
+            { word: "drink", meaning: "飲む" },
+            { word: "sleep", meaning: "眠る" },
+            { word: "study", meaning: "勉強する" },
+            { word: "play", meaning: "遊ぶ、演奏する" },
+            { word: "write", meaning: "書く" }
+        ],
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I like plays. / He go to school.",
+            goodExample: "I <strong>like playing</strong>. / He <strong>goes</strong> to school.",
+            description: "動詞の形は文の形に合わせて変わります。三単現や動名詞の形も一緒に覚えましょう。"
+        },
+        examples: [
+            {
+                engDisplay: 'I <span class="text-red-600 font-bold">eat</span> breakfast at seven.',
+                engRead: "I eat breakfast at seven.",
+                jp: "私は7時に朝食を食べます。",
+                icon: "coffee",
+                color: "blue"
+            },
+            {
+                engDisplay: 'She <span class="text-rose-600 font-bold">studies</span> English every day.',
+                engRead: "She studies English every day.",
+                jp: "彼女は毎日英語を勉強します。",
+                icon: "book",
+                color: "rose"
+            },
+            {
+                engDisplay: 'I <span class="text-orange-600 font-bold">want</span> a new computer.',
+                engRead: "I want a new computer.",
+                jp: "私は新しいコンピュータが欲しいです。",
+                icon: "monitor",
+                color: "orange"
+            },
+            {
+                engDisplay: 'We <span class="text-blue-600 font-bold">go</span> to school by bus.',
+                engRead: "We go to school by bus.",
+                jp: "私たちはバスで学校へ行きます。",
+                icon: "bus",
+                color: "blue"
+            },
+            {
+                engDisplay: 'He <span class="text-rose-600 font-bold">reads</span> a book after dinner.',
+                engRead: "He reads a book after dinner.",
+                jp: "彼は夕食後に本を読みます。",
+                icon: "book-open",
+                color: "rose"
+            },
+            {
+                engDisplay: 'They <span class="text-orange-600 font-bold">make</span> lunch together.',
+                engRead: "They make lunch together.",
+                jp: "彼らは一緒に昼食を作ります。",
+                icon: "utensils",
+                color: "orange"
+            }
+        ],
+        quizChoiceList: [
+            {
+                id: "vA1",
+                subQuestion: "「作る」という意味の動詞はどれ？",
+                options: ["make", "take", "open", "read"],
+                correctIndex: 0,
+                explanation: "make は「作る」という意味です。例: make dinner"
+            },
+            {
+                id: "vA2",
+                subQuestion: "「知っている」という意味の動詞はどれ？",
+                options: ["think", "know", "speak", "feel"],
+                correctIndex: 1,
+                explanation: "know は「知っている」です。k は発音しません。"
+            },
+            {
+                id: "vA3",
+                subQuestion: "「洗う」という意味の動詞はどれ？",
+                options: ["wash", "watch", "walk", "want"],
+                correctIndex: 0,
+                explanation: "wash が「洗う」です。watch（見る）と似ているので注意！"
+            },
+            {
+                id: "vA4",
+                subQuestion: "I (　　　) to music. （私は音楽を聴きます）",
+                options: ["hear", "listen", "see", "speak"],
+                correctIndex: 1,
+                explanation: "意識して聴く場合は listen to ～ を使います。"
+            },
+            {
+                id: "vA5",
+                subQuestion: "I (　　　) a new bike. （私は新しい自転車が欲しいです）",
+                options: ["have", "want", "look", "run"],
+                correctIndex: 1,
+                explanation: "「欲しい」は want です。"
+            },
+            {
+                id: "vA6",
+                subQuestion: "Please (　　　) the door. （ドアを閉めてください）",
+                options: ["open", "close", "use", "make"],
+                correctIndex: 1,
+                explanation: "「閉める」は close です。開けるは open です。"
+            },
+            {
+                id: "vA7",
+                subQuestion: "He (　　　) Japanese. （彼は日本語を話します）",
+                options: ["talks", "speaks", "reads", "writes"],
+                correctIndex: 1,
+                explanation: "言語を話す能力については speak を使います。"
+            },
+            {
+                id: "vA8",
+                subQuestion: "「買う」という意味の動詞はどれ？",
+                options: ["sell", "buy", "pay", "bring"],
+                correctIndex: 1,
+                explanation: "buy が「買う」です。売るは sell です。"
+            }
+        ],
+        quizFillList: [],
+        quizSortList: [],
+        summary: [
+            "動詞は英語の文で最も重要なパーツ",
+            "動作（eat, run）と状態（like, know）を区別して覚える",
+            "単語だけでなく、後の名詞（drink milkなど）とセットで覚えるのがコツ"
+        ]
+    },
+    "english-word-order": {
+        id: "english-word-order",
+        grade: 0,
+        menuTitle: "英語の語順 (文の並べ方)",
+        intro: {
+            title: "言葉を並べる順番",
+            subtitle: "絶対ルール：主語＋動詞＋何を＋どのように＋誰と＋どこで＋いつ",
+            goals: [
+                "「主語＋動詞」から文を始めるルールを徹底する",
+                "「どのように・誰と・どこで・いつ」の並び順を覚える",
+                "場所・時の言葉は文の最後に置く"
+            ]
+        },
+        grammar: {
+            formula: [
+                { text: "①主語", type: "red" },
+                { text: "②動詞", type: "red" },
+                { text: "③何を", type: "blue" },
+                { text: "④どのように", type: "orange" },
+                { text: "⑤誰と", type: "orange" },
+                { text: "⑥どこで", type: "orange" },
+                { text: "⑦いつ", type: "orange" }
+            ],
+            text: "英語はこの順番で情報を並べていきます。「誰が・どうする・何を」の後に、詳しい説明（おまけ情報）を付け足していくイメージです。",
+            items: [
+                { title: "① 主語", desc: "I, He, My mother, Ken, They など", icon: "user", color: "red" },
+                { title: "② 動詞", desc: "play, eat, study, go, watch など", icon: "activity", color: "red" },
+                { title: "③ 何を", desc: "soccer, lunch, English, TV など (目的語)", icon: "box", color: "blue" },
+                { title: "④ どのように", desc: "hard, well, fast など (方法)", icon: "tool", color: "orange" },
+                { title: "⑤ 誰と", desc: "with Tom, with my friends など (相手)", icon: "users", color: "orange" },
+                { title: "⑥ どこで", desc: "in the park, at school, here, in Tokyo など (場所)", icon: "map-pin", color: "orange" },
+                { title: "⑦ いつ", desc: "yesterday, now, on Sunday, every day など (時)", icon: "clock", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I yesterday played soccer. / I in the park ran.",
+            goodExample: "I <strong>played soccer</strong> yesterday. / I <strong>ran</strong> in the park.",
+            description: "日本語は「昨日、私は…」と言えますが、英語は必ず「私は・しました」から始めます。「場所」と「時」は文の最後が定位置です。"
+        },
+        examples: [
+            {
+                engDisplay: 'I <span class="text-red-600 font-bold">play</span> <span class="text-blue-600 font-bold">soccer</span> <span class="text-orange-600 font-bold">in the park</span>.',
+                engRead: "I play soccer in the park.",
+                jp: "私は公園でサッカーをします。（場所）",
+                icon: "award",
+                color: "blue"
+            },
+            {
+                engDisplay: 'She <span class="text-red-600 font-bold">studied</span> <span class="text-blue-600 font-bold">English</span> <span class="text-orange-600 font-bold">hard</span> <span class="text-orange-600 font-bold">yesterday</span>.',
+                engRead: "She studied English hard yesterday.",
+                jp: "彼女は昨日、一生懸命英語を勉強しました。（方法＋時）",
+                icon: "book-open",
+                color: "rose"
+            },
+            {
+                engDisplay: 'He <span class="text-red-600 font-bold">went</span> <span class="text-orange-600 font-bold">to the library</span> <span class="text-orange-600 font-bold">with Ken</span>.',
+                engRead: "He went to the library with Ken.",
+                jp: "彼はケンと一緒に図書館へ行きました。（場所＋相手）",
+                icon: "users",
+                color: "orange"
+            }
+        ],
+        quizChoiceList: [
+            {
+                id: "qA1",
+                subQuestion: "私は昨日テニスをしました。",
+                options: ["I played tennis yesterday.", "I yesterday played tennis.", "Yesterday I played tennis.", "Played I tennis yesterday."],
+                correctIndex: 0,
+                explanation: "「主語＋動詞＋何を＋いつ」の順番が基本です。"
+            },
+            {
+                id: "qA2",
+                subQuestion: "彼は公園で走ります。",
+                options: ["He runs in the park.", "He in the park runs.", "Runs he in the park.", "In the park he runs."],
+                correctIndex: 0,
+                explanation: "「場所（in the park）」は動詞の後ろ（文末）に置きます。"
+            },
+            {
+                id: "qA3",
+                subQuestion: "私たちは一生懸命勉強します。",
+                options: ["We study hard.", "We hard study.", "Study we hard.", "We study very."],
+                correctIndex: 0,
+                explanation: "「どのように（hard）」も動詞の後ろに置きます。"
+            }
+        ],
+        quizFillList: [
+            {
+                id: "qB1",
+                subQuestion: "私は毎日英語を話します。",
+                sentenceParts: ["I", "{slot}", "{slot}", "every day."],
+                words: ["speak", "English", "speaks", "speaking"],
+                correctOrder: ["speak", "English"],
+                explanation: "動詞(speak) ＋ 何を(English) の順です。"
+            },
+            {
+                id: "qB2",
+                subQuestion: "彼は昨日、ここで昼食を食べました。",
+                sentenceParts: ["He", "{slot}", "{slot}", "here yesterday."],
+                words: ["ate", "lunch", "eat", "eats"],
+                correctOrder: ["ate", "lunch"],
+                explanation: "動詞(ate) ＋ 何を(lunch) ＋ どこで(here) ＋ いつ(yesterday) の順です。"
+            },
+            {
+                id: "qB3",
+                subQuestion: "彼女はケンと一緒に学校へ行きます。",
+                sentenceParts: ["She goes", "{slot}", "{slot}", "Ken."],
+                words: ["to school", "with", "school to", "by"],
+                correctOrder: ["to school", "with"],
+                explanation: "どこへ(to school) ＋ 誰と(with Ken) の順で並べます。"
+            }
+        ],
+        quizSortList: [
+            {
+                id: "qC1",
+                subQuestion: "私は放課後、友達とサッカーをします。",
+                words: ["I", "play", "soccer", "with", "my", "friends", "after", "school"],
+                explanation: "主語＋動詞＋何を＋誰と＋いつ のフルコースです。"
+            },
+            {
+                id: "qC2",
+                subQuestion: "私の父は毎週日曜日にゴルフをします。",
+                words: ["My", "father", "plays", "golf", "on", "Sundays"],
+                explanation: "「いつ（on Sundays）」は最後に置きます。"
+            }
+        ],
+        summary: [
+            "大切なのは「主語＋動詞＋何を＋どのように＋誰と＋どこで＋いつ」！",
+            "「何を」を言った後に「おまけ（方法・相手・場所・時）」をつける",
+            "場所と時なら、場所が先で時が最後（場所→時の順）"
+        ]
+    },
     "passive-voice-basic": {
         id: "passive-voice-basic",
         grade: 3,
@@ -7558,17 +7868,24 @@ function renderGradeSelect() {
     headerTitle.textContent = "中学英語 学習ナビ";
     statusArea.innerHTML = "";
     
+    const gradeButtons = [
+        { id: 1, label: "1年", title: "英語の学習をはじめる", theme: "blue" },
+        { id: 2, label: "2年", title: "英語の学習をはじめる", theme: "blue" },
+        { id: 3, label: "3年", title: "英語の学習をはじめる", theme: "blue" },
+        { id: "basic", label: "英語のド基礎", title: "超基礎からスタート", theme: "amber" }
+    ];
+
     wrapper.innerHTML = `
         <div class="fade-in max-w-2xl mx-auto w-full py-4 text-center">
             <h2 class="text-2xl font-bold mb-8 text-slate-800 flex items-center justify-center gap-2">
                 <i data-lucide="layout"></i> コース一覧
             </h2>
             <div class="grid gap-6">
-                ${[1, 2, 3].map(grade => `
-                    <button onclick="renderLessonSelect(${grade})" class="group relative flex items-center justify-center bg-white p-8 rounded-2xl border-2 border-slate-200 shadow-sm hover:border-blue-500 hover:shadow-md transition-all">
-                        <div class="text-3xl font-black text-blue-600 mr-4 group-hover:scale-110 transition-transform">${grade}<span class="text-sm ml-1 text-slate-400">年</span></div>
-                        <div class="text-xl font-bold text-slate-700">英語の学習をはじめる</div>
-                        <i data-lucide="chevron-right" class="absolute right-6 text-slate-300 group-hover:text-blue-500 group-hover:translate-x-1 transition-all"></i>
+                ${gradeButtons.map(g => `
+                    <button onclick="renderLessonSelect('${g.id}')" class="group relative flex items-center justify-center bg-white p-8 rounded-2xl border-2 border-slate-200 shadow-sm hover:border-${g.theme}-500 hover:shadow-md transition-all">
+                        <div class="text-3xl font-black text-${g.theme}-600 mr-4 group-hover:scale-110 transition-transform">${g.label}</div>
+                        <div class="text-xl font-bold text-slate-700">${g.title}</div>
+                        <i data-lucide="chevron-right" class="absolute right-6 text-slate-300 group-hover:text-${g.theme}-500 group-hover:translate-x-1 transition-all"></i>
                     </button>
                 `).join('')}
             </div>
@@ -7579,9 +7896,10 @@ function renderGradeSelect() {
 
 function renderLessonSelect(grade) {
     state.view = 'lessonSelect';
-    headerTitle.textContent = `${grade}年生のコース`;
+    const isBasic = grade === 'basic';
+    headerTitle.textContent = isBasic ? "英語のド基礎" : `${grade}年生のコース`;
     
-    const lessons = Object.values(LESSONS_DB).filter(l => l.grade === grade);
+    const lessons = Object.values(LESSONS_DB).filter(l => l.grade === (isBasic ? 0 : Number(grade)));
     const statusMap = loadStatusMap();
     
     wrapper.innerHTML = `
@@ -7619,6 +7937,9 @@ function startLesson(id) {
     state.quizStates = {};
 
     state.slides = [{ type: 'intro' }, { type: 'grammar' }, { type: 'points' }, { type: 'examples' }];
+    if (l.verbList30 && l.verbList30.length) {
+        state.slides.splice(3, 0, { type: 'verbList30' });
+    }
     if (l.quizChoiceList.length) {
         state.slides.push({ type: 'quizA_All_Q' }, { type: 'quizA_All_A' });
         l.quizChoiceList.forEach(q => {
@@ -7717,6 +8038,7 @@ function renderSlide(animate = true) {
         case 'intro': html = getIntroHtml(lesson); break;
         case 'grammar': html = getGrammarHtml(lesson); break;
         case 'points': html = getPointsHtml(lesson); break;
+        case 'verbList30': html = getVerbList30Html(lesson); break;
         case 'examples': html = getExamplesHtml(lesson); break;
         case 'quizA_All_Q': html = getQuizA_All_Q_Html(lesson); break;
         case 'quizA_All_A': html = getQuizA_All_A_Html(lesson); break;
@@ -7809,6 +8131,26 @@ function getExamplesHtml(l) {
                 <div class="flex-grow"><p class="text-xl text-slate-800 mb-0.5">${ex.engDisplay}</p><p class="text-slate-500 text-sm">${ex.jp}</p></div>
             </div>`).join('')}
         </div>
+    </div>`;
+}
+
+function getVerbList30Html(l) {
+    if (!l.verbList30 || !l.verbList30.length) return "";
+    const items = l.verbList30.map((v, i) => `
+        <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-sm flex items-center gap-2">
+            <div class="w-7 h-7 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold flex-shrink-0">${i + 1}</div>
+            <button onclick="speak('${v.word.replace(/'/g, "\\'")}')" class="p-1.5 rounded-full bg-slate-100 text-slate-500 hover:bg-amber-100 hover:text-amber-600 transition-colors" aria-label="pronounce">
+                <i data-lucide="volume-2" class="w-4 h-4"></i>
+            </button>
+            <div class="min-w-0">
+                <div class="text-base font-bold text-slate-800 leading-tight">${v.word}</div>
+                <div class="text-slate-500 text-xs leading-tight">${v.meaning}</div>
+            </div>
+        </div>
+    `).join('');
+    return `<div class="space-y-4 h-full flex flex-col justify-center">
+        <h3 class="text-xl font-bold text-slate-700 flex items-center gap-2 mb-2"><i data-lucide="list-checks" class="w-6 h-6 text-amber-500"></i> 重要動詞30選</h3>
+        <div class="grid grid-rows-10 grid-flow-col gap-2">${items}</div>
     </div>`;
 }
 
