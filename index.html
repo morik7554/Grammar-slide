@@ -28,7 +28,7 @@
 
         <!-- メインコンテンツ -->
         <main id="main-container" class="flex-grow flex flex-col justify-center relative bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-            <div id="slide-wrapper" class="w-full h-full overflow-y-auto custom-scroll p-2 md:p-6 flex flex-col justify-center"></div>
+            <div id="slide-wrapper" class="w-full h-full overflow-y-auto custom-scroll p-2 md:p-6 flex flex-col"></div>
         </main>
 
         <!-- ナビゲーション -->
@@ -7833,6 +7833,7 @@ const state = {
     slides: [],
     quizStates: {}
 };
+let speechVoice = null;
 
 function shuffleArray(arr) {
     const a = [...arr];
@@ -7848,7 +7849,18 @@ const footer = document.getElementById('nav-footer');
 const statusArea = document.getElementById('status-area');
 const headerTitle = document.getElementById('header-title');
 
+function updateSpeechVoice() {
+    if (!window.speechSynthesis) return;
+    const voices = window.speechSynthesis.getVoices();
+    speechVoice = voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en')) || null;
+}
+
 function init() {
+    updateSpeechVoice();
+    if (window.speechSynthesis) {
+        window.speechSynthesis.addEventListener('voiceschanged', updateSpeechVoice);
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
     const unitId = urlParams.get('unit');
 
@@ -8065,13 +8077,28 @@ function renderSlide(animate = true) {
 
 function speak(text) {
     if (!window.speechSynthesis) return;
+    updateSpeechVoice();
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    const voices = window.speechSynthesis.getVoices();
-    const enVoice = voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
-    if (enVoice) utterance.voice = enVoice;
+    utterance.lang = 'en-US';
+    if (speechVoice) utterance.voice = speechVoice;
     utterance.rate = 0.9;
+    window.speechSynthesis.resume();
     window.speechSynthesis.speak(utterance);
+}
+
+function escapeHtmlAttr(text) {
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
+function speakFromButton(button) {
+    const text = button.dataset.speak;
+    if (!text) return;
+    speak(text);
 }
 
 // --- HTML Generators (Core) ---
@@ -8127,7 +8154,7 @@ function getExamplesHtml(l) {
         <h3 class="text-xl font-bold text-slate-700 flex items-center gap-2 mb-2"><i data-lucide="message-square" class="w-6 h-6 text-blue-500"></i> 例文</h3>
         <div class="grid gap-3">
             ${l.examples.map(ex => `<div class="bg-white p-4 rounded-lg border-l-4 border-${ex.color}-500 shadow-sm flex items-center gap-3 group hover:shadow-md transition-all">
-                <button onclick="speak('${ex.engRead.replace(/'/g, "\\'")}')" class="p-2 rounded-full bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition-colors"><i data-lucide="volume-2" class="w-5 h-5"></i></button>
+                <button data-speak="${escapeHtmlAttr(ex.engRead)}" onclick="speakFromButton(this)" class="p-2 rounded-full bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition-colors"><i data-lucide="volume-2" class="w-5 h-5"></i></button>
                 <div class="flex-grow"><p class="text-xl text-slate-800 mb-0.5">${ex.engDisplay}</p><p class="text-slate-500 text-sm">${ex.jp}</p></div>
             </div>`).join('')}
         </div>
@@ -8139,7 +8166,7 @@ function getVerbList30Html(l) {
     const items = l.verbList30.map((v, i) => `
         <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-sm flex items-center gap-2">
             <div class="w-7 h-7 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold flex-shrink-0">${i + 1}</div>
-            <button onclick="speak('${v.word.replace(/'/g, "\\'")}')" class="p-1.5 rounded-full bg-slate-100 text-slate-500 hover:bg-amber-100 hover:text-amber-600 transition-colors" aria-label="pronounce">
+            <button data-speak="${escapeHtmlAttr(v.word)}" onclick="speakFromButton(this)" class="p-1.5 rounded-full bg-slate-100 text-slate-500 hover:bg-amber-100 hover:text-amber-600 transition-colors" aria-label="pronounce">
                 <i data-lucide="volume-2" class="w-4 h-4"></i>
             </button>
             <div class="min-w-0">
@@ -8154,7 +8181,12 @@ function getVerbList30Html(l) {
     </div>`;
 }
 
-function selectOptionA(id, idx) { state.quizStates[id].selectedIndex = idx; renderSlide(false); }
+function selectOptionA(id, idx) {
+    state.quizStates[id].selectedIndex = idx;
+    document.querySelectorAll(`[data-quiz-a="${id}"]`).forEach((button, buttonIdx) => {
+        button.className = `w-full text-center px-2 py-2 rounded border transition-all font-medium ${buttonIdx === idx ? 'bg-blue-600 text-white' : 'bg-white text-slate-700 hover:bg-slate-50'}`;
+    });
+}
 
 function updateLessonStatus() {
     const l = state.currentLessonData;
@@ -8191,7 +8223,7 @@ function getQuizA_All_Q_Html(l) {
     <div class="flex flex-col gap-2 flex-grow overflow-y-auto justify-center">
         ${l.quizChoiceList.map((q, i) => `<div class="bg-white p-3 rounded-lg border border-slate-200 mb-2">
             <div class="text-xl font-bold text-slate-800 leading-tight mb-2"><span class="text-blue-600 text-base mr-2">Q${i+1}.</span>${q.subQuestion}</div>
-            <div class="grid grid-cols-4 gap-2">${state.quizStates[q.id].options.map((opt, idx) => `<button onclick="selectOptionA('${q.id}', ${idx})" class="w-full text-center px-2 py-2 rounded border transition-all font-medium ${state.quizStates[q.id].selectedIndex === idx ? 'bg-blue-600 text-white' : 'bg-white text-slate-700 hover:bg-slate-50'}">${opt}</button>`).join('')}</div>
+            <div class="grid grid-cols-4 gap-2">${state.quizStates[q.id].options.map((opt, idx) => `<button data-quiz-a="${q.id}" onclick="selectOptionA('${q.id}', ${idx})" class="w-full text-center px-2 py-2 rounded border transition-all font-medium ${state.quizStates[q.id].selectedIndex === idx ? 'bg-blue-600 text-white' : 'bg-white text-slate-700 hover:bg-slate-50'}">${opt}</button>`).join('')}</div>
         </div>`).join('')}
     </div><div class="mt-2 text-center flex-shrink-0"><button onclick="checkAllQuizA()" class="px-10 py-2 bg-blue-600 text-white font-bold rounded-full shadow-lg">答え合わせ</button></div></div>`;
 }
@@ -8210,7 +8242,7 @@ function getQuizA_All_A_Html(l) {
                         <div class="text-xs text-slate-500 mb-0.5">${q.subQuestion.split('<br>')[0]}</div>
                         <div class="text-lg font-bold text-slate-800 mb-1 flex items-center gap-2">
                             <span>正解: <span class="text-blue-600">${q.options[q.correctIndex]}</span></span>
-                            <button onclick="speak('${sentenceToRead}')" class="p-1 rounded-full bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition-colors"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+                            <button data-speak="${escapeHtmlAttr(sentenceToRead)}" onclick="speakFromButton(this)" class="p-1 rounded-full bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition-colors"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
                         </div>
                         <div class="text-slate-600 bg-slate-50 p-2 rounded text-sm border border-slate-100">${q.explanation}</div>
                     </div>
@@ -8223,6 +8255,21 @@ function getQuizA_All_A_Html(l) {
 function selectWordB(id, word, poolIdx) { const s = state.quizStates[id]; const emptySlotIdx = s.slots.findIndex(v => v === null); if (emptySlotIdx !== -1) { s.slots[emptySlotIdx] = word; s.pool.splice(poolIdx, 1); renderSlide(false); } }
 function returnWordB(id, slotIdx) { const s = state.quizStates[id]; const word = s.slots[slotIdx]; if (word) { s.slots[slotIdx] = null; s.pool.push(word); renderSlide(false); } }
 function resetQuizB(id) { const q = state.currentLessonData.quizFillList.find(i => i.id === id); const s = state.quizStates[id]; s.slots = q.correctOrder.map(() => null); s.pool = [...q.words].sort(() => Math.random() - 0.5); renderSlide(false); }
+
+function replaceFillSlots(parts, values, renderer) {
+    let valueIdx = 0;
+    return parts.map(part => {
+        const segments = part.split('{slot}');
+        if (segments.length === 1) return part;
+
+        return segments.map((segment, segmentIdx) => {
+            if (segmentIdx === segments.length - 1) return segment;
+            const rendered = renderer(values[valueIdx], valueIdx);
+            valueIdx += 1;
+            return `${segment}${rendered}`;
+        }).join('');
+    }).join('');
+}
 
 function checkAllB() {
     state.currentLessonData.quizFillList.forEach(q => {
@@ -8238,14 +8285,11 @@ function getQuizB_All_Q_Html(l) {
     <div class="flex flex-col gap-1 flex-grow overflow-y-auto justify-center">
         ${l.quizFillList.map((q, i) => {
             const s = state.quizStates[q.id];
-            let sIdx = 0;
-            const display = q.sentenceParts.map(p => {
-                if (p === "{slot}") {
-                    const w = s.slots[sIdx]; const idx = sIdx; sIdx++;
-                    return w ? `<button onclick="returnWordB('${q.id}', ${idx})" class="inline-block px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded mx-0.5 font-bold text-lg border border-blue-300">${w}</button>` : `<span class="inline-block w-10 h-6 border-b-2 border-slate-300 mx-0.5 align-bottom bg-slate-50"></span>`;
-                }
-                return `<span class="text-lg mx-0.5">${p}</span>`;
-            }).join('');
+            const display = replaceFillSlots(q.sentenceParts, s.slots, (word, idx) => (
+                word
+                    ? `<button onclick="returnWordB('${q.id}', ${idx})" class="inline-block px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded mx-0.5 font-bold text-lg border border-blue-300">${word}</button>`
+                    : `<span class="inline-block w-10 h-6 border-b-2 border-slate-300 mx-0.5 align-bottom bg-slate-50"></span>`
+            ));
             return `<div class="bg-white p-2 rounded-lg border border-slate-200 shadow-sm mb-1">
                 <div class="mb-1 flex justify-between items-center">
                     <div class="text-sm font-bold text-slate-700 truncate flex-grow"><span class="text-blue-600 mr-1">Q${i+1}.</span>${q.subQuestion.split('<br>')[0]}</div>
@@ -8267,9 +8311,9 @@ function getQuizB_All_A_Html(l) {
     return `<div class="h-full flex flex-col"><h3 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2 flex-shrink-0"><i data-lucide="award" class="w-6 h-6 text-yellow-500"></i> 解答・解説</h3>
     <div class="flex-col flex gap-2 flex-grow overflow-y-auto justify-center">
         ${l.quizFillList.map(q => {
-            const s = state.quizStates[q.id]; let sIdx = 0; let sIdxRead = 0;
-            const res = q.sentenceParts.map(p => (p === "{slot}") ? `<span class="text-blue-600 font-bold underline mx-1">${q.correctOrder[sIdx++]}</span>` : p).join('');
-            const sentenceToRead = q.sentenceParts.map(p => (p === "{slot}") ? q.correctOrder[sIdxRead++] : p).join(' ').replace(/'/g, "\\'");
+            const s = state.quizStates[q.id];
+            const res = replaceFillSlots(q.sentenceParts, q.correctOrder, word => `<span class="text-blue-600 font-bold underline mx-1">${word}</span>`);
+            const sentenceToRead = replaceFillSlots(q.sentenceParts, q.correctOrder, word => word).replace(/'/g, "\\'");
             return `<div class="bg-white p-3 rounded-lg border border-slate-200">
                 <div class="flex items-start gap-2">
                     <div class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 border ${s.isCorrect ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'}"><i data-lucide="${s.isCorrect ? 'check' : 'x'}"></i></div>
@@ -8277,7 +8321,7 @@ function getQuizB_All_A_Html(l) {
                         <div class="text-slate-500 text-sm mb-1 truncate">${q.subQuestion.split('<br>')[0]}</div>
                         <div class="text-lg font-bold text-slate-800 mb-1 leading-tight flex items-center gap-2">
                             <span>${res}</span>
-                            <button onclick="speak('${sentenceToRead}')" class="p-1 rounded-full bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition-colors"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+                            <button data-speak="${escapeHtmlAttr(sentenceToRead)}" onclick="speakFromButton(this)" class="p-1 rounded-full bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition-colors"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
                         </div>
                         <div class="text-slate-600 bg-slate-50 p-2 rounded text-sm border border-slate-100">${q.explanation}</div>
                     </div>
@@ -8331,7 +8375,7 @@ function getQuizC_All_A_Html(l) {
                     <div class="text-slate-500 text-sm mb-1">${q.subQuestion}</div>
                     <div class="text-lg font-bold text-slate-800 mb-1 flex items-center gap-2">
                         <span>${q.words.join(' ')}</span>
-                        <button onclick="speak('${sentenceToRead}')" class="p-1 rounded-full bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition-colors"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+                        <button data-speak="${escapeHtmlAttr(sentenceToRead)}" onclick="speakFromButton(this)" class="p-1 rounded-full bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition-colors"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
                     </div>
                     <div class="text-slate-600 bg-slate-50 p-2 rounded text-sm border font-medium">${q.explanation}</div>
                 </div>
