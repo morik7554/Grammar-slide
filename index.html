@@ -8253,7 +8253,10 @@ function getQuizB_All_Q_Html(l) {
                 </div>
                 <div class="mt-1 p-1 bg-slate-50 rounded border border-slate-100 text-center leading-relaxed text-lg flex items-center justify-center min-h-[40px]">${display}</div>
                 <div class="bg-slate-100 p-1 rounded flex flex-wrap gap-1 justify-center min-h-[36px] items-center mt-1">
-                    ${s.pool.map((w, pi) => `<button onclick="selectWordB('${q.id}', '${w}', ${pi})" class="px-2 py-1 bg-white border border-slate-300 shadow-sm rounded text-base hover:bg-blue-50 transition-all">${w}</button>`).join('') || '<span class="text-sm text-slate-400">選択済み</span>'}
+                    ${s.pool.map((w, pi) => {
+                        const safe = w.replace(/'/g, "\\'");
+                        return `<button onclick="selectWordB('${q.id}', '${safe}', ${pi})" class="px-2 py-1 bg-white border border-slate-300 shadow-sm rounded text-base hover:bg-blue-50 transition-all">${w}</button>`;
+                    }).join('') || '<span class="text-sm text-slate-400">選択済み</span>'}
                 </div>
             </div>`;
         }).join('')}
