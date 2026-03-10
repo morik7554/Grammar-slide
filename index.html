@@ -4128,7 +4128,7 @@ const LESSONS_DB = {
             {
                 id: "qB1",
                 subQuestion: "その部屋は使われていません。",
-                sentenceParts: ["The room", "{slot}", "{slot}", "."],
+                sentenceParts: ["The room ", "{slot}", " ", "{slot}", " ", "{slot}", "."],
                 words: ["is", "not", "used", "doesn't"],
                 correctOrder: ["is", "not", "used"],
                 explanation: "受動態の否定文です。is not used とします。"
@@ -5397,7 +5397,7 @@ const LESSONS_DB = {
             {
                 id: "qB1",
                 subQuestion: "向こうで走っている少年はケンです。",
-                sentenceParts: ["The boy", "{slot}", "{slot}", "over there is Ken."],
+                sentenceParts: ["The boy ", "{slot}", " over there is Ken."],
                 words: ["running", "run", "ran", "is"],
                 correctOrder: ["running"],
                 explanation: "「走っている」少年なので running を後ろに置きます。"
@@ -5531,7 +5531,7 @@ const LESSONS_DB = {
         ],
         quizFillList: [
             { id: "qB1", subQuestion: "彼女はその時、ピアノを弾いていましたか？", sentenceParts: ["{slot}", "she", "{slot}", "the piano then?"], words: ["Was", "playing", "Were", "play"], correctOrder: ["Was", "playing"], explanation: "Sheが主語なのでWasを使い、動詞をing形にします。" },
-            { id: "qB2", subQuestion: "私はその時、眠っていませんでした。", sentenceParts: ["I", "{slot}", "{slot}", "then."], words: ["was", "not", "sleeping", "were"], correctOrder: ["was", "not", "sleeping"], explanation: "be動詞の後にnotを置き、その後にing形を続けます。" },
+            { id: "qB2", subQuestion: "私はその時、眠っていませんでした。", sentenceParts: ["I ", "{slot}", " ", "{slot}", " ", "{slot}", " then."], words: ["was", "not", "sleeping", "were"], correctOrder: ["was", "not", "sleeping"], explanation: "be動詞の後にnotを置き、その後にing形を続けます。" },
             { id: "qB3", subQuestion: "彼らは夕食を作っていました。", sentenceParts: ["They", "{slot}", "{slot}", "dinner."], words: ["were", "making", "was", "make"], correctOrder: ["were", "making"], explanation: "Theyに合わせてwereを選び、makeのeを取ってingをつけます。" }
         ],
         quizSortList: [
@@ -5793,7 +5793,7 @@ const LESSONS_DB = {
         quizFillList: [
             { id: "qB1", subQuestion: "何か温かい飲み物が欲しいです。", sentenceParts: ["I want", "{slot}", "{slot}", "{slot}."], words: ["something", "hot", "to drink", "anything"], correctOrder: ["something", "hot", "to drink"], explanation: "something + 形容詞 + to不定詞 の語順に注意しましょう。" },
             { id: "qB2", subQuestion: "私には英語を勉強するための友達が必要です。", sentenceParts: ["I need", "{slot}", "{slot}", "{slot}", "English."], words: ["friends", "to", "study", "studied"], correctOrder: ["friends", "to", "study"], explanation: "「勉強するための友達」は friends to study です。" },
-            { id: "qB3", subQuestion: "彼は書くためのペンを持っていません。", sentenceParts: ["He has", "{slot}", "{slot}", "{slot}."], words: ["no", "pen", "to write", "with"], correctOrder: ["no", "pen", "to write"], explanation: "「書くためのペン」という形容詞的用法です。" }
+            { id: "qB3", subQuestion: "彼は書くためのペンを持っていません。", sentenceParts: ["He has", "{slot}", "{slot}", "{slot}", "{slot}."], words: ["no", "pen", "to write", "with"], correctOrder: ["no", "pen", "to write", "with"], explanation: "「書くためのペン」は a pen to write with の形にします。" }
         ],
         quizSortList: [
             { id: "qC1", subQuestion: "あなたは何か話すことがありますか？", words: ["Do", "you", "have", "anything", "to", "talk", "about", "?"], explanation: "anything to talk about で「話すべきこと」となります。" },
@@ -6685,11 +6685,11 @@ const LESSONS_DB = {
         quizFillList: [
             { id: "qB1", subQuestion: "これは世界で一番古い建物です。", sentenceParts: ["This is ", "{slot}", " ", "{slot}", " building in the world."], words: ["the", "oldest", "old", "more old"], correctOrder: ["the", "oldest"], explanation: "最上級には the ＋ -est が必要です。" },
             { id: "qB2", subQuestion: "彼女は私のクラスで一番親切です。", sentenceParts: ["She is ", "{slot}", " ", "{slot}", " ", "{slot}", " our class."], words: ["the", "kindest", "in", "most"], correctOrder: ["the", "kindest", "in"], explanation: "kind は kindest（短い単語）になり、場所・範囲には in を使います。" },
-            { id: "qB3", subQuestion: "私は3人の中で一番早く起きます。", sentenceParts: ["I get up ", "{slot}", " ", "{slot}", " the three."], words: ["the", "earliest", "of", "in"], correctOrder: ["the", "earliest", "of"], explanation: "early を y→i＋est に変え、数字の前なので of を置きます。" }
+            { id: "qB3", subQuestion: "私は3人の中で一番早く起きます。", sentenceParts: ["I get up ", "{slot}", " ", "{slot}", " ", "{slot}", " the three."], words: ["the", "earliest", "of", "in"], correctOrder: ["the", "earliest", "of"], explanation: "early を y→i＋est に変え、数字の前なので of を置きます。" }
         ],
         quizSortList: [
             { id: "qC1", subQuestion: "野球は日本で一番人気のあるスポーツです。", words: ["Baseball", "is", "the", "most", "popular", "sport", "in", "Japan"], explanation: "the most ＋ 形容詞 ＋ 名詞 ＋ in 範囲 の語順です。" },
-            { id: "qC2", subQuestion: "彼は家族の中で一番背が高いです。", words: ["He", "is", "the", "taller", "tallest", "in", "his", "family"], explanation: "「一番〜」は tallest です。the を忘れないように。" }
+            { id: "qC2", subQuestion: "彼は家族の中で一番背が高いです。", words: ["He", "is", "the", "tallest", "in", "his", "family"], explanation: "「一番〜」は tallest です。the を忘れないように。" }
         ],
         summary: ["the ＋ 最上級（-est / most）で「一番〜」", "in ＋ 場所・単数名詞（in Japan, in my class）", "of ＋ 数字・複数名詞（of all, of the three）"]
     },
@@ -7962,11 +7962,11 @@ function startLesson(id) {
     }
     if (l.quizFillList.length) {
         state.slides.push({ type: 'quizB_All_Q' }, { type: 'quizB_All_A' });
-        l.quizFillList.forEach(q => state.quizStates[q.id] = { slots: q.correctOrder.map(() => null), pool: [...q.words].sort(() => Math.random() - 0.5), isCorrect: false });
+        l.quizFillList.forEach(q => state.quizStates[q.id] = { slots: q.correctOrder.map(() => null), pool: shuffleArray(q.words), isCorrect: false });
     }
     if (l.quizSortList.length) {
         state.slides.push({ type: 'quizC_All_Q' }, { type: 'quizC_All_A' });
-        l.quizSortList.forEach(q => state.quizStates[q.id] = { selected: [], pool: [...q.words].sort(() => Math.random() - 0.5), isCorrect: false });
+        l.quizSortList.forEach(q => state.quizStates[q.id] = { selected: [], pool: shuffleArray(q.words), isCorrect: false });
     }
     state.slides.push({ type: 'summary' });
 
@@ -7976,18 +7976,30 @@ function startLesson(id) {
     renderSlide(true);
 }
 
-// リンクをクリップボードにコピーする関数
-function copyCurrentLink() {
+async function copyCurrentLink() {
     if (!state.currentLessonData) return;
     const url = window.location.origin + window.location.pathname + '?unit=' + state.currentLessonData.id;
-    
-    const el = document.createElement('textarea');
-    el.value = url;
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand('copy');
-    document.body.removeChild(el);
-    
+
+    let copied = false;
+    if (navigator.clipboard?.writeText) {
+        try {
+            await navigator.clipboard.writeText(url);
+            copied = true;
+        } catch {
+            copied = false;
+        }
+    }
+    if (!copied) {
+        const el = document.createElement('textarea');
+        el.value = url;
+        document.body.appendChild(el);
+        el.select();
+        copied = document.execCommand('copy');
+        document.body.removeChild(el);
+    }
+
+    if (!copied) return;
+
     const copyBtn = document.getElementById('btn-copy-link');
     const copyText = document.getElementById('copy-text');
     
@@ -8254,21 +8266,44 @@ function getQuizA_All_A_Html(l) {
 
 function selectWordB(id, word, poolIdx) { const s = state.quizStates[id]; const emptySlotIdx = s.slots.findIndex(v => v === null); if (emptySlotIdx !== -1) { s.slots[emptySlotIdx] = word; s.pool.splice(poolIdx, 1); renderSlide(false); } }
 function returnWordB(id, slotIdx) { const s = state.quizStates[id]; const word = s.slots[slotIdx]; if (word) { s.slots[slotIdx] = null; s.pool.push(word); renderSlide(false); } }
-function resetQuizB(id) { const q = state.currentLessonData.quizFillList.find(i => i.id === id); const s = state.quizStates[id]; s.slots = q.correctOrder.map(() => null); s.pool = [...q.words].sort(() => Math.random() - 0.5); renderSlide(false); }
+function resetQuizB(id) { const q = state.currentLessonData.quizFillList.find(i => i.id === id); const s = state.quizStates[id]; s.slots = q.correctOrder.map(() => null); s.pool = shuffleArray(q.words); renderSlide(false); }
 
-function replaceFillSlots(parts, values, renderer) {
+function shouldInsertSpace(prevRaw, nextRaw) {
+    if (!prevRaw || !nextRaw) return false;
+    if (/\s$/.test(prevRaw) || /^\s/.test(nextRaw)) return false;
+    return /[A-Za-z0-9)]$/.test(prevRaw) && /^[A-Za-z0-9(]/.test(nextRaw);
+}
+
+function composeFillSentence(parts, values, renderer) {
+    const segments = [];
     let valueIdx = 0;
-    return parts.map(part => {
-        const segments = part.split('{slot}');
-        if (segments.length === 1) return part;
 
-        return segments.map((segment, segmentIdx) => {
-            if (segmentIdx === segments.length - 1) return segment;
-            const rendered = renderer(values[valueIdx], valueIdx);
-            valueIdx += 1;
-            return `${segment}${rendered}`;
-        }).join('');
-    }).join('');
+    parts.forEach(part => {
+        const splitParts = part.split('{slot}');
+        splitParts.forEach((segment, idx) => {
+            if (segment) {
+                segments.push({ raw: segment, rendered: segment });
+            }
+            if (idx < splitParts.length - 1) {
+                const value = values[valueIdx];
+                segments.push({
+                    raw: value == null ? '' : String(value),
+                    rendered: renderer(value, valueIdx)
+                });
+                valueIdx += 1;
+            }
+        });
+    });
+
+    let output = '';
+    segments.forEach((segment, idx) => {
+        const prev = segments[idx - 1];
+        if (idx > 0 && shouldInsertSpace(prev.raw, segment.raw)) {
+            output += ' ';
+        }
+        output += segment.rendered;
+    });
+    return output;
 }
 
 function checkAllB() {
@@ -8285,7 +8320,7 @@ function getQuizB_All_Q_Html(l) {
     <div class="flex flex-col gap-1 flex-grow overflow-y-auto justify-center">
         ${l.quizFillList.map((q, i) => {
             const s = state.quizStates[q.id];
-            const display = replaceFillSlots(q.sentenceParts, s.slots, (word, idx) => (
+            const display = composeFillSentence(q.sentenceParts, s.slots, (word, idx) => (
                 word
                     ? `<button onclick="returnWordB('${q.id}', ${idx})" class="inline-block px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded mx-0.5 font-bold text-lg border border-blue-300">${word}</button>`
                     : `<span class="inline-block w-10 h-6 border-b-2 border-slate-300 mx-0.5 align-bottom bg-slate-50"></span>`
@@ -8312,8 +8347,8 @@ function getQuizB_All_A_Html(l) {
     <div class="flex-col flex gap-2 flex-grow overflow-y-auto justify-center">
         ${l.quizFillList.map(q => {
             const s = state.quizStates[q.id];
-            const res = replaceFillSlots(q.sentenceParts, q.correctOrder, word => `<span class="text-blue-600 font-bold underline mx-1">${word}</span>`);
-            const sentenceToRead = replaceFillSlots(q.sentenceParts, q.correctOrder, word => word).replace(/'/g, "\\'");
+            const res = composeFillSentence(q.sentenceParts, q.correctOrder, word => `<span class="text-blue-600 font-bold underline mx-1">${word}</span>`);
+            const sentenceToRead = composeFillSentence(q.sentenceParts, q.correctOrder, word => word).replace(/'/g, "\\'");
             return `<div class="bg-white p-3 rounded-lg border border-slate-200">
                 <div class="flex items-start gap-2">
                     <div class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 border ${s.isCorrect ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'}"><i data-lucide="${s.isCorrect ? 'check' : 'x'}"></i></div>
