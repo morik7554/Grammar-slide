@@ -58,7 +58,7 @@
  * LESSONS_DB
  * --------------------------------------------------------------------------
  */
-const ALL_LESSONS_DB = {
+const LESSONS_DB = {
     "be-verb-i-am": {
         id: "be-verb-i-am",
         grade: 1,
@@ -6927,14 +6927,14 @@ const ALL_LESSONS_DB = {
             },
             {
                 id: "qA2",
-                subQuestion: "Everyone calls him (　　　).",
-                options: ["kind", "a doctor", "carefully", "in Tokyo"],
-                correctIndex: 1,
-                explanation: "call + O + C の C には名詞が入ります。a doctor が正解です。"
+                subQuestion: "This game made us (　　　).",
+                options: ["excited", "excite", "exciting", "excitement"],
+                correctIndex: 0,
+                explanation: "make + O + C(形容詞) の形。excited が正解です。"
             },
             {
                 id: "qA3",
-                subQuestion: "Please keep the classroom (　　　).",
+                subQuestion: "Please keep your room (　　　).",
                 options: ["clean", "to clean", "cleaning", "cleans"],
                 correctIndex: 0,
                 explanation: "keep + O + C の形では、C に形容詞を置きます。clean が正解です。"
@@ -6951,18 +6951,18 @@ const ALL_LESSONS_DB = {
             },
             {
                 id: "qB2",
-                subQuestion: "彼らはその船をドリーム号と名づけました。",
-                sentenceParts: ["They", "{slot}", "{slot}", "{slot}", "."],
-                words: ["named", "the ship", "Dream", "call"],
-                correctOrder: ["named", "the ship", "Dream"],
-                explanation: "name + O + C の語順で「OをCと名づける」です。"
+                subQuestion: "私たちはそのチームをイーグルスと呼びます。",
+                sentenceParts: ["We", "{slot}", "{slot}", "{slot}", "."],
+                words: ["call", "the team", "Eagles", "name"],
+                correctOrder: ["call", "the team", "Eagles"],
+                explanation: "call + O + C の語順で「OをCと呼ぶ」です。"
             },
             {
                 id: "qB3",
-                subQuestion: "私たちはその公園をきれいなままにしておきました。",
-                sentenceParts: ["We", "{slot}", "{slot}", "{slot}", "."],
-                words: ["kept", "the park", "clean", "keep"],
-                correctOrder: ["kept", "the park", "clean"],
+                subQuestion: "彼は自分の部屋をきれいなままにしておきました。",
+                sentenceParts: ["He", "{slot}", "{slot}", "{slot}", "."],
+                words: ["kept", "his room", "clean", "keep"],
+                correctOrder: ["kept", "his room", "clean"],
                 explanation: "keep + O + C の語順で「OをCのままにしておく」です。"
             }
         ],
@@ -7803,10 +7803,6 @@ const ALL_LESSONS_DB = {
     }
 };
 
-const LESSONS_DB = Object.fromEntries(
-    Object.entries(ALL_LESSONS_DB).filter(([, lesson]) => lesson.grade == 0 || lesson.grade == 2)
-);
-
 /**
  * --------------------------------------------------------------------------
  * アプリロジック
@@ -7892,7 +7888,11 @@ function renderGradeSelect() {
     headerTitle.textContent = "中学英語 学習ナビ";
     statusArea.innerHTML = "";
     
-    const gradeButtons = [        { id: 2, label: "2年", title: "英語の学習をはじめる", theme: "blue" },        { id: "basic", label: "英語のド基礎", title: "超基礎からスタート", theme: "amber" }
+    const gradeButtons = [
+        { id: 1, label: "1年", title: "英語の学習をはじめる", theme: "blue" },
+        { id: 2, label: "2年", title: "英語の学習をはじめる", theme: "blue" },
+        { id: 3, label: "3年", title: "英語の学習をはじめる", theme: "blue" },
+        { id: "basic", label: "英語のド基礎", title: "超基礎からスタート", theme: "amber" }
     ];
 
     wrapper.innerHTML = `
