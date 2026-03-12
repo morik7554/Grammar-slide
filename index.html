@@ -4300,7 +4300,7 @@ const LESSONS_DB = {
     "svoc-sentences": {
         id: "svoc-sentences",
         grade: 3,
-        menuTitle: "call / make (SVOCの文)",
+        menuTitle: "call / make / keep (SVOCの文)",
         intro: {
             title: "AをBと呼ぶ / AをBにする",
             subtitle: "意味：O ＝ C の関係を作る文",
@@ -6854,19 +6854,19 @@ const LESSONS_DB = {
     "svoc-make-call": {
         id: "svoc-make-call",
         grade: 2,
-        menuTitle: "SVOC (make / call / name)",
+        menuTitle: "SVOC (make / call / name / keep)",
         intro: {
-            title: "SVOC (make / call / name)",
-            subtitle: "意味：〜を…にする／〜を…と呼ぶ・名づける",
+            title: "SVOC (make / call / name / keep)",
+            subtitle: "意味：〜を…にする／〜を…と呼ぶ・名づける／〜のままにしておく",
             goals: [
-                "make / call / name を使った SVOC文型 を理解する",
+                "make / call / name / keep を使った SVOC文型 を理解する",
                 "「OをCにする」という形を作れるようになる",
                 "自分や友だちについて英語で言えるようになる"
             ]
         },
         grammar: {
             formula: [
-                { text: "make / call / name", type: "red" },
+                { text: "make / call / name / keep", type: "red" },
                 { text: "+", type: "text" },
                 { text: "O (目的語)", type: "box" },
                 { text: "+", type: "text" },
@@ -6876,7 +6876,8 @@ const LESSONS_DB = {
             items: [
                 { title: "make + O + C", desc: "OをCにする(状態)", icon: "smile", color: "rose" },
                 { title: "call + O + C", desc: "OをCと呼ぶ", icon: "phone", color: "blue" },
-                { title: "name + O + C", desc: "OをCと名づける", icon: "tag", color: "orange" }
+                { title: "name + O + C", desc: "OをCと名づける", icon: "tag", color: "orange" },
+                { title: "keep + O + C", desc: "OをCのままにしておく", icon: "lock", color: "emerald" }
             ]
         },
         points: {
@@ -6907,6 +6908,13 @@ const LESSONS_DB = {
                 jp: "彼らはその犬をポチと名づけました。",
                 icon: "dog",
                 color: "orange"
+            },
+            {
+                engDisplay: 'Please <span class="text-emerald-500 font-bold">keep</span> your room <span class="text-blue-500 font-bold">clean</span>.',
+                engRead: "Please keep your room clean.",
+                jp: "あなたの部屋をきれいなままにしておいてください。",
+                icon: "home",
+                color: "emerald"
             }
         ],
         quizChoiceList: [
@@ -6926,10 +6934,10 @@ const LESSONS_DB = {
             },
             {
                 id: "qA3",
-                subQuestion: "Everyone calls him (　　　).",
-                options: ["kind", "a doctor", "carefully", "in Tokyo"],
-                correctIndex: 1,
-                explanation: "call + O + C の C には名詞が入ります。a doctor が正解です。"
+                subQuestion: "Please keep your room (　　　).",
+                options: ["clean", "to clean", "cleaning", "cleans"],
+                correctIndex: 0,
+                explanation: "keep + O + C の形では、C に形容詞を置きます。clean が正解です。"
             }
         ],
         quizFillList: [
@@ -6951,11 +6959,11 @@ const LESSONS_DB = {
             },
             {
                 id: "qB3",
-                subQuestion: "彼らはその船をドリーム号と名づけました。",
-                sentenceParts: ["They", "{slot}", "{slot}", "{slot}", "."],
-                words: ["named", "the ship", "Dream", "call"],
-                correctOrder: ["named", "the ship", "Dream"],
-                explanation: "name + O + C の語順で「OをCと名づける」です。"
+                subQuestion: "彼は自分の部屋をきれいなままにしておきました。",
+                sentenceParts: ["He", "{slot}", "{slot}", "{slot}", "."],
+                words: ["kept", "his room", "clean", "keep"],
+                correctOrder: ["kept", "his room", "clean"],
+                explanation: "keep + O + C の語順で「OをCのままにしておく」です。"
             }
         ],
         quizSortList: [
@@ -6974,7 +6982,7 @@ const LESSONS_DB = {
         ],
         summary: [
             "SVOCは「OをCにする・呼ぶ」という形",
-            "makeは「〜にする」、call / nameは「〜と呼ぶ・名づける」",
+            "makeは「〜にする」、call / nameは「〜と呼ぶ・名づける」、keepは「〜のままにしておく」",
             "V + O + C の語順を絶対に守る（前置詞は不要）"
         ]
     },
