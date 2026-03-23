@@ -5699,6 +5699,268 @@ const LESSONS_DB = {
         ],
         summary: ["基本は「動詞 ＋ 人 ＋ 物」の語順", "give, show, tell, teach などが代表的", "buy, make などもこの形をとれる"]
     },
+    "svoo-rewrite-to": {
+        id: "svoo-rewrite-to",
+        grade: 2,
+        menuTitle: "SVOO書き換え (to)",
+        intro: {
+            title: "SVOO の to を使う書き換え",
+            subtitle: "意味はそのままで語順を変える",
+            goals: [
+                "S + V + 人 + 物 を S + V + 物 + to + 人 に書き換えられるようにする",
+                "to を使う動詞の代表例を覚える",
+                "意味を変えずに語順だけを変える感覚をつかむ"
+            ]
+        },
+        grammar: {
+            formula: [
+                { text: "S", type: "box" },
+                { text: "+", type: "text" },
+                { text: "V", type: "red" },
+                { text: "+", type: "text" },
+                { text: "物", type: "orange" },
+                { text: "+", type: "text" },
+                { text: "to", type: "blue" },
+                { text: "+", type: "text" },
+                { text: "人", type: "box" }
+            ],
+            text: "give, show, tell, teach, send などは、SVOOの文を「物 + to + 人」の形に書き換えることができます。",
+            items: [
+                { title: "意味は同じ", desc: "語順が変わっても意味はほぼ同じ", icon: "repeat", color: "blue" },
+                { title: "to を使う動詞", desc: "give, show, tell, teach, send など", icon: "arrow-right", color: "rose" },
+                { title: "人の前に to", desc: "物を先に出したら、人の前に必ず to を置く", icon: "user-round", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I gave a present my friend.",
+            goodExample: "I gave <strong>a present to my friend</strong>.",
+            description: "「物」を先に出したときは、人の前に to が必要です。to を忘れると不自然な文になります。"
+        },
+        examples: [
+            {
+                engDisplay: 'I <span class="text-red-600 font-bold">gave a present to my friend</span>.',
+                engRead: "I gave a present to my friend.",
+                jp: "私は友だちにプレゼントをあげました。",
+                icon: "gift",
+                color: "rose"
+            },
+            {
+                engDisplay: 'She <span class="text-blue-600 font-bold">showed the picture to us</span>.',
+                engRead: "She showed the picture to us.",
+                jp: "彼女はその写真を私たちに見せました。",
+                icon: "image",
+                color: "blue"
+            },
+            {
+                engDisplay: 'Mr. Sato <span class="text-orange-600 font-bold">taught English to the students</span>.',
+                engRead: "Mr. Sato taught English to the students.",
+                jp: "佐藤先生は生徒たちに英語を教えました。",
+                icon: "graduation-cap",
+                color: "orange"
+            }
+        ],
+        quizChoiceList: [
+            {
+                id: "qA1",
+                subQuestion: "He gave a ball (　　　) me.",
+                options: ["for", "to", "at", "with"],
+                correctIndex: 1,
+                explanation: "give は「物 + to + 人」に書き換えます。"
+            },
+            {
+                id: "qA2",
+                subQuestion: "She showed the answer (　　　) her teacher.",
+                options: ["to", "for", "of", "by"],
+                correctIndex: 0,
+                explanation: "show も to を使う代表的な動詞です。"
+            },
+            {
+                id: "qA3",
+                subQuestion: "My uncle sent a letter (　　　) us.",
+                options: ["for", "to", "from", "about"],
+                correctIndex: 1,
+                explanation: "send は「送る相手」に to を使います。"
+            }
+        ],
+        quizFillList: [
+            {
+                id: "qB1",
+                subQuestion: "私は彼にその本を渡しました。",
+                sentenceParts: ["I", "{slot}", "the book", "{slot}", "him."],
+                words: ["gave", "to", "for", "give"],
+                correctOrder: ["gave", "to"],
+                explanation: "gave the book to him の形にします。"
+            },
+            {
+                id: "qB2",
+                subQuestion: "彼女は私たちにそのニュースを伝えました。",
+                sentenceParts: ["She", "{slot}", "the news", "{slot}", "us."],
+                words: ["told", "to", "for", "tell"],
+                correctOrder: ["told", "to"],
+                explanation: "tell も「物 + to + 人」の形に書き換えられます。"
+            },
+            {
+                id: "qB3",
+                subQuestion: "先生は生徒たちにその歌を教えました。",
+                sentenceParts: ["The teacher", "{slot}", "the song", "{slot}", "the students."],
+                words: ["taught", "to", "for", "teach"],
+                correctOrder: ["taught", "to"],
+                explanation: "taught the song to the students の語順です。"
+            }
+        ],
+        quizSortList: [
+            {
+                id: "qC1",
+                subQuestion: "私は母にその写真を見せました。",
+                words: ["I", "showed", "the", "picture", "to", "my", "mother"],
+                explanation: "showed + 物 + to + 人 の順です。"
+            },
+            {
+                id: "qC2",
+                subQuestion: "彼は私にメールを送りました。",
+                words: ["He", "sent", "an", "e-mail", "to", "me"],
+                explanation: "sent + 物 + to + 人 に並べます。"
+            }
+        ],
+        summary: [
+            "give / show / tell / teach / send などは to を使って書き換える",
+            "形は「S + V + 物 + to + 人」",
+            "物を先に出したら、人の前に to が必要"
+        ]
+    },
+    "svoo-rewrite-for": {
+        id: "svoo-rewrite-for",
+        grade: 2,
+        menuTitle: "SVOO書き換え (for)",
+        intro: {
+            title: "SVOO の for を使う書き換え",
+            subtitle: "相手のためにする動作を表す",
+            goals: [
+                "S + V + 人 + 物 を S + V + 物 + for + 人 に書き換えられるようにする",
+                "for を使う動詞の代表例を覚える",
+                "to と for の使い分けを理解する"
+            ]
+        },
+        grammar: {
+            formula: [
+                { text: "S", type: "box" },
+                { text: "+", type: "text" },
+                { text: "V", type: "red" },
+                { text: "+", type: "text" },
+                { text: "物", type: "orange" },
+                { text: "+", type: "text" },
+                { text: "for", type: "blue" },
+                { text: "+", type: "text" },
+                { text: "人", type: "box" }
+            ],
+            text: "buy, make, cook などは、誰かのために何かをする動詞です。SVOOの文を「物 + for + 人」の形に書き換えることができます。",
+            items: [
+                { title: "for は「〜のために」", desc: "相手の利益になる感じを表す", icon: "heart-handshake", color: "rose" },
+                { title: "for を使う動詞", desc: "buy, make, cook など", icon: "shopping-cart", color: "blue" },
+                { title: "to と区別", desc: "相手に渡す動きは to、相手のためにする動きは for", icon: "split", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "My mother made lunch to me.",
+            goodExample: "My mother made <strong>lunch for me</strong>.",
+            description: "buy や make などは to ではなく for を使います。動詞によって前置詞が決まります。"
+        },
+        examples: [
+            {
+                engDisplay: 'My father <span class="text-red-600 font-bold">bought a bike for me</span>.',
+                engRead: "My father bought a bike for me.",
+                jp: "父は私に自転車を買ってくれました。",
+                icon: "bike",
+                color: "rose"
+            },
+            {
+                engDisplay: 'She <span class="text-blue-600 font-bold">made dinner for her family</span>.',
+                engRead: "She made dinner for her family.",
+                jp: "彼女は家族のために夕食を作りました。",
+                icon: "utensils",
+                color: "blue"
+            },
+            {
+                engDisplay: 'Ken <span class="text-orange-600 font-bold">cooked lunch for us</span>.',
+                engRead: "Ken cooked lunch for us.",
+                jp: "ケンは私たちのために昼食を作ってくれました。",
+                icon: "chef-hat",
+                color: "orange"
+            }
+        ],
+        quizChoiceList: [
+            {
+                id: "qA1",
+                subQuestion: "My aunt bought a bag (　　　) me.",
+                options: ["to", "for", "at", "from"],
+                correctIndex: 1,
+                explanation: "buy は「物 + for + 人」に書き換えます。"
+            },
+            {
+                id: "qA2",
+                subQuestion: "He made lunch (　　　) his sister.",
+                options: ["to", "for", "with", "of"],
+                correctIndex: 1,
+                explanation: "make は「〜のために作る」ので for を使います。"
+            },
+            {
+                id: "qA3",
+                subQuestion: "Our mother cooked soup (　　　) us.",
+                options: ["to", "for", "by", "on"],
+                correctIndex: 1,
+                explanation: "cook も for を使うグループです。"
+            }
+        ],
+        quizFillList: [
+            {
+                id: "qB1",
+                subQuestion: "彼は私のためにいすを作りました。",
+                sentenceParts: ["He", "{slot}", "a chair", "{slot}", "me."],
+                words: ["made", "for", "to", "make"],
+                correctOrder: ["made", "for"],
+                explanation: "made a chair for me の形です。"
+            },
+            {
+                id: "qB2",
+                subQuestion: "母は私たちのために朝食を作ってくれました。",
+                sentenceParts: ["My mother", "{slot}", "breakfast", "{slot}", "us."],
+                words: ["cooked", "for", "to", "cook"],
+                correctOrder: ["cooked", "for"],
+                explanation: "cook は for を使って書き換えます。"
+            },
+            {
+                id: "qB3",
+                subQuestion: "私は妹のために花を買いました。",
+                sentenceParts: ["I", "{slot}", "flowers", "{slot}", "my sister."],
+                words: ["bought", "for", "to", "buy"],
+                correctOrder: ["bought", "for"],
+                explanation: "bought flowers for my sister にします。"
+            }
+        ],
+        quizSortList: [
+            {
+                id: "qC1",
+                subQuestion: "彼女は私のためにケーキを作ってくれました。",
+                words: ["She", "made", "a", "cake", "for", "me"],
+                explanation: "made + 物 + for + 人 の順です。"
+            },
+            {
+                id: "qC2",
+                subQuestion: "彼らは祖母のために夕食を料理しました。",
+                words: ["They", "cooked", "dinner", "for", "their", "grandmother"],
+                explanation: "cooked dinner for their grandmother に並べます。"
+            }
+        ],
+        summary: [
+            "buy / make / cook などは for を使って書き換える",
+            "形は「S + V + 物 + for + 人」",
+            "to と for は動詞ごとに使い分ける"
+        ]
+    },
     "infinitive-noun": {
         id: "infinitive-noun",
         grade: 2,
@@ -6850,6 +7112,133 @@ const LESSONS_DB = {
             { id: "qC2", subQuestion: "私はあなたに英語を勉強してほしい。", words: ["I", "want", "you", "to", "study", "English"], explanation: "語順：want + 人 + to + 動詞" }
         ],
         summary: ["動詞 + 人 + to + 動詞の原形", "want=〜してほしい / ask=頼む / tell=言う", "人は必須"]
+    },
+    "help-let-make": {
+        id: "help-let-make",
+        grade: 2,
+        menuTitle: "help / let / make + 人 + 動詞の原形",
+        intro: {
+            title: "使役・補助の表現",
+            subtitle: "意味：〜が人に…するのを手伝う／させる",
+            goals: [
+                "help / let / make の後ろの語順を理解する",
+                "「人 + 動詞の原形」の形を正しく使えるようにする",
+                "それぞれの意味の違いを例文でつかむ"
+            ]
+        },
+        grammar: {
+            formula: [
+                { text: "help / let / make", type: "red" },
+                { text: "+", type: "text" },
+                { text: "人", type: "box" },
+                { text: "+", type: "text" },
+                { text: "動詞の原形", type: "blue" }
+            ],
+            text: "help は「〜するのを手伝う」、let は「〜させてあげる」、make は「〜させる」という意味です。どれも後ろは「人 + 動詞の原形」になります。",
+            items: [
+                { title: "help", desc: "人が〜するのを手伝う", icon: "help-circle", color: "blue" },
+                { title: "let", desc: "人に〜するのを許す", icon: "door-open", color: "rose" },
+                { title: "make", desc: "人に〜させる", icon: "move-right", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "My mother made me to clean my room.",
+            goodExample: "My mother <strong>made me clean</strong> my room.",
+            description: "この文法では、help / let / make の後ろは to を入れずに動詞の原形を置きます。"
+        },
+        examples: [
+            {
+                engDisplay: 'My friend <span class="text-blue-600 font-bold">helped</span> me <span class="text-red-600 font-bold">carry</span> the bag.',
+                engRead: "My friend helped me carry the bag.",
+                jp: "友だちは私がそのかばんを運ぶのを手伝ってくれました。",
+                icon: "briefcase",
+                color: "blue"
+            },
+            {
+                engDisplay: 'My father <span class="text-rose-600 font-bold">let</span> me <span class="text-red-600 font-bold">use</span> his camera.',
+                engRead: "My father let me use his camera.",
+                jp: "父は私に彼のカメラを使わせてくれました。",
+                icon: "camera",
+                color: "rose"
+            },
+            {
+                engDisplay: 'The teacher <span class="text-orange-600 font-bold">made</span> us <span class="text-red-600 font-bold">read</span> the book again.',
+                engRead: "The teacher made us read the book again.",
+                jp: "先生は私たちにその本をもう一度読ませました。",
+                icon: "book-open",
+                color: "orange"
+            }
+        ],
+        quizChoiceList: [
+            {
+                id: "qA1",
+                subQuestion: "My brother helped me (　　　) my homework.",
+                options: ["do", "to do", "did", "doing"],
+                correctIndex: 0,
+                explanation: "help の後ろは「人 + 動詞の原形」です。"
+            },
+            {
+                id: "qA2",
+                subQuestion: "Our teacher let us (　　　) this game.",
+                options: ["played", "playing", "play", "to play"],
+                correctIndex: 2,
+                explanation: "let の後ろも to を入れず、動詞の原形 play を使います。"
+            },
+            {
+                id: "qA3",
+                subQuestion: "My mother made me (　　　) my room.",
+                options: ["to clean", "clean", "cleaned", "cleaning"],
+                correctIndex: 1,
+                explanation: "make + 人 + 動詞の原形 で「人に〜させる」です。"
+            }
+        ],
+        quizFillList: [
+            {
+                id: "qB1",
+                subQuestion: "彼は私がその箱を動かすのを手伝ってくれました。",
+                sentenceParts: ["He", "{slot}", "{slot}", "{slot}", "the box."],
+                words: ["helped", "me", "move", "to move"],
+                correctOrder: ["helped", "me", "move"],
+                explanation: "helped + 人 + 動詞の原形 で「〜するのを手伝った」です。"
+            },
+            {
+                id: "qB2",
+                subQuestion: "母は私にその映画を見させてくれました。",
+                sentenceParts: ["My mother", "{slot}", "{slot}", "{slot}", "the movie."],
+                words: ["let", "me", "watch", "to watch"],
+                correctOrder: ["let", "me", "watch"],
+                explanation: "let + 人 + 動詞の原形 で「〜させてくれた」を表します。"
+            },
+            {
+                id: "qB3",
+                subQuestion: "そのコーチは私たちに毎日走らせました。",
+                sentenceParts: ["The coach", "{slot}", "{slot}", "{slot}", "every day."],
+                words: ["made", "us", "run", "to run"],
+                correctOrder: ["made", "us", "run"],
+                explanation: "make + 人 + 動詞の原形 で「〜させた」です。"
+            }
+        ],
+        quizSortList: [
+            {
+                id: "qC1",
+                subQuestion: "先生は私たちに早く来させました。",
+                words: ["The", "teacher", "made", "us", "come", "early"],
+                explanation: "make + 人 + come の形で並べます。"
+            },
+            {
+                id: "qC2",
+                subQuestion: "父は私にそのコンピュータを使わせてくれました。",
+                words: ["My", "father", "let", "me", "use", "the", "computer"],
+                explanation: "let の後ろは me use と続けます。"
+            }
+        ],
+        summary: [
+            "help / let / make の後ろは「人 + 動詞の原形」",
+            "help は「〜するのを手伝う」、let は「〜させてあげる」、make は「〜させる」",
+            "to は入れないことが重要"
+        ]
     },
     "svoc-make-call": {
         id: "svoc-make-call",
