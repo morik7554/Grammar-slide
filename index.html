@@ -14,9 +14,9 @@
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans selection:bg-blue-200 h-screen overflow-hidden flex flex-col">
+<body class="bg-slate-50 text-slate-800 font-sans selection:bg-blue-200 min-h-dvh overflow-hidden flex flex-col">
 
-    <div id="app" class="max-w-6xl mx-auto w-full h-full flex flex-col p-2 md:p-4">
+    <div id="app" class="max-w-6xl mx-auto w-full flex-1 min-h-0 flex flex-col p-2 md:p-4">
         <!-- ヘッダー -->
         <header class="flex justify-between items-center py-2 border-b border-slate-200 mb-2 flex-shrink-0">
             <h1 class="text-lg font-bold text-slate-700 flex items-center gap-2 cursor-pointer" onclick="goToMenu()">
@@ -27,8 +27,8 @@
         </header>
 
         <!-- メインコンテンツ -->
-        <main id="main-container" class="flex-grow flex flex-col justify-center relative bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-            <div id="slide-wrapper" class="w-full h-full overflow-y-auto custom-scroll p-2 md:p-6 flex flex-col"></div>
+        <main id="main-container" class="flex-grow min-h-0 flex flex-col justify-center relative bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+            <div id="slide-wrapper" class="w-full min-h-0 flex-1 overflow-y-auto custom-scroll p-2 md:p-6 flex flex-col"></div>
         </main>
 
         <!-- ナビゲーション -->
@@ -8245,6 +8245,12 @@ const wrapper = document.getElementById('slide-wrapper');
 const footer = document.getElementById('nav-footer');
 const statusArea = document.getElementById('status-area');
 const headerTitle = document.getElementById('header-title');
+const bodyEl = document.body;
+
+function setPageScrollMode(isLessonView) {
+    bodyEl.classList.toggle('overflow-hidden', isLessonView);
+    bodyEl.classList.toggle('overflow-y-auto', !isLessonView);
+}
 
 function updateSpeechVoice() {
     if (!window.speechSynthesis) return;
@@ -8273,6 +8279,7 @@ function init() {
 
 function renderGradeSelect() {
     state.view = 'gradeSelect';
+    setPageScrollMode(false);
     footer.classList.add('hidden');
     headerTitle.textContent = "中学英語 学習ナビ";
     statusArea.innerHTML = "";
@@ -8305,6 +8312,7 @@ function renderGradeSelect() {
 
 function renderLessonSelect(grade) {
     state.view = 'lessonSelect';
+    setPageScrollMode(false);
     const isBasic = grade === 'basic';
     headerTitle.textContent = isBasic ? "英語のド基礎" : `${grade}年生のコース`;
     
@@ -8341,6 +8349,7 @@ function renderLessonSelect(grade) {
 function startLesson(id) {
     const l = LESSONS_DB[id];
     state.view = 'lesson';
+    setPageScrollMode(true);
     state.currentLessonData = l;
     state.currentSlide = 0;
     state.quizStates = {};
