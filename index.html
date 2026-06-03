@@ -7157,6 +7157,133 @@ const LESSONS_DB = {
         ],
         summary: ["if ＋ 主語 ＋ 現在形 で「もし〜ならば」", "文頭ならカンマ（,）が必要。文の後半なら不要", "未来の話でも if 節の中は will を使わない"]
     },
+    "that-clause-i-think": {
+        id: "that-clause-i-think",
+        grade: 2,
+        menuTitle: "I think (that) の文",
+        intro: {
+            title: "自分の考えを伝えよう",
+            subtitle: "意味：〜だと思います",
+            goals: [
+                "I think that + 文 の形を覚える",
+                "that は省略できることを理解する",
+                "think / know / believe などの後ろに文を続ける感覚を身につける"
+            ]
+        },
+        grammar: {
+            formula: [
+                { text: "I think", type: "box" },
+                { text: "+", type: "text" },
+                { text: "(that)", type: "red" },
+                { text: "+", type: "text" },
+                { text: "主語 + 動詞", type: "blue" }
+            ],
+            text: "自分の考えや意見を言う時、think の後ろに that を置いて、もう一つの文を続けます。that はよく省略されます。",
+            items: [
+                { title: "文をつなぐ that", desc: "that の後ろには主語 + 動詞の文が続く", icon: "link", color: "blue" },
+                { title: "省略OK", desc: "I think that he is kind. は I think he is kind. とも言える", icon: "scissors", color: "rose" },
+                { title: "意見を表す", desc: "think / believe / know などで考えや事実を伝える", icon: "message-circle", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I think that is he kind. / I think that he kind.",
+            goodExample: "I think that <strong>he is kind</strong>. / I think <strong>he is kind</strong>.",
+            description: "that の後ろは疑問文の語順ではなく、普通の文の語順（主語 + 動詞）にします。that を省略しても語順は変わりません。"
+        },
+        examples: [
+            {
+                engDisplay: 'I think <span class="text-blue-600 font-bold">that he is kind</span>.',
+                engRead: "I think that he is kind.",
+                jp: "私は彼が親切だと思います。",
+                icon: "smile",
+                color: "blue"
+            },
+            {
+                engDisplay: 'She knows <span class="text-rose-600 font-bold">that I like music</span>.',
+                engRead: "She knows that I like music.",
+                jp: "彼女は私が音楽を好きだと知っています。",
+                icon: "music",
+                color: "rose"
+            },
+            {
+                engDisplay: 'I believe <span class="text-orange-600 font-bold">we can win</span>.',
+                engRead: "I believe we can win.",
+                jp: "私は私たちが勝てると信じています。",
+                icon: "trophy",
+                color: "orange"
+            }
+        ],
+        quizChoiceList: [
+            {
+                id: "qA1",
+                subQuestion: "I think (　　　) she is a good student.",
+                options: ["that", "what", "if", "when"],
+                correctIndex: 0,
+                explanation: "think の後ろに文を続ける時は that を使えます。that は省略することもできます。"
+            },
+            {
+                id: "qA2",
+                subQuestion: "I think that he (　　　) busy.",
+                options: ["is", "are", "am", "be"],
+                correctIndex: 0,
+                explanation: "that の後ろは普通の文です。主語 he に合わせて is を使います。"
+            },
+            {
+                id: "qA3",
+                subQuestion: "She knows (　　　) I can swim.",
+                options: ["that", "because", "when", "what"],
+                correctIndex: 0,
+                explanation: "know の後ろでも that + 文 の形を使えます。"
+            }
+        ],
+        quizFillList: [
+            {
+                id: "qB1",
+                subQuestion: "私は彼が正しいと思います。",
+                sentenceParts: ["I think", "{slot}", "{slot}", "{slot}", "right."],
+                words: ["that", "he", "is", "are"],
+                correctOrder: ["that", "he", "is"],
+                explanation: "I think + that + he is right の順です。that の後ろは普通の文になります。"
+            },
+            {
+                id: "qB2",
+                subQuestion: "彼女は私がサッカーを好きだと知っています。",
+                sentenceParts: ["She knows", "{slot}", "{slot}", "{slot}", "soccer."],
+                words: ["that", "I", "like", "likes"],
+                correctOrder: ["that", "I", "like"],
+                explanation: "that I like soccer で「私がサッカーを好きだということ」です。"
+            },
+            {
+                id: "qB3",
+                subQuestion: "私は明日は晴れると思います。",
+                sentenceParts: ["I think", "{slot}", "{slot}", "{slot}", "sunny tomorrow."],
+                words: ["it", "will", "be", "is"],
+                correctOrder: ["it", "will", "be"],
+                explanation: "that を省略して、I think it will be sunny tomorrow. と言えます。"
+            }
+        ],
+        quizSortList: [
+            {
+                id: "qC1",
+                subQuestion: "私は彼女が英語を上手に話すと思います。",
+                words: ["I", "think", "that", "she", "speaks", "English", "well"],
+                explanation: "that の後ろは she speaks English well という普通の文です。"
+            },
+            {
+                id: "qC2",
+                subQuestion: "彼は私たちが試合に勝てると信じています。",
+                words: ["He", "believes", "that", "we", "can", "win", "the", "game"],
+                explanation: "believe の後ろにも that + 文 を続けられます。"
+            }
+        ],
+        summary: [
+            "I think (that) + 主語 + 動詞 で「〜だと思う」",
+            "that はよく省略される",
+            "that の後ろは疑問文ではなく普通の文の語順"
+        ]
+    },
     "comparative": {
         id: "comparative",
         grade: 2,
