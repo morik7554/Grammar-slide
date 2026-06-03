@@ -14,9 +14,9 @@
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans selection:bg-blue-200 min-h-dvh overflow-hidden flex flex-col">
+<body class="bg-slate-50 text-slate-800 font-sans selection:bg-blue-200 h-dvh overflow-hidden flex flex-col">
 
-    <div id="app" class="max-w-6xl mx-auto w-full flex-1 min-h-0 flex flex-col p-2 md:p-4">
+    <div id="app" class="max-w-6xl mx-auto w-full h-dvh max-h-dvh min-h-0 overflow-hidden flex flex-col p-2 md:p-4">
         <!-- ヘッダー -->
         <header class="flex justify-between items-center py-2 border-b border-slate-200 mb-2 flex-shrink-0">
             <h1 class="text-lg font-bold text-slate-700 flex items-center gap-2 cursor-pointer" onclick="goToMenu()">
@@ -3758,20 +3758,6 @@ const LESSONS_DB = {
                 options: ["open", "close", "use", "make"],
                 correctIndex: 1,
                 explanation: "「閉める」は close です。開けるは open です。"
-            },
-            {
-                id: "vA7",
-                subQuestion: "He (　　　) Japanese. （彼は日本語を話します）",
-                options: ["talks", "speaks", "reads", "writes"],
-                correctIndex: 1,
-                explanation: "言語を話す能力については speak を使います。"
-            },
-            {
-                id: "vA8",
-                subQuestion: "「買う」という意味の動詞はどれ？",
-                options: ["sell", "buy", "pay", "bring"],
-                correctIndex: 1,
-                explanation: "buy が「買う」です。売るは sell です。"
             }
         ],
         quizFillList: [],
@@ -8599,20 +8585,20 @@ function getExamplesHtml(l) {
 function getVerbList30Html(l) {
     if (!l.verbList30 || !l.verbList30.length) return "";
     const items = l.verbList30.map((v, i) => `
-        <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-sm flex items-center gap-2">
-            <div class="w-7 h-7 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold flex-shrink-0">${i + 1}</div>
-            <button data-speak="${escapeHtmlAttr(v.word)}" onclick="speakFromButton(this)" class="p-1.5 rounded-full bg-slate-100 text-slate-500 hover:bg-amber-100 hover:text-amber-600 transition-colors" aria-label="pronounce">
-                <i data-lucide="volume-2" class="w-4 h-4"></i>
+        <div class="bg-white p-1.5 rounded-lg border border-slate-200 shadow-sm flex items-center gap-1.5">
+            <div class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-[11px] font-bold flex-shrink-0">${i + 1}</div>
+            <button data-speak="${escapeHtmlAttr(v.word)}" onclick="speakFromButton(this)" class="p-1 rounded-full bg-slate-100 text-slate-500 hover:bg-amber-100 hover:text-amber-600 transition-colors" aria-label="pronounce">
+                <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
             </button>
             <div class="min-w-0">
-                <div class="text-base font-bold text-slate-800 leading-tight">${v.word}</div>
-                <div class="text-slate-500 text-xs leading-tight">${v.meaning}</div>
+                <div class="text-sm font-bold text-slate-800 leading-tight">${v.word}</div>
+                <div class="text-slate-500 text-[11px] leading-tight">${v.meaning}</div>
             </div>
         </div>
     `).join('');
-    return `<div class="space-y-4 h-full flex flex-col justify-center">
-        <h3 class="text-xl font-bold text-slate-700 flex items-center gap-2 mb-2"><i data-lucide="list-checks" class="w-6 h-6 text-amber-500"></i> 重要動詞30選</h3>
-        <div class="grid grid-rows-10 grid-flow-col gap-2">${items}</div>
+    return `<div class="space-y-2 h-full flex flex-col justify-center">
+        <h3 class="text-lg font-bold text-slate-700 flex items-center gap-2 mb-1"><i data-lucide="list-checks" class="w-5 h-5 text-amber-500"></i> 重要動詞30選</h3>
+        <div class="grid grid-rows-10 grid-flow-col gap-1.5">${items}</div>
     </div>`;
 }
 
@@ -8655,31 +8641,31 @@ function checkAllQuizA() {
 
 function getQuizA_All_Q_Html(l) {
     return `<div class="h-full flex flex-col"><h3 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2"><i data-lucide="check-square" class="w-6 h-6 text-blue-500"></i> 練習問題 A</h3>
-    <div class="flex flex-col gap-2 flex-grow overflow-y-auto justify-center">
-        ${l.quizChoiceList.map((q, i) => `<div class="bg-white p-3 rounded-lg border border-slate-200 mb-2">
-            <div class="text-xl font-bold text-slate-800 leading-tight mb-2"><span class="text-blue-600 text-base mr-2">Q${i+1}.</span>${q.subQuestion}</div>
-            <div class="grid grid-cols-4 gap-2">${state.quizStates[q.id].options.map((opt, idx) => `<button data-quiz-a="${q.id}" onclick="selectOptionA('${q.id}', ${idx})" class="w-full text-center px-2 py-2 rounded border transition-all font-medium ${state.quizStates[q.id].selectedIndex === idx ? 'bg-blue-600 text-white' : 'bg-white text-slate-700 hover:bg-slate-50'}">${opt}</button>`).join('')}</div>
+    <div class="flex flex-col gap-1.5 flex-grow overflow-y-auto">
+        ${l.quizChoiceList.map((q, i) => `<div class="bg-white p-2 rounded-lg border border-slate-200">
+            <div class="text-base font-bold text-slate-800 leading-tight mb-1.5"><span class="text-blue-600 text-sm mr-1.5">Q${i+1}.</span>${q.subQuestion}</div>
+            <div class="grid grid-cols-4 gap-1.5">${state.quizStates[q.id].options.map((opt, idx) => `<button data-quiz-a="${q.id}" onclick="selectOptionA('${q.id}', ${idx})" class="w-full text-center px-1.5 py-1.5 rounded border transition-all font-medium text-sm ${state.quizStates[q.id].selectedIndex === idx ? 'bg-blue-600 text-white' : 'bg-white text-slate-700 hover:bg-slate-50'}">${opt}</button>`).join('')}</div>
         </div>`).join('')}
     </div><div class="mt-2 text-center flex-shrink-0"><button onclick="checkAllQuizA()" class="px-10 py-2 bg-blue-600 text-white font-bold rounded-full shadow-lg">答え合わせ</button></div></div>`;
 }
 
 function getQuizA_All_A_Html(l) {
-    return `<div class="h-full flex flex-col"><h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2 flex-shrink-0"><i data-lucide="award" class="w-6 h-6 text-yellow-500"></i> 解答・解説</h3>
-    <div class="flex flex-col gap-3 flex-grow overflow-y-auto justify-center">
+    return `<div class="h-full min-h-0 flex flex-col"><h3 class="text-lg font-bold text-slate-800 mb-1.5 flex items-center gap-2 flex-shrink-0"><i data-lucide="award" class="w-5 h-5 text-yellow-500"></i> 解答・解説</h3>
+    <div class="flex flex-col gap-1.5 flex-1 min-h-0 overflow-y-auto">
         ${l.quizChoiceList.map(q => {
             const s = state.quizStates[q.id];
             const isCorr = s.selectedIndex === s.correctIndex;
             const sentenceToRead = q.subQuestion.split('<br>')[0].replace('(　　　)', q.options[q.correctIndex]).replace(/'/g, "\\'");
-            return `<div class="bg-white p-3 rounded-lg border border-slate-200">
-                <div class="flex items-start gap-2">
-                    <div class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 border ${isCorr ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'}"><i data-lucide="${isCorr ? 'check' : 'x'}"></i></div>
+            return `<div class="bg-white p-1.5 rounded-lg border border-slate-200">
+                <div class="flex items-start gap-1.5">
+                    <div class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 border ${isCorr ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'}"><i data-lucide="${isCorr ? 'check' : 'x'}" class="w-3.5 h-3.5"></i></div>
                     <div class="flex-grow min-w-0">
                         <div class="text-xs text-slate-500 mb-0.5">${q.subQuestion.split('<br>')[0]}</div>
-                        <div class="text-lg font-bold text-slate-800 mb-1 flex items-center gap-2">
+                        <div class="text-base font-bold text-slate-800 mb-1 flex items-center gap-2">
                             <span>正解: <span class="text-blue-600">${q.options[q.correctIndex]}</span></span>
-                            <button data-speak="${escapeHtmlAttr(sentenceToRead)}" onclick="speakFromButton(this)" class="p-1 rounded-full bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition-colors"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+                            <button data-speak="${escapeHtmlAttr(sentenceToRead)}" onclick="speakFromButton(this)" class="p-1 rounded-full bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition-colors"><i data-lucide="volume-2" class="w-3.5 h-3.5"></i></button>
                         </div>
-                        <div class="text-slate-600 bg-slate-50 p-2 rounded text-sm border border-slate-100">${q.explanation}</div>
+                        <div class="text-slate-600 bg-slate-50 p-1.5 rounded text-xs border border-slate-100">${q.explanation}</div>
                     </div>
                 </div>
             </div>`;
