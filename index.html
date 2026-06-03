@@ -6122,6 +6122,258 @@ const LESSONS_DB = {
             "enjoy / finish / stop や前置詞の後ろでは動名詞を使う"
         ]
     },
+    "gerund-megafeps": {
+        id: "gerund-megafeps",
+        grade: 2,
+        menuTitle: "動名詞しか使えない動詞 (MEGAFEPS)",
+        intro: {
+            title: "MEGAFEPSを覚えよう",
+            subtitle: "意味：後ろは必ず動名詞",
+            goals: [
+                "mind / enjoy / give up / avoid / finish / escape / practice / stop を覚える",
+                "これらの後ろに to不定詞ではなく ing形を置けるようにする",
+                "定期テストで出やすい組み合わせを例文で確認する"
+            ]
+        },
+        grammar: {
+            formula: [
+                { text: "MEGAFEPS", type: "box" },
+                { text: "+", type: "text" },
+                { text: "動詞のing形", type: "red" }
+            ],
+            text: "MEGAFEPS は、後ろに「to + 原形」ではなく、動名詞を置く代表的な動詞の頭文字です。",
+            items: [
+                { title: "M E G", desc: "mind / enjoy / give up", icon: "brain", color: "blue" },
+                { title: "A F E", desc: "avoid / finish / escape", icon: "route", color: "rose" },
+                { title: "P S", desc: "practice / stop", icon: "check-circle", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I enjoyed to play tennis. / She finished to read the book.",
+            goodExample: "I enjoyed <strong>playing</strong> tennis. / She finished <strong>reading</strong> the book.",
+            description: "MEGAFEPS の後ろは、原則として動名詞です。to不定詞を置かないようにしましょう。"
+        },
+        examples: [
+            {
+                engDisplay: 'Do you mind <span class="text-blue-600 font-bold">opening</span> the window?',
+                engRead: "Do you mind opening the window?",
+                jp: "窓を開けてもらってもいいですか。",
+                icon: "wind",
+                color: "blue"
+            },
+            {
+                engDisplay: 'He gave up <span class="text-rose-600 font-bold">playing</span> video games.',
+                engRead: "He gave up playing video games.",
+                jp: "彼はテレビゲームをすることをあきらめました。",
+                icon: "gamepad-2",
+                color: "rose"
+            },
+            {
+                engDisplay: 'We practiced <span class="text-orange-600 font-bold">speaking</span> English.',
+                engRead: "We practiced speaking English.",
+                jp: "私たちは英語を話す練習をしました。",
+                icon: "message-circle",
+                color: "orange"
+            }
+        ],
+        quizChoiceList: [
+            {
+                id: "qA1",
+                subQuestion: "She finished (　　　) the report.",
+                options: ["write", "to write", "writing", "wrote"],
+                correctIndex: 2,
+                explanation: "finish の後ろは動名詞です。finished writing で「書き終えた」です。"
+            },
+            {
+                id: "qA2",
+                subQuestion: "I avoided (　　　) too much sugar.",
+                options: ["eat", "eating", "to eat", "ate"],
+                correctIndex: 1,
+                explanation: "avoid の後ろは動名詞です。avoid eating で「食べることを避ける」です。"
+            },
+            {
+                id: "qA3",
+                subQuestion: "They practiced (　　　) the song.",
+                options: ["sing", "to sing", "singing", "sang"],
+                correctIndex: 2,
+                explanation: "practice の後ろは動名詞です。practiced singing を選びます。"
+            }
+        ],
+        quizFillList: [
+            {
+                id: "qB1",
+                subQuestion: "彼は泳ぐ練習をしました。",
+                sentenceParts: ["He practiced", "{slot}", "."],
+                words: ["swimming", "to swim", "swim", "swam"],
+                correctOrder: ["swimming"],
+                explanation: "practice の後ろは動名詞なので swimming です。"
+            },
+            {
+                id: "qB2",
+                subQuestion: "私はその映画を見るのを楽しみました。",
+                sentenceParts: ["I enjoyed", "{slot}", "{slot}."],
+                words: ["watching", "the movie", "to watch", "watched"],
+                correctOrder: ["watching", "the movie"],
+                explanation: "enjoy の後ろは動名詞です。enjoyed watching と続けます。"
+            },
+            {
+                id: "qB3",
+                subQuestion: "彼女はピアノを弾くのをやめました。",
+                sentenceParts: ["She stopped", "{slot}", "{slot}", "{slot}."],
+                words: ["playing", "the", "piano", "to play"],
+                correctOrder: ["playing", "the", "piano"],
+                explanation: "stop + 動名詞で「〜することをやめる」という意味です。"
+            }
+        ],
+        quizSortList: [
+            {
+                id: "qC1",
+                subQuestion: "私は宿題をするのをあきらめません。",
+                words: ["I", "will", "not", "give", "up", "doing", "my", "homework"],
+                explanation: "give up の後ろは動名詞 doing です。"
+            },
+            {
+                id: "qC2",
+                subQuestion: "彼らは英語を話す練習をしました。",
+                words: ["They", "practiced", "speaking", "English"],
+                explanation: "practice の後ろは動名詞 speaking です。"
+            }
+        ],
+        summary: [
+            "MEGAFEPS = mind / enjoy / give up / avoid / finish / escape / practice / stop",
+            "これらの後ろは to不定詞ではなく動名詞",
+            "enjoy doing, finish doing, stop doing, practice doing の形で覚える"
+        ]
+    },
+    "infinitive-only-verbs": {
+        id: "infinitive-only-verbs",
+        grade: 2,
+        menuTitle: "to不定詞しか使えない動詞",
+        intro: {
+            title: "toしか使えない動詞を覚えよう",
+            subtitle: "意味：後ろは to + 動詞の原形",
+            goals: [
+                "want / hope / decide / plan / promise などの後ろに to不定詞を置くことを覚える",
+                "動名詞しか使えない動詞との違いを整理する",
+                "テストで出やすい動詞 + to + 原形の形に慣れる"
+            ]
+        },
+        grammar: {
+            formula: [
+                { text: "want / hope など", type: "box" },
+                { text: "+", type: "text" },
+                { text: "to", type: "red" },
+                { text: "+", type: "text" },
+                { text: "動詞の原形", type: "blue" }
+            ],
+            text: "一部の動詞は、後ろに動名詞ではなく to不定詞を置くのが自然です。まずは代表的なものをセットで覚えましょう。",
+            items: [
+                { title: "願望", desc: "want / hope / wish + to 原形", icon: "heart", color: "rose" },
+                { title: "決定・計画", desc: "decide / plan + to 原形", icon: "calendar-check", color: "blue" },
+                { title: "約束・同意", desc: "promise / agree + to 原形", icon: "handshake", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I want playing soccer. / She decided going there.",
+            goodExample: "I want <strong>to play</strong> soccer. / She decided <strong>to go</strong> there.",
+            description: "want, hope, decide, plan, promise, agree などの後ろは、基本的に to + 動詞の原形で続けます。"
+        },
+        examples: [
+            {
+                engDisplay: 'I want <span class="text-rose-600 font-bold">to visit</span> Canada.',
+                engRead: "I want to visit Canada.",
+                jp: "私はカナダを訪れたいです。",
+                icon: "map-pin",
+                color: "rose"
+            },
+            {
+                engDisplay: 'She decided <span class="text-blue-600 font-bold">to study</span> harder.',
+                engRead: "She decided to study harder.",
+                jp: "彼女はもっと一生懸命勉強することに決めました。",
+                icon: "book-open",
+                color: "blue"
+            },
+            {
+                engDisplay: 'He promised <span class="text-orange-600 font-bold">to help</span> us.',
+                engRead: "He promised to help us.",
+                jp: "彼は私たちを助けると約束しました。",
+                icon: "handshake",
+                color: "orange"
+            }
+        ],
+        quizChoiceList: [
+            {
+                id: "qA1",
+                subQuestion: "I hope (　　　) you soon.",
+                options: ["see", "seeing", "to see", "saw"],
+                correctIndex: 2,
+                explanation: "hope の後ろは to不定詞です。hope to see で「会えることを望む」です。"
+            },
+            {
+                id: "qA2",
+                subQuestion: "She decided (　　　) a doctor.",
+                options: ["become", "becoming", "to become", "became"],
+                correctIndex: 2,
+                explanation: "decide の後ろは to不定詞です。decided to become を選びます。"
+            },
+            {
+                id: "qA3",
+                subQuestion: "They agreed (　　　) together.",
+                options: ["work", "working", "to work", "worked"],
+                correctIndex: 2,
+                explanation: "agree の後ろは to不定詞です。agreed to work で「働くことに同意した」です。"
+            }
+        ],
+        quizFillList: [
+            {
+                id: "qB1",
+                subQuestion: "私は英語を話せるようになりたいです。",
+                sentenceParts: ["I want", "{slot}", "{slot}", "English."],
+                words: ["to", "speak", "speaking", "spoke"],
+                correctOrder: ["to", "speak"],
+                explanation: "want の後ろは to + 原形です。want to speak とします。"
+            },
+            {
+                id: "qB2",
+                subQuestion: "彼女は早く起きる予定です。",
+                sentenceParts: ["She plans", "{slot}", "{slot}", "early."],
+                words: ["to", "get", "getting", "got"],
+                correctOrder: ["to", "get"],
+                explanation: "plan の後ろは to不定詞です。plans to get up early の形です。"
+            },
+            {
+                id: "qB3",
+                subQuestion: "彼は宿題を終えると約束しました。",
+                sentenceParts: ["He promised", "{slot}", "{slot}", "his homework."],
+                words: ["to", "finish", "finishing", "finished"],
+                correctOrder: ["to", "finish"],
+                explanation: "promise の後ろは to + 原形です。promised to finish と続けます。"
+            }
+        ],
+        quizSortList: [
+            {
+                id: "qC1",
+                subQuestion: "私は新しい自転車を買いたいです。",
+                words: ["I", "want", "to", "buy", "a", "new", "bike"],
+                explanation: "want の後ろは to + 原形 buy です。"
+            },
+            {
+                id: "qC2",
+                subQuestion: "彼らはその問題について話し合うことに同意しました。",
+                words: ["They", "agreed", "to", "talk", "about", "the", "problem"],
+                explanation: "agree の後ろは to不定詞です。agreed to talk と続けます。"
+            }
+        ],
+        summary: [
+            "want / hope / wish は to + 原形で続ける",
+            "decide / plan も to + 原形で続ける",
+            "promise / agree も to + 原形で続ける"
+        ]
+    },
     "infinitive-adjective": {
         id: "infinitive-adjective",
         grade: 2,
