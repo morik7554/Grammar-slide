@@ -5997,6 +5997,131 @@ const LESSONS_DB = {
         ],
         summary: ["不定詞の名詞的用法は「〜すること」と訳す", "want to / like to / hope to などでよく使われる", "文の主語（〜することは…だ）にもなれる"]
     },
+    "gerund-basic": {
+        id: "gerund-basic",
+        grade: 2,
+        menuTitle: "動名詞 (〜すること)",
+        intro: {
+            title: "動名詞を使いこなそう",
+            subtitle: "意味：〜すること",
+            goals: [
+                "動詞のing形が名詞のように働くことを理解する",
+                "like / enjoy / finish など、動名詞と相性のよい動詞を覚える",
+                "to不定詞との違いを意識して使い分ける"
+            ]
+        },
+        grammar: {
+            formula: [
+                { text: "動詞のing形", type: "red" },
+                { text: "=", type: "text" },
+                { text: "〜すること", type: "blue" }
+            ],
+            text: "動名詞は、動詞に ing をつけて「〜すること」という名詞の働きをさせる形です。",
+            items: [
+                { title: "主語になる", desc: "Reading books is fun. のように文の最初に置ける", icon: "book-open", color: "blue" },
+                { title: "目的語になる", desc: "I enjoy playing soccer. のように動詞の後ろに置ける", icon: "target", color: "rose" },
+                { title: "前置詞の後ろ", desc: "Thank you for helping me. のように前置詞の後ろはing形", icon: "link", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I enjoy to play tennis. / Thank you for help me.",
+            goodExample: "I enjoy <strong>playing</strong> tennis. / Thank you for <strong>helping</strong> me.",
+            description: "enjoy, finish, stop などの後ろや、前置詞の後ろでは to不定詞ではなく動名詞を使います。"
+        },
+        examples: [
+            {
+                engDisplay: 'I like <span class="text-red-600 font-bold">watching</span> movies.',
+                engRead: "I like watching movies.",
+                jp: "私は映画を見ることが好きです。",
+                icon: "film",
+                color: "rose"
+            },
+            {
+                engDisplay: '<span class="text-blue-600 font-bold">Playing</span> soccer is fun.',
+                engRead: "Playing soccer is fun.",
+                jp: "サッカーをすることは楽しいです。",
+                icon: "award",
+                color: "blue"
+            },
+            {
+                engDisplay: 'She finished <span class="text-orange-600 font-bold">doing</span> her homework.',
+                engRead: "She finished doing her homework.",
+                jp: "彼女は宿題をすることを終えました。",
+                icon: "check-circle",
+                color: "orange"
+            }
+        ],
+        quizChoiceList: [
+            {
+                id: "qA1",
+                subQuestion: "I enjoy (　　　) music.",
+                options: ["listen", "listening to", "to listen", "listened"],
+                correctIndex: 1,
+                explanation: "enjoy の後ろは動名詞です。listen は listen to music の形で使います。"
+            },
+            {
+                id: "qA2",
+                subQuestion: "(　　　) English is important.",
+                options: ["Study", "Studied", "Studying", "To studying"],
+                correctIndex: 2,
+                explanation: "文の主語として「英語を勉強すること」を表すので Studying を使います。"
+            },
+            {
+                id: "qA3",
+                subQuestion: "Thank you for (　　　) me.",
+                options: ["help", "helping", "to help", "helped"],
+                correctIndex: 1,
+                explanation: "前置詞 for の後ろは名詞か動名詞です。ここでは helping を使います。"
+            }
+        ],
+        quizFillList: [
+            {
+                id: "qB1",
+                subQuestion: "私は本を読むことが好きです。",
+                sentenceParts: ["I like", "{slot}", "{slot}."],
+                words: ["reading", "books", "read", "to"],
+                correctOrder: ["reading", "books"],
+                explanation: "like の後ろに動名詞 reading を置いて「読むこと」とします。"
+            },
+            {
+                id: "qB2",
+                subQuestion: "泳ぐことは健康によいです。",
+                sentenceParts: ["{slot}", "is good for your health."],
+                words: ["Swimming", "Swim", "To swimming", "Swam"],
+                correctOrder: ["Swimming"],
+                explanation: "文の主語として使う時も、動名詞 Swimming にします。"
+            },
+            {
+                id: "qB3",
+                subQuestion: "彼はテレビを見るのをやめました。",
+                sentenceParts: ["He stopped", "{slot}", "{slot}."],
+                words: ["watching", "TV", "to watch", "watched"],
+                correctOrder: ["watching", "TV"],
+                explanation: "stop + 動名詞で「〜することをやめる」という意味になります。"
+            }
+        ],
+        quizSortList: [
+            {
+                id: "qC1",
+                subQuestion: "私は朝走ることが好きです。",
+                words: ["I", "like", "running", "in", "the", "morning"],
+                explanation: "like の後ろに動名詞 running を置きます。"
+            },
+            {
+                id: "qC2",
+                subQuestion: "彼女は夕食を作り終えました。",
+                words: ["She", "finished", "cooking", "dinner"],
+                explanation: "finish の後ろは動名詞 cooking を使います。"
+            }
+        ],
+        summary: [
+            "動名詞は 動詞のing形 で「〜すること」を表す",
+            "主語にも目的語にもなれる",
+            "enjoy / finish / stop や前置詞の後ろでは動名詞を使う"
+        ]
+    },
     "infinitive-adjective": {
         id: "infinitive-adjective",
         grade: 2,
