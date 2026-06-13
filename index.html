@@ -25,6 +25,10 @@
             border-color: #60a5fa;
             box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25);
         }
+        .draw-action-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
         #pointer-dot {
             width: 34px;
             height: 34px;
@@ -67,6 +71,13 @@
                 </button>
                 <button type="button" data-draw-tool="pointer" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="ポインター" title="ポインター">
                     <i data-lucide="mouse-pointer-2" class="w-5 h-5"></i>
+                </button>
+                <div class="h-7 w-px bg-sky-300/80 mx-1"></div>
+                <button type="button" data-draw-action="undo" class="draw-action-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="戻す" title="戻す">
+                    <i data-lucide="undo-2" class="w-5 h-5"></i>
+                </button>
+                <button type="button" data-draw-action="redo" class="draw-action-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="やり直し" title="やり直し">
+                    <i data-lucide="redo-2" class="w-5 h-5"></i>
                 </button>
             </div>
         </main>
@@ -8763,6 +8774,9 @@ const state = {
     drawings: {},
     currentStrokes: [],
     currentStroke: null,
+    undoStack: [],
+    redoStack: [],
+    objectEraseHistoryRecorded: false,
     isDrawing: false,
     lastDrawPoint: null
 };
@@ -8916,6 +8930,9 @@ function startLesson(id) {
     state.drawings = {};
     state.currentStrokes = [];
     state.currentStroke = null;
+    state.undoStack = [];
+    state.redoStack = [];
+    state.objectEraseHistoryRecorded = false;
 
     state.slides = [{ type: 'intro' }, { type: 'grammar' }, { type: 'points' }, { type: 'examples' }];
     if (l.verbList30 && l.verbList30.length) {
@@ -9094,8 +9111,11 @@ function saveCurrentDrawing() {
     if (!key || !drawCanvas.width || !drawCanvas.height) return;
     state.drawings[key] = {
         image: drawCanvas.toDataURL('image/png'),
-        strokes: cloneDrawingStrokes(state.currentStrokes)
+        strokes: cloneDrawingStrokes(state.currentStrokes),
+        undoStack: cloneDrawingHistory(state.undoStack),
+        redoStack: cloneDrawingHistory(state.redoStack)
     };
+    updateDrawingHistoryButtons();
 }
 
 function restoreCurrentDrawing() {
@@ -9104,11 +9124,20 @@ function restoreCurrentDrawing() {
     const entry = key ? state.drawings[key] : null;
     state.currentStrokes = [];
     state.currentStroke = null;
-    if (!entry) return;
+    state.undoStack = [];
+    state.redoStack = [];
+    state.objectEraseHistoryRecorded = false;
+    if (!entry) {
+        updateDrawingHistoryButtons();
+        return;
+    }
 
     if (typeof entry === 'object' && entry.strokes) {
         state.currentStrokes = cloneDrawingStrokes(entry.strokes);
+        state.undoStack = cloneDrawingHistory(entry.undoStack || []);
+        state.redoStack = cloneDrawingHistory(entry.redoStack || []);
         redrawDrawingStrokes();
+        updateDrawingHistoryButtons();
         return;
     }
 
@@ -9117,6 +9146,7 @@ function restoreCurrentDrawing() {
         const rect = drawCanvas.getBoundingClientRect();
         clearCanvas();
         drawCtx.drawImage(image, 0, 0, rect.width, rect.height);
+        updateDrawingHistoryButtons();
     };
     image.src = typeof entry === 'string' ? entry : entry.image;
 }
@@ -9154,6 +9184,8 @@ function initDrawingTools() {
             setDrawingTool(state.drawingTool === nextTool ? null : nextTool);
         });
     });
+    drawToolbar.querySelector('[data-draw-action="undo"]').addEventListener('click', undoDrawing);
+    drawToolbar.querySelector('[data-draw-action="redo"]').addEventListener('click', redoDrawing);
 
     drawCanvas.addEventListener('pointerdown', handleDrawPointerDown);
     drawCanvas.addEventListener('pointermove', handleDrawPointerMove);
@@ -9172,12 +9204,14 @@ function setDrawingTool(tool) {
     state.isDrawing = false;
     state.lastDrawPoint = null;
     state.currentStroke = null;
+    state.objectEraseHistoryRecorded = false;
     pointerDot.classList.add('hidden');
 
     drawCanvas.className = `absolute inset-0 z-20 ${tool ? `draw-${tool}` : 'draw-disabled'}`;
     drawToolbar.querySelectorAll('[data-draw-tool]').forEach(button => {
         button.classList.toggle('draw-tool-active', button.dataset.drawTool === tool);
     });
+    updateDrawingHistoryButtons();
 }
 
 function getCanvasPoint(event) {
@@ -9193,6 +9227,16 @@ function cloneDrawingStrokes(strokes) {
         tool: stroke.tool,
         points: stroke.points.map(point => ({ x: point.x, y: point.y }))
     }));
+}
+
+function cloneDrawingHistory(history) {
+    return history.map(strokes => cloneDrawingStrokes(strokes));
+}
+
+function recordDrawingHistory() {
+    state.undoStack.push(cloneDrawingStrokes(state.currentStrokes));
+    state.redoStack = [];
+    updateDrawingHistoryButtons();
 }
 
 function drawLine(from, to, tool = state.drawingTool) {
@@ -9221,6 +9265,35 @@ function redrawDrawingStrokes() {
             drawLine(stroke.points[0], stroke.points[0], stroke.tool);
         }
     });
+}
+
+function updateDrawingHistoryButtons() {
+    const undoButton = drawToolbar.querySelector('[data-draw-action="undo"]');
+    const redoButton = drawToolbar.querySelector('[data-draw-action="redo"]');
+    if (!undoButton || !redoButton) return;
+
+    undoButton.disabled = state.view !== 'lesson' || state.undoStack.length === 0;
+    redoButton.disabled = state.view !== 'lesson' || state.redoStack.length === 0;
+}
+
+function undoDrawing() {
+    if (state.undoStack.length === 0) return;
+    state.redoStack.push(cloneDrawingStrokes(state.currentStrokes));
+    state.currentStrokes = state.undoStack.pop();
+    state.currentStroke = null;
+    state.isDrawing = false;
+    redrawDrawingStrokes();
+    saveCurrentDrawing();
+}
+
+function redoDrawing() {
+    if (state.redoStack.length === 0) return;
+    state.undoStack.push(cloneDrawingStrokes(state.currentStrokes));
+    state.currentStrokes = state.redoStack.pop();
+    state.currentStroke = null;
+    state.isDrawing = false;
+    redrawDrawingStrokes();
+    saveCurrentDrawing();
 }
 
 function distanceToSegment(point, start, end) {
@@ -9257,6 +9330,10 @@ function strokeTouchesPoint(stroke, point) {
 function eraseStrokeAt(point) {
     for (let i = state.currentStrokes.length - 1; i >= 0; i--) {
         if (strokeTouchesPoint(state.currentStrokes[i], point)) {
+            if (!state.objectEraseHistoryRecorded) {
+                recordDrawingHistory();
+                state.objectEraseHistoryRecorded = true;
+            }
             state.currentStrokes.splice(i, 1);
             redrawDrawingStrokes();
             saveCurrentDrawing();
@@ -9284,12 +9361,14 @@ function handleDrawPointerDown(event) {
     }
     if (state.drawingTool === 'objectEraser') {
         state.isDrawing = true;
+        state.objectEraseHistoryRecorded = false;
         eraseStrokeAt(point);
         return;
     }
 
     state.isDrawing = true;
     state.lastDrawPoint = point;
+    recordDrawingHistory();
     state.currentStroke = {
         tool: state.drawingTool,
         points: [point]
@@ -9330,6 +9409,12 @@ function handleDrawPointerUp(event) {
         pointerDot.classList.add('hidden');
         return;
     }
+    if (state.drawingTool === 'objectEraser') {
+        state.isDrawing = false;
+        state.objectEraseHistoryRecorded = false;
+        saveCurrentDrawing();
+        return;
+    }
     state.isDrawing = false;
     state.lastDrawPoint = null;
     if (state.currentStroke && state.currentStroke.points.length) {
@@ -9345,6 +9430,7 @@ function handleDrawPointerLeave() {
     }
     if (state.drawingTool === 'objectEraser') {
         state.isDrawing = false;
+        state.objectEraseHistoryRecorded = false;
     }
 }
 
