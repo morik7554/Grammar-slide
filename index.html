@@ -63,6 +63,9 @@
                 <button type="button" data-draw-tool="highlighter" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="蛍光ペン" title="蛍光ペン">
                     <i data-lucide="highlighter" class="w-5 h-5"></i>
                 </button>
+                <button type="button" data-draw-action="ruler" class="draw-action-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="定規" title="定規">
+                    <i data-lucide="ruler" class="w-5 h-5"></i>
+                </button>
                 <button type="button" data-draw-tool="eraser" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="消しゴム" title="消しゴム">
                     <i data-lucide="eraser" class="w-5 h-5"></i>
                 </button>
@@ -8776,6 +8779,7 @@ const state = {
     currentStroke: null,
     undoStack: [],
     redoStack: [],
+    rulerMode: false,
     objectEraseHistoryRecorded: false,
     isDrawing: false,
     lastDrawPoint: null
@@ -8803,7 +8807,7 @@ const drawToolbar = document.getElementById('draw-toolbar');
 const pointerDot = document.getElementById('pointer-dot');
 const DRAW_TOOLS = {
     pencil: { color: '#ef4444', width: 4, alpha: 1, composite: 'source-over' },
-    highlighter: { color: '#facc15', width: 18, alpha: 0.24, composite: 'source-over' },
+    highlighter: { color: '#eab308', width: 18, alpha: 0.24, composite: 'source-over' },
     eraser: { color: '#000000', width: 28, alpha: 1, composite: 'destination-out' }
 };
 const OBJECT_ERASER_HIT_RADIUS = 18;
@@ -8932,6 +8936,7 @@ function startLesson(id) {
     state.currentStroke = null;
     state.undoStack = [];
     state.redoStack = [];
+    state.rulerMode = false;
     state.objectEraseHistoryRecorded = false;
 
     state.slides = [{ type: 'intro' }, { type: 'grammar' }, { type: 'points' }, { type: 'examples' }];
@@ -9184,6 +9189,7 @@ function initDrawingTools() {
             setDrawingTool(state.drawingTool === nextTool ? null : nextTool);
         });
     });
+    drawToolbar.querySelector('[data-draw-action="ruler"]').addEventListener('click', toggleRulerMode);
     drawToolbar.querySelector('[data-draw-action="undo"]').addEventListener('click', undoDrawing);
     drawToolbar.querySelector('[data-draw-action="redo"]').addEventListener('click', redoDrawing);
 
@@ -9211,6 +9217,7 @@ function setDrawingTool(tool) {
     drawToolbar.querySelectorAll('[data-draw-tool]').forEach(button => {
         button.classList.toggle('draw-tool-active', button.dataset.drawTool === tool);
     });
+    updateRulerButton();
     updateDrawingHistoryButtons();
 }
 
@@ -9237,6 +9244,10 @@ function recordDrawingHistory() {
     state.undoStack.push(cloneDrawingStrokes(state.currentStrokes));
     state.redoStack = [];
     updateDrawingHistoryButtons();
+}
+
+function isStraightLineTool(tool = state.drawingTool) {
+    return tool === 'pencil' || tool === 'highlighter';
 }
 
 function drawLine(from, to, tool = state.drawingTool) {
@@ -9274,6 +9285,20 @@ function updateDrawingHistoryButtons() {
 
     undoButton.disabled = state.view !== 'lesson' || state.undoStack.length === 0;
     redoButton.disabled = state.view !== 'lesson' || state.redoStack.length === 0;
+}
+
+function updateRulerButton() {
+    const rulerButton = drawToolbar.querySelector('[data-draw-action="ruler"]');
+    if (!rulerButton) return;
+
+    rulerButton.classList.toggle('draw-tool-active', state.rulerMode);
+    rulerButton.disabled = state.view !== 'lesson';
+}
+
+function toggleRulerMode() {
+    if (state.view !== 'lesson') return;
+    state.rulerMode = !state.rulerMode;
+    updateRulerButton();
 }
 
 function undoDrawing() {
@@ -9373,6 +9398,7 @@ function handleDrawPointerDown(event) {
         tool: state.drawingTool,
         points: [point]
     };
+    if (state.rulerMode && isStraightLineTool()) return;
     drawLine(point, point);
 }
 
@@ -9393,6 +9419,15 @@ function handleDrawPointerMove(event) {
     if (!state.isDrawing || !state.lastDrawPoint) return;
 
     event.preventDefault();
+    if (state.rulerMode && isStraightLineTool()) {
+        if (state.currentStroke) {
+            state.currentStroke.points = [state.lastDrawPoint, point];
+        }
+        redrawDrawingStrokes();
+        drawLine(state.lastDrawPoint, point);
+        return;
+    }
+
     drawLine(state.lastDrawPoint, point);
     if (state.currentStroke) {
         state.currentStroke.points.push(point);
@@ -9419,6 +9454,7 @@ function handleDrawPointerUp(event) {
     state.lastDrawPoint = null;
     if (state.currentStroke && state.currentStroke.points.length) {
         state.currentStrokes.push(state.currentStroke);
+        redrawDrawingStrokes();
     }
     state.currentStroke = null;
     saveCurrentDrawing();
