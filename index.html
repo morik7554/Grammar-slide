@@ -12,6 +12,27 @@
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        #draw-canvas { touch-action: none; }
+        #draw-canvas.draw-disabled { pointer-events: none; }
+        #draw-canvas.draw-pencil { cursor: crosshair; }
+        #draw-canvas.draw-highlighter { cursor: crosshair; }
+        #draw-canvas.draw-eraser { cursor: cell; }
+        #draw-canvas.draw-objectEraser { cursor: cell; }
+        #draw-canvas.draw-pointer { cursor: none; }
+        .draw-tool-active {
+            background: #dbeafe;
+            color: #2563eb;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25);
+        }
+        #pointer-dot {
+            width: 34px;
+            height: 34px;
+            margin: -17px 0 0 -17px;
+            background: rgba(239, 68, 68, 0.35);
+            border: 3px solid rgba(220, 38, 38, 0.9);
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.55);
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans selection:bg-blue-200 h-dvh overflow-hidden flex flex-col">
@@ -29,6 +50,25 @@
         <!-- メインコンテンツ -->
         <main id="main-container" class="flex-grow min-h-0 flex flex-col justify-center relative bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
             <div id="slide-wrapper" class="w-full min-h-0 flex-1 overflow-y-auto custom-scroll p-2 md:p-6 flex flex-col"></div>
+            <canvas id="draw-canvas" class="absolute inset-0 z-20 draw-disabled"></canvas>
+            <div id="pointer-dot" class="hidden absolute z-30 rounded-full pointer-events-none"></div>
+            <div id="draw-toolbar" class="hidden absolute left-1/2 bottom-3 z-40 -translate-x-1/2 items-center gap-1 rounded-full border border-sky-300 bg-sky-100/90 px-2 py-1 shadow-lg backdrop-blur">
+                <button type="button" data-draw-tool="pencil" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="鉛筆" title="鉛筆">
+                    <i data-lucide="pencil" class="w-5 h-5"></i>
+                </button>
+                <button type="button" data-draw-tool="highlighter" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="蛍光ペン" title="蛍光ペン">
+                    <i data-lucide="highlighter" class="w-5 h-5"></i>
+                </button>
+                <button type="button" data-draw-tool="eraser" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="消しゴム" title="消しゴム">
+                    <i data-lucide="eraser" class="w-5 h-5"></i>
+                </button>
+                <button type="button" data-draw-tool="objectEraser" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="線ごと消しゴム" title="線ごと消しゴム">
+                    <i data-lucide="trash-2" class="w-5 h-5"></i>
+                </button>
+                <button type="button" data-draw-tool="pointer" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="ポインター" title="ポインター">
+                    <i data-lucide="mouse-pointer-2" class="w-5 h-5"></i>
+                </button>
+            </div>
         </main>
 
         <!-- ナビゲーション -->
@@ -8718,7 +8758,13 @@ const state = {
     currentLessonData: null,
     currentSlide: 0,
     slides: [],
-    quizStates: {}
+    quizStates: {},
+    drawingTool: null,
+    drawings: {},
+    currentStrokes: [],
+    currentStroke: null,
+    isDrawing: false,
+    lastDrawPoint: null
 };
 let speechVoice = null;
 
@@ -8732,10 +8778,21 @@ function shuffleArray(arr) {
 }
 
 const wrapper = document.getElementById('slide-wrapper');
+const mainContainer = document.getElementById('main-container');
 const footer = document.getElementById('nav-footer');
 const statusArea = document.getElementById('status-area');
 const headerTitle = document.getElementById('header-title');
 const bodyEl = document.body;
+const drawCanvas = document.getElementById('draw-canvas');
+const drawCtx = drawCanvas.getContext('2d');
+const drawToolbar = document.getElementById('draw-toolbar');
+const pointerDot = document.getElementById('pointer-dot');
+const DRAW_TOOLS = {
+    pencil: { color: '#ef4444', width: 4, alpha: 1, composite: 'source-over' },
+    highlighter: { color: '#facc15', width: 18, alpha: 0.24, composite: 'source-over' },
+    eraser: { color: '#000000', width: 28, alpha: 1, composite: 'destination-out' }
+};
+const OBJECT_ERASER_HIT_RADIUS = 18;
 
 function setPageScrollMode(isLessonView) {
     bodyEl.classList.toggle('overflow-hidden', isLessonView);
@@ -8766,12 +8823,18 @@ function init() {
     document.getElementById('btn-prev').addEventListener('click', () => changeSlide(-1));
     document.getElementById('btn-next').addEventListener('click', () => changeSlide(1));
     document.addEventListener('keydown', handleSlideKeydown);
+    initDrawingTools();
 }
 
 function renderGradeSelect() {
+    saveCurrentDrawing();
     state.view = 'gradeSelect';
     setPageScrollMode(false);
     footer.classList.add('hidden');
+    drawToolbar.classList.add('hidden');
+    drawToolbar.classList.remove('flex');
+    setDrawingTool(null);
+    clearCanvas();
     headerTitle.textContent = "中学英語 学習ナビ";
     statusArea.innerHTML = "";
     
@@ -8802,8 +8865,13 @@ function renderGradeSelect() {
 }
 
 function renderLessonSelect(grade) {
+    saveCurrentDrawing();
     state.view = 'lessonSelect';
     setPageScrollMode(false);
+    drawToolbar.classList.add('hidden');
+    drawToolbar.classList.remove('flex');
+    setDrawingTool(null);
+    clearCanvas();
     const isBasic = grade === 'basic';
     headerTitle.textContent = isBasic ? "英語のド基礎" : `${grade}年生のコース`;
     
@@ -8838,12 +8906,16 @@ function renderLessonSelect(grade) {
 }
 
 function startLesson(id) {
+    saveCurrentDrawing();
     const l = LESSONS_DB[id];
     state.view = 'lesson';
     setPageScrollMode(true);
     state.currentLessonData = l;
     state.currentSlide = 0;
     state.quizStates = {};
+    state.drawings = {};
+    state.currentStrokes = [];
+    state.currentStroke = null;
 
     state.slides = [{ type: 'intro' }, { type: 'grammar' }, { type: 'points' }, { type: 'examples' }];
     if (l.verbList30 && l.verbList30.length) {
@@ -8868,6 +8940,9 @@ function startLesson(id) {
     state.slides.push({ type: 'summary' });
 
     footer.classList.remove('hidden');
+    drawToolbar.classList.remove('hidden');
+    drawToolbar.classList.add('flex');
+    setDrawingTool(null);
     headerTitle.textContent = l.intro.title;
     createDots();
     renderSlide(true);
@@ -8912,6 +8987,7 @@ async function copyCurrentLink() {
 }
 
 function goToMenu() {
+    saveCurrentDrawing();
     window.history.replaceState({}, document.title, window.location.pathname);
     renderGradeSelect();
 }
@@ -8939,6 +9015,7 @@ function handleSlideKeydown(event) {
 function changeSlide(direction) {
     const next = state.currentSlide + direction;
     if (next >= 0 && next < state.slides.length) {
+        saveCurrentDrawing();
         state.currentSlide = next;
         renderSlide(true);
     }
@@ -8998,6 +9075,277 @@ function renderSlide(animate = true) {
     }
     lucide.createIcons();
     updateControls();
+    resizeDrawingCanvas();
+    restoreCurrentDrawing();
+}
+
+function getDrawingKey() {
+    if (!state.currentLessonData) return null;
+    const slide = state.slides[state.currentSlide];
+    return `${state.currentLessonData.id}:${state.currentSlide}:${slide?.type || 'slide'}`;
+}
+
+function clearCanvas() {
+    drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+}
+
+function saveCurrentDrawing() {
+    const key = getDrawingKey();
+    if (!key || !drawCanvas.width || !drawCanvas.height) return;
+    state.drawings[key] = {
+        image: drawCanvas.toDataURL('image/png'),
+        strokes: cloneDrawingStrokes(state.currentStrokes)
+    };
+}
+
+function restoreCurrentDrawing() {
+    clearCanvas();
+    const key = getDrawingKey();
+    const entry = key ? state.drawings[key] : null;
+    state.currentStrokes = [];
+    state.currentStroke = null;
+    if (!entry) return;
+
+    if (typeof entry === 'object' && entry.strokes) {
+        state.currentStrokes = cloneDrawingStrokes(entry.strokes);
+        redrawDrawingStrokes();
+        return;
+    }
+
+    const image = new Image();
+    image.onload = () => {
+        const rect = drawCanvas.getBoundingClientRect();
+        clearCanvas();
+        drawCtx.drawImage(image, 0, 0, rect.width, rect.height);
+    };
+    image.src = typeof entry === 'string' ? entry : entry.image;
+}
+
+function resizeDrawingCanvas() {
+    const ratio = window.devicePixelRatio || 1;
+    const rect = mainContainer.getBoundingClientRect();
+    const nextWidth = Math.max(1, Math.round(rect.width * ratio));
+    const nextHeight = Math.max(1, Math.round(rect.height * ratio));
+
+    if (drawCanvas.width === nextWidth && drawCanvas.height === nextHeight) return;
+
+    const snapshot = drawCanvas.width && drawCanvas.height ? drawCanvas.toDataURL('image/png') : null;
+    drawCanvas.width = nextWidth;
+    drawCanvas.height = nextHeight;
+    drawCanvas.style.width = `${rect.width}px`;
+    drawCanvas.style.height = `${rect.height}px`;
+    drawCtx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    drawCtx.lineCap = 'round';
+    drawCtx.lineJoin = 'round';
+
+    if (!snapshot) return;
+    const image = new Image();
+    image.onload = () => {
+        clearCanvas();
+        drawCtx.drawImage(image, 0, 0, rect.width, rect.height);
+    };
+    image.src = snapshot;
+}
+
+function initDrawingTools() {
+    drawToolbar.querySelectorAll('[data-draw-tool]').forEach(button => {
+        button.addEventListener('click', () => {
+            const nextTool = button.dataset.drawTool;
+            setDrawingTool(state.drawingTool === nextTool ? null : nextTool);
+        });
+    });
+
+    drawCanvas.addEventListener('pointerdown', handleDrawPointerDown);
+    drawCanvas.addEventListener('pointermove', handleDrawPointerMove);
+    drawCanvas.addEventListener('pointerup', handleDrawPointerUp);
+    drawCanvas.addEventListener('pointercancel', handleDrawPointerUp);
+    drawCanvas.addEventListener('pointerleave', handleDrawPointerLeave);
+    window.addEventListener('resize', () => {
+        saveCurrentDrawing();
+        resizeDrawingCanvas();
+        restoreCurrentDrawing();
+    });
+}
+
+function setDrawingTool(tool) {
+    state.drawingTool = tool;
+    state.isDrawing = false;
+    state.lastDrawPoint = null;
+    state.currentStroke = null;
+    pointerDot.classList.add('hidden');
+
+    drawCanvas.className = `absolute inset-0 z-20 ${tool ? `draw-${tool}` : 'draw-disabled'}`;
+    drawToolbar.querySelectorAll('[data-draw-tool]').forEach(button => {
+        button.classList.toggle('draw-tool-active', button.dataset.drawTool === tool);
+    });
+}
+
+function getCanvasPoint(event) {
+    const rect = drawCanvas.getBoundingClientRect();
+    return {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+    };
+}
+
+function cloneDrawingStrokes(strokes) {
+    return strokes.map(stroke => ({
+        tool: stroke.tool,
+        points: stroke.points.map(point => ({ x: point.x, y: point.y }))
+    }));
+}
+
+function drawLine(from, to, tool = state.drawingTool) {
+    const toolConfig = DRAW_TOOLS[tool];
+    if (!toolConfig) return;
+
+    drawCtx.save();
+    drawCtx.globalCompositeOperation = toolConfig.composite;
+    drawCtx.globalAlpha = toolConfig.alpha;
+    drawCtx.strokeStyle = toolConfig.color;
+    drawCtx.lineWidth = toolConfig.width;
+    drawCtx.beginPath();
+    drawCtx.moveTo(from.x, from.y);
+    drawCtx.lineTo(to.x, to.y);
+    drawCtx.stroke();
+    drawCtx.restore();
+}
+
+function redrawDrawingStrokes() {
+    clearCanvas();
+    state.currentStrokes.forEach(stroke => {
+        for (let i = 1; i < stroke.points.length; i++) {
+            drawLine(stroke.points[i - 1], stroke.points[i], stroke.tool);
+        }
+        if (stroke.points.length === 1) {
+            drawLine(stroke.points[0], stroke.points[0], stroke.tool);
+        }
+    });
+}
+
+function distanceToSegment(point, start, end) {
+    const dx = end.x - start.x;
+    const dy = end.y - start.y;
+    if (dx === 0 && dy === 0) {
+        return Math.hypot(point.x - start.x, point.y - start.y);
+    }
+
+    const t = Math.max(0, Math.min(1, ((point.x - start.x) * dx + (point.y - start.y) * dy) / (dx * dx + dy * dy)));
+    const closest = {
+        x: start.x + t * dx,
+        y: start.y + t * dy
+    };
+    return Math.hypot(point.x - closest.x, point.y - closest.y);
+}
+
+function strokeTouchesPoint(stroke, point) {
+    const toolWidth = DRAW_TOOLS[stroke.tool]?.width || 8;
+    const radius = Math.max(OBJECT_ERASER_HIT_RADIUS, toolWidth / 2 + 8);
+
+    if (stroke.points.length === 1) {
+        return Math.hypot(point.x - stroke.points[0].x, point.y - stroke.points[0].y) <= radius;
+    }
+
+    for (let i = 1; i < stroke.points.length; i++) {
+        if (distanceToSegment(point, stroke.points[i - 1], stroke.points[i]) <= radius) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function eraseStrokeAt(point) {
+    for (let i = state.currentStrokes.length - 1; i >= 0; i--) {
+        if (strokeTouchesPoint(state.currentStrokes[i], point)) {
+            state.currentStrokes.splice(i, 1);
+            redrawDrawingStrokes();
+            saveCurrentDrawing();
+            return true;
+        }
+    }
+    return false;
+}
+
+function movePointerDot(point) {
+    pointerDot.style.left = `${point.x}px`;
+    pointerDot.style.top = `${point.y}px`;
+    pointerDot.classList.remove('hidden');
+}
+
+function handleDrawPointerDown(event) {
+    if (!state.drawingTool || state.view !== 'lesson') return;
+    event.preventDefault();
+    const point = getCanvasPoint(event);
+    drawCanvas.setPointerCapture(event.pointerId);
+
+    if (state.drawingTool === 'pointer') {
+        movePointerDot(point);
+        return;
+    }
+    if (state.drawingTool === 'objectEraser') {
+        state.isDrawing = true;
+        eraseStrokeAt(point);
+        return;
+    }
+
+    state.isDrawing = true;
+    state.lastDrawPoint = point;
+    state.currentStroke = {
+        tool: state.drawingTool,
+        points: [point]
+    };
+    drawLine(point, point);
+}
+
+function handleDrawPointerMove(event) {
+    if (!state.drawingTool || state.view !== 'lesson') return;
+    const point = getCanvasPoint(event);
+
+    if (state.drawingTool === 'pointer') {
+        movePointerDot(point);
+        return;
+    }
+    if (state.drawingTool === 'objectEraser') {
+        if (!state.isDrawing) return;
+        event.preventDefault();
+        eraseStrokeAt(point);
+        return;
+    }
+    if (!state.isDrawing || !state.lastDrawPoint) return;
+
+    event.preventDefault();
+    drawLine(state.lastDrawPoint, point);
+    if (state.currentStroke) {
+        state.currentStroke.points.push(point);
+    }
+    state.lastDrawPoint = point;
+}
+
+function handleDrawPointerUp(event) {
+    if (!state.drawingTool) return;
+    if (drawCanvas.hasPointerCapture(event.pointerId)) {
+        drawCanvas.releasePointerCapture(event.pointerId);
+    }
+    if (state.drawingTool === 'pointer') {
+        pointerDot.classList.add('hidden');
+        return;
+    }
+    state.isDrawing = false;
+    state.lastDrawPoint = null;
+    if (state.currentStroke && state.currentStroke.points.length) {
+        state.currentStrokes.push(state.currentStroke);
+    }
+    state.currentStroke = null;
+    saveCurrentDrawing();
+}
+
+function handleDrawPointerLeave() {
+    if (state.drawingTool === 'pointer') {
+        pointerDot.classList.add('hidden');
+    }
+    if (state.drawingTool === 'objectEraser') {
+        state.isDrawing = false;
+    }
 }
 
 function speak(text) {
