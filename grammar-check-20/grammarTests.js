@@ -545,10 +545,22 @@ window.GRAMMAR_CHECK_TESTS = {
             next.jp = next.jp.replace(/^数学は数学/, "理科は数学");
         }
 
-        if (/^(math|science) is spoken around the world/i.test(next.en)) {
-            next.en = next.en.replace(/^(math|science) is/i, "English is");
-            next.blank = next.blank.replace(/^(math|science) is/i, "English is");
-            next.jp = next.jp.replace(/^(数学|理科)は世界中で話されています/, "英語は世界中で話されています");
+        if (/^(math|science|history) is spoken around the world/i.test(next.en)) {
+            next.en = next.en.replace(/^(math|science|history) is/i, "English is");
+            next.blank = next.blank.replace(/^(math|science|history) is/i, "English is");
+            next.jp = next.jp.replace(/^(数学|理科|歴史)は世界中で話されています/, "英語は世界中で話されています");
+        }
+
+        if (/(The news|The song) (made|makes) me ready/i.test(next.en)) {
+            next.en = next.en.replace(/ready/g, "happy");
+            next.blank = next.blank.replace(/ready/g, "happy");
+            next.jp = next.jp.replace(/準備ができて/g, "幸せ");
+        }
+
+        if (/Mt\. Fuji is the highest mountain in Canada/i.test(next.en)) {
+            next.en = next.en.replace("Canada", "Japan");
+            next.blank = next.blank.replace("Canada", "Japan");
+            next.jp = next.jp.replace("カナダ", "日本");
         }
 
         return next;
@@ -556,6 +568,7 @@ window.GRAMMAR_CHECK_TESTS = {
 
     function addSectionContext(example, sectionType) {
         if (sectionType === "choice" || sectionType === "meaning") return example;
+        if (/\b(who|which)\b/.test(example.en)) return example;
         const contexts = {
             fill: {
                 statement: ["today", "今日"],
@@ -1189,6 +1202,18 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "私の夢は医者になることです。", en: "My dream is to be a doctor.", blank: "My dream is _____ be a doctor.", answer: "to" },
                 { jp: "ケンはサッカーをすることが好きです。", en: "Ken likes to play soccer.", blank: "Ken likes to _____ soccer.", answer: "play" },
                 { jp: "私たちは公園へ行くことを計画しました。", en: "We planned to go to the park.", blank: "We planned _____ go to the park.", answer: "to" }
+            ],
+            choiceExamples: [
+                { jp: "to read は「読むこと」を表します。", en: "I like to read books.", blank: "I like to read books. の to read は _____.", answer: "読むこと", distractors: ["読むために", "読むための", "読んでいる"] },
+                { jp: "want の後ろは to + 動詞の原形です。", en: "She wants to study English.", blank: "She wants _____ study English.", answer: "to", distractors: ["for", "studying", "studies"] },
+                { jp: "to be a doctor は「医者になること」です。", en: "My dream is to be a doctor.", blank: "My dream is to _____.", answer: "be a doctor", distractors: ["a doctor", "being a doctor", "was a doctor"] },
+                { jp: "to の後ろは動詞の原形です。", en: "Ken likes to play soccer.", blank: "Ken likes to _____ soccer.", answer: "play", distractors: ["plays", "playing", "played"] },
+                { jp: "plan の後ろは to + 動詞の原形です。", en: "We planned to go to the park.", blank: "We planned _____ go to the park.", answer: "to", distractors: ["for", "going", "went"] }
+            ],
+            meaningExamples: [
+                { jp: "名詞的用法は「〜すること」を表します。", en: "I like to read books.", blank: "to read books の意味は _____.", answer: "本を読むこと", distractors: ["本を読むために", "読むための本", "本を読んでいる"] },
+                { jp: "to + 動詞の原形が目的語になります。", en: "She wants to study English.", blank: "wants の目的語は _____.", answer: "to study English", distractors: ["She", "wants", "English"] },
+                { jp: "to の後ろは動詞の原形です。", en: "Ken likes to play soccer.", blank: "to の後ろに置く形は _____.", answer: "動詞の原形", distractors: ["過去形", "ing形", "三単現の形"] }
             ]
         },
         {
@@ -1248,6 +1273,18 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "私たちは遊ぶ場所を探しています。", en: "We are looking for a place to play.", blank: "We are looking for a place _____ play.", answer: "to" },
                 { jp: "ケンにはするべき宿題があります。", en: "Ken has homework to do.", blank: "Ken has homework _____ do.", answer: "to" },
                 { jp: "私は手紙を書くためのペンを持っています。", en: "I have a pen to write with.", blank: "I have a pen _____ write with.", answer: "to" }
+            ],
+            choiceExamples: [
+                { jp: "to read は前の名詞 book を説明します。", en: "I want a book to read.", blank: "a book to read の意味は _____.", answer: "読む本", distractors: ["本を読むこと", "読むために", "本を読んでいる"] },
+                { jp: "to の後ろは動詞の原形です。", en: "She needs water to drink.", blank: "She needs water to _____.", answer: "drink", distractors: ["drinks", "drinking", "drank"] },
+                { jp: "to play は前の名詞 place を説明します。", en: "We are looking for a place to play.", blank: "to play が説明している名詞は _____.", answer: "place", distractors: ["We", "looking", "play"] },
+                { jp: "homework to do は「するべき宿題」です。", en: "Ken has homework to do.", blank: "homework to do の意味は _____.", answer: "するべき宿題", distractors: ["宿題をすること", "宿題をするために", "宿題をしている"] },
+                { jp: "write with は「それを使って書く」という形です。", en: "I have a pen to write with.", blank: "I have a pen to write _____.", answer: "with", distractors: ["to", "for", "at"] }
+            ],
+            meaningExamples: [
+                { jp: "形容詞的用法は前の名詞を後ろから説明します。", en: "I want a book to read.", blank: "to read が説明している語は _____.", answer: "book", distractors: ["I", "want", "read"] },
+                { jp: "a place to play は「遊ぶ場所」です。", en: "We are looking for a place to play.", blank: "a place to play の意味は _____.", answer: "遊ぶ場所", distractors: ["遊ぶこと", "遊ぶために", "遊んでいる場所"] },
+                { jp: "to の後ろは動詞の原形です。", en: "Ken has homework to do.", blank: "homework to do の do は _____.", answer: "動詞の原形", distractors: ["過去形", "ing形", "三単現"] }
             ]
         },
         {
@@ -1261,6 +1298,18 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "私たちはサッカーをするために公園へ行きました。", en: "We went to the park to play soccer.", blank: "We went to the park _____ play soccer.", answer: "to" },
                 { jp: "ケンは友達に会うために駅へ行きました。", en: "Ken went to the station to meet his friend.", blank: "Ken went to the station _____ meet his friend.", answer: "to" },
                 { jp: "私は写真を撮るためにカメラを使いました。", en: "I used a camera to take pictures.", blank: "I used a camera _____ take pictures.", answer: "to" }
+            ],
+            choiceExamples: [
+                { jp: "目的を表す to は「〜するために」です。", en: "I went to the library to study English.", blank: "to study English の意味は _____.", answer: "英語を勉強するために", distractors: ["英語を勉強すること", "英語を勉強するための", "英語を勉強している"] },
+                { jp: "to の後ろは動詞の原形です。", en: "She went to the store to buy lunch.", blank: "She went to the store to _____ lunch.", answer: "buy", distractors: ["buys", "buying", "bought"] },
+                { jp: "to play soccer は公園へ行った目的です。", en: "We went to the park to play soccer.", blank: "この文で目的を表す部分は _____.", answer: "to play soccer", distractors: ["We went", "the park", "soccer"] },
+                { jp: "友達に会う目的を表します。", en: "Ken went to the station to meet his friend.", blank: "Ken went to the station _____ meet his friend.", answer: "to", distractors: ["for", "because", "with"] },
+                { jp: "カメラを使った目的を表します。", en: "I used a camera to take pictures.", blank: "to take pictures の意味は _____.", answer: "写真を撮るために", distractors: ["写真を撮ること", "写真を撮るための", "写真を撮っている"] }
+            ],
+            meaningExamples: [
+                { jp: "副詞的用法（目的）は「〜するために」です。", en: "I went to the library to study English.", blank: "この to の用法は _____.", answer: "目的", distractors: ["名詞的用法", "形容詞的用法", "比較"] },
+                { jp: "to buy lunch は店へ行った目的です。", en: "She went to the store to buy lunch.", blank: "to buy lunch が表すものは _____.", answer: "目的", distractors: ["主語", "場所", "時"] },
+                { jp: "to の後ろは動詞の原形です。", en: "I used a camera to take pictures.", blank: "to の後ろに置く形は _____.", answer: "動詞の原形", distractors: ["過去形", "ing形", "三単現"] }
             ]
         },
         {
@@ -1274,6 +1323,18 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "私たちはあなたに会えてうれしいです。", en: "We are glad to see you.", blank: "We are glad _____ see you.", answer: "to" },
                 { jp: "ケンはその話を聞いて悲しかったです。", en: "Ken was sad to hear the story.", blank: "Ken was sad _____ hear the story.", answer: "to" },
                 { jp: "私はその写真を見てわくわくしました。", en: "I was excited to see the picture.", blank: "I was excited _____ see the picture.", answer: "to" }
+            ],
+            choiceExamples: [
+                { jp: "感情の原因を表す to は「〜して」です。", en: "I was happy to hear the news.", blank: "to hear the news の意味は _____.", answer: "その知らせを聞いて", distractors: ["その知らせを聞くこと", "その知らせを聞くために", "その知らせを聞くための"] },
+                { jp: "to の後ろは動詞の原形です。", en: "She was surprised to win the game.", blank: "She was surprised to _____ the game.", answer: "win", distractors: ["wins", "winning", "won"] },
+                { jp: "glad の原因を表します。", en: "We are glad to see you.", blank: "We are glad _____ see you.", answer: "to", distractors: ["for", "because", "with"] },
+                { jp: "sad の原因を表します。", en: "Ken was sad to hear the story.", blank: "to hear the story が表すものは _____.", answer: "悲しかった理由", distractors: ["目的", "場所", "比較"] },
+                { jp: "excited の原因を表します。", en: "I was excited to see the picture.", blank: "I was excited to _____ the picture.", answer: "see", distractors: ["saw", "seeing", "sees"] }
+            ],
+            meaningExamples: [
+                { jp: "感情の原因を表す用法です。", en: "I was happy to hear the news.", blank: "この to の用法は _____.", answer: "感情の原因", distractors: ["目的", "名詞的用法", "形容詞的用法"] },
+                { jp: "surprised の理由を表します。", en: "She was surprised to win the game.", blank: "to win the game は何を表しますか。", answer: "驚いた理由", distractors: ["勝つ目的", "勝つための試合", "勝っている人"] },
+                { jp: "to の後ろは動詞の原形です。", en: "We are glad to see you.", blank: "to の後ろに置く形は _____.", answer: "動詞の原形", distractors: ["過去形", "ing形", "三単現"] }
             ]
         },
         {
@@ -1471,6 +1532,13 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "英語は数学より簡単です。", en: "English is easier than math.", blank: "English is _____ than math.", answer: "easier" },
                 { jp: "この映画はあの映画より人気があります。", en: "This movie is more popular than that one.", blank: "This movie is _____ popular than that one.", answer: "more" }
             ],
+            choiceExamples: [
+                { jp: "比較級では than を使います。", en: "Ken is taller than Yuki.", blank: "Ken is taller _____ Yuki.", answer: "than", distractors: ["as", "of", "in"] },
+                { jp: "new の比較級は newer です。", en: "This book is newer than that one.", blank: "This book is _____ than that one.", answer: "newer", distractors: ["newest", "more new", "new"] },
+                { jp: "big の比較級は bigger です。", en: "My dog is bigger than your dog.", blank: "My dog is _____ than your dog.", answer: "bigger", distractors: ["biggest", "more big", "big"] },
+                { jp: "比較する相手は than の後ろに置きます。", en: "English is easier than math.", blank: "English is easier than _____.", answer: "math", distractors: ["easy", "more", "in"] },
+                { jp: "長い形容詞の比較級は more を使います。", en: "This movie is more popular than that one.", blank: "This movie is _____ popular than that one.", answer: "more", distractors: ["most", "as", "the"] }
+            ],
             reorderExamples: [
                 { jp: "私の犬はあなたの犬より大きいです。", en: "My dog is bigger than your dog.", blank: "My dog is _____ than your dog.", answer: "bigger" },
                 { jp: "理科は数学より簡単です。", en: "Science is easier than math.", blank: "Science is _____ than math.", answer: "easier" },
@@ -1503,6 +1571,13 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "富士山は日本で一番高い山です。", en: "Mt. Fuji is the highest mountain in Japan.", blank: "Mt. Fuji is the _____ mountain in Japan.", answer: "highest" },
                 { jp: "彼女は私たちの学校で一番人気があります。", en: "She is the most popular in our school.", blank: "She is the _____ popular in our school.", answer: "most" },
                 { jp: "これはすべての中で一番よい考えです。", en: "This is the best idea of all.", blank: "This is the _____ idea of all.", answer: "best" }
+            ],
+            choiceExamples: [
+                { jp: "最上級には the をつけます。", en: "Ken is the tallest in his class.", blank: "Ken is _____ tallest in his class.", answer: "the", distractors: ["than", "as", "more"] },
+                { jp: "3つの中では of the three を使えます。", en: "This book is the newest of the three.", blank: "This book is the newest _____ the three.", answer: "of", distractors: ["in", "than", "as"] },
+                { jp: "高い山は highest mountain と表します。", en: "Mt. Fuji is the highest mountain in Japan.", blank: "Mt. Fuji is the _____ mountain in Japan.", answer: "highest", distractors: ["higher", "high", "more high"] },
+                { jp: "popular の最上級は most popular です。", en: "She is the most popular in our school.", blank: "She is the _____ popular in our school.", answer: "most", distractors: ["more", "as", "than"] },
+                { jp: "good の最上級は best です。", en: "This is the best idea of all.", blank: "This is the _____ idea of all.", answer: "best", distractors: ["better", "good", "more good"] }
             ],
             reorderExamples: [
                 { jp: "富士山は日本で一番高い山です。", en: "Mt. Fuji is the highest mountain in Japan.", blank: "Mt. Fuji is the _____ mountain in Japan.", answer: "highest" },
@@ -1541,6 +1616,13 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "この犬はあの犬ほど大きくありません。", en: "This dog is not as big as that dog.", blank: "This dog is not as _____ as that dog.", answer: "big" },
                 { jp: "英語は数学と同じくらい大切です。", en: "English is as important as math.", blank: "English is as _____ as math.", answer: "important" }
             ],
+            choiceExamples: [
+                { jp: "as ... as で「同じくらい〜」を表します。", en: "Ken is as tall as Yuki.", blank: "Ken is as tall _____ Yuki.", answer: "as", distractors: ["than", "of", "the"] },
+                { jp: "as と as の間は原級です。", en: "This book is as interesting as that one.", blank: "This book is as _____ as that one.", answer: "interesting", distractors: ["more interesting", "most interesting", "interest"] },
+                { jp: "not as ... as は「ほど〜ではない」です。", en: "I can't run as fast as my brother.", blank: "I can't run as _____ as my brother.", answer: "fast", distractors: ["faster", "fastest", "more fast"] },
+                { jp: "否定形でも as と as の間は原級です。", en: "This dog is not as big as that dog.", blank: "This dog is not as _____ as that dog.", answer: "big", distractors: ["bigger", "biggest", "more big"] },
+                { jp: "important は原級のまま使います。", en: "English is as important as math.", blank: "English is as _____ as math.", answer: "important", distractors: ["more important", "most important", "importance"] }
+            ],
             reorderExamples: [
                 { jp: "私は兄ほど速く走れません。", en: "I can't run as fast as my brother.", blank: "I can't run as _____ as my brother.", answer: "fast" },
                 { jp: "この犬はあの犬ほど大きくありません。", en: "This dog is not as big as that dog.", blank: "This dog is not as _____ as that dog.", answer: "big" },
@@ -1560,6 +1642,25 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "先生は私たちに静かにするよう言いました。", en: "The teacher told us to be quiet.", blank: "The teacher told us _____ be quiet.", answer: "to" },
                 { jp: "母は私に部屋を掃除してほしいです。", en: "My mother wants me to clean my room.", blank: "My mother wants me _____ clean my room.", answer: "to" },
                 { jp: "私は友達に待つよう頼みました。", en: "I asked my friend to wait.", blank: "I asked my friend _____ wait.", answer: "to" }
+            ],
+            choiceExamples: [
+                { jp: "私はケンに私を手伝ってほしいです。", en: "I want Ken to help me.", blank: "I _____ Ken to help me.", answer: "want", distractors: ["ask", "tell", "make"] },
+                { jp: "彼女は私にドアを開けるよう頼みました。", en: "She asked me to open the door.", blank: "She asked _____ to open the door.", answer: "me", distractors: ["I", "my", "mine"] },
+                { jp: "先生は私たちに静かにするよう言いました。", en: "The teacher told us to be quiet.", blank: "The teacher told us _____ be quiet.", answer: "to", distractors: ["for", "that", "with"] },
+                { jp: "母は私に部屋を掃除してほしいです。", en: "My mother wants me to clean my room.", blank: "My mother _____ me to clean my room.", answer: "wants", distractors: ["want", "asking", "tell"] },
+                { jp: "私は友達に待つよう頼みました。", en: "I asked my friend to wait.", blank: "I asked my friend to _____.", answer: "wait", distractors: ["waits", "waiting", "waited"] }
+            ],
+            fillExamples: [
+                { jp: "私はケンに私を手伝ってほしいです。", en: "I want Ken to help me.", blank: "I _____ Ken to help me.", answer: "want" },
+                { jp: "彼女は私にドアを開けるよう頼みました。", en: "She asked me to open the door.", blank: "She asked _____ to open the door.", answer: "me" },
+                { jp: "先生は私たちに静かにするよう言いました。", en: "The teacher told us to be quiet.", blank: "The teacher told us _____ be quiet.", answer: "to" },
+                { jp: "母は私に部屋を掃除してほしいです。", en: "My mother wants me to clean my room.", blank: "My mother _____ me to clean my room.", answer: "wants" },
+                { jp: "私は友達に待つよう頼みました。", en: "I asked my friend to wait.", blank: "I asked my friend to _____.", answer: "wait" }
+            ],
+            meaningExamples: [
+                { jp: "「人に〜するよう頼む」は ask 人 to do です。", en: "She asked me to open the door.", blank: "「人に〜するよう頼む」を表す動詞は _____.", answer: "ask", distractors: ["want", "tell", "let"] },
+                { jp: "「人に〜するよう言う」は tell 人 to do です。", en: "The teacher told us to be quiet.", blank: "「人に〜するよう言う」を表す動詞は _____.", answer: "tell", distractors: ["want", "ask", "make"] },
+                { jp: "want / ask / tell の後ろは 人 + to + 動詞の原形 です。", en: "I want Ken to help me.", blank: "want Ken の後ろに続く形は _____.", answer: "to help", distractors: ["help", "helps", "helping"] }
             ]
         },
         {
@@ -1573,6 +1674,25 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "その知らせは私を幸せにしました。", en: "The news made me happy.", blank: "The news made me _____.", answer: "happy" },
                 { jp: "母は私に夕食を作らせました。", en: "My mother made me cook dinner.", blank: "My mother made me _____ dinner.", answer: "cook" },
                 { jp: "ケンは私がその箱を運ぶのを手伝いました。", en: "Ken helped me carry the box.", blank: "Ken helped me _____ the box.", answer: "carry" }
+            ],
+            choiceExamples: [
+                { jp: "私は妹が英語を勉強するのを手伝いました。", en: "I helped my sister study English.", blank: "I _____ my sister study English.", answer: "helped", distractors: ["let", "made", "wanted"] },
+                { jp: "父は私に車を使わせてくれました。", en: "My father let me use his car.", blank: "My father let _____ use his car.", answer: "me", distractors: ["I", "my", "mine"] },
+                { jp: "その知らせは私を幸せにしました。", en: "The news made me happy.", blank: "The news _____ me happy.", answer: "made", distractors: ["helped", "let", "asked"] },
+                { jp: "母は私に夕食を作らせました。", en: "My mother made me cook dinner.", blank: "My mother made me _____ dinner.", answer: "cook", distractors: ["to cook", "cooks", "cooking"] },
+                { jp: "ケンは私がその箱を運ぶのを手伝いました。", en: "Ken helped me carry the box.", blank: "Ken helped _____ carry the box.", answer: "me", distractors: ["I", "my", "mine"] }
+            ],
+            fillExamples: [
+                { jp: "私は妹が英語を勉強するのを手伝いました。", en: "I helped my sister study English.", blank: "I _____ my sister study English.", answer: "helped" },
+                { jp: "父は私に車を使わせてくれました。", en: "My father let me use his car.", blank: "My father let _____ use his car.", answer: "me" },
+                { jp: "その知らせは私を幸せにしました。", en: "The news made me happy.", blank: "The news _____ me happy.", answer: "made" },
+                { jp: "母は私に夕食を作らせました。", en: "My mother made me cook dinner.", blank: "My mother made me _____ dinner.", answer: "cook" },
+                { jp: "ケンは私がその箱を運ぶのを手伝いました。", en: "Ken helped me carry the box.", blank: "Ken helped _____ carry the box.", answer: "me" }
+            ],
+            meaningExamples: [
+                { jp: "help / let / make の後ろでは to を入れません。", en: "My father let me use his car.", blank: "正しい形は _____.", answer: "let me use", distractors: ["let me to use", "let I use", "let me using"] },
+                { jp: "make + 人 + 形容詞で「人を〜にする」を表します。", en: "The news made me happy.", blank: "「私を幸せにした」は _____.", answer: "made me happy", distractors: ["made I happy", "made me happily", "made me to happy"] },
+                { jp: "help + 人 + 動詞の原形で「人が〜するのを手伝う」を表します。", en: "Ken helped me carry the box.", blank: "正しい形は _____.", answer: "helped me carry", distractors: ["helped me to carrying", "helped I carry", "helped me carried"] }
             ]
         },
         {
@@ -1586,6 +1706,25 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "彼らはその赤ちゃんをハナと名づけました。", en: "They named the baby Hana.", blank: "They named the baby _____.", answer: "Hana" },
                 { jp: "窓を開けたままにしてください。", en: "Please keep the window open.", blank: "Please keep the window _____.", answer: "open" },
                 { jp: "そのニュースは彼を有名にしました。", en: "The news made him famous.", blank: "The news made him _____.", answer: "famous" }
+            ],
+            choiceExamples: [
+                { jp: "その歌は私を幸せにします。", en: "The song makes me happy.", blank: "The song _____ me happy.", answer: "makes", distractors: ["make", "making", "to make"] },
+                { jp: "私たちはその犬をポチと呼びます。", en: "We call the dog Pochi.", blank: "We call _____ Pochi.", answer: "the dog", distractors: ["happy", "open", "famous"] },
+                { jp: "彼らはその赤ちゃんをハナと名づけました。", en: "They named the baby Hana.", blank: "They _____ the baby Hana.", answer: "named", distractors: ["name", "names", "naming"] },
+                { jp: "窓を開けたままにしてください。", en: "Please keep the window open.", blank: "Please keep the window _____.", answer: "open", distractors: ["opens", "opened", "to open"] },
+                { jp: "そのニュースは彼を有名にしました。", en: "The news made him famous.", blank: "The news made _____ famous.", answer: "him", distractors: ["he", "his", "himself"] }
+            ],
+            fillExamples: [
+                { jp: "その歌は私を幸せにします。", en: "The song makes me happy.", blank: "The song _____ me happy.", answer: "makes" },
+                { jp: "私たちはその犬をポチと呼びます。", en: "We call the dog Pochi.", blank: "We call _____ Pochi.", answer: "the dog" },
+                { jp: "彼らはその赤ちゃんをハナと名づけました。", en: "They named the baby Hana.", blank: "They _____ the baby Hana.", answer: "named" },
+                { jp: "窓を開けたままにしてください。", en: "Please keep the window open.", blank: "Please keep the window _____.", answer: "open" },
+                { jp: "そのニュースは彼を有名にしました。", en: "The news made him famous.", blank: "The news made _____ famous.", answer: "him" }
+            ],
+            meaningExamples: [
+                { jp: "SVOCでは O と C が「O = C」の関係です。", en: "The song makes me happy.", blank: "The song makes me happy. の O は _____.", answer: "me", distractors: ["The song", "makes", "happy"] },
+                { jp: "SVOCでは O と C が「O = C」の関係です。", en: "The news made him famous.", blank: "The news made him famous. の C は _____.", answer: "famous", distractors: ["The news", "made", "him"] },
+                { jp: "call + O + C で「OをCと呼ぶ」を表します。", en: "We call the dog Pochi.", blank: "We call the dog Pochi. の意味は _____.", answer: "その犬をポチと呼ぶ", distractors: ["その犬がポチを呼ぶ", "ポチが犬を呼ぶ", "犬を幸せにする"] }
             ]
         },
         {
@@ -1599,6 +1738,18 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "これらの写真はユキによって撮られました。", en: "These pictures were taken by Yuki.", blank: "These pictures _____ taken by Yuki.", answer: "were" },
                 { jp: "英語は世界中で話されています。", en: "English is spoken around the world.", blank: "English is _____ around the world.", answer: "spoken" },
                 { jp: "その部屋は毎日掃除されています。", en: "The room is cleaned every day.", blank: "The room is _____ every day.", answer: "cleaned" }
+            ],
+            choiceExamples: [
+                { jp: "受動態は be動詞 + 過去分詞です。", en: "This book is read by many students.", blank: "This book _____ read by many students.", answer: "is", distractors: ["are", "am", "do"] },
+                { jp: "過去の受動態では was / were を使います。", en: "The window was opened by Ken.", blank: "The window was _____ by Ken.", answer: "opened", distractors: ["open", "opens", "opening"] },
+                { jp: "主語が複数なので were を使います。", en: "These pictures were taken by Yuki.", blank: "These pictures _____ taken by Yuki.", answer: "were", distractors: ["was", "is", "are"] },
+                { jp: "speak の過去分詞は spoken です。", en: "English is spoken around the world.", blank: "English is _____ around the world.", answer: "spoken", distractors: ["speak", "spoke", "speaking"] },
+                { jp: "受動態の形を選びます。", en: "The room is cleaned every day.", blank: "The room is _____.", answer: "cleaned", distractors: ["cleans", "cleaning", "clean"] }
+            ],
+            meaningExamples: [
+                { jp: "受動態は「〜される」を表します。", en: "This book is read by many students.", blank: "This book is read の意味は _____.", answer: "読まれる", distractors: ["読む", "読んでいる", "読むつもり"] },
+                { jp: "by Ken は動作をした人を表します。", en: "The window was opened by Ken.", blank: "by Ken が表すのは _____.", answer: "開けた人", distractors: ["開けられた物", "開けた場所", "開けた時間"] },
+                { jp: "受動態は be動詞 + 過去分詞です。", en: "These pictures were taken by Yuki.", blank: "受動態の中心の形は _____.", answer: "be動詞 + 過去分詞", distractors: ["do + 原形", "have + 原形", "will + ing"] }
             ],
             reorderExamples: [
                 { jp: "これらの写真はユキによって撮られました。", en: "These pictures were taken by Yuki.", blank: "These pictures _____ taken by Yuki.", answer: "were" },
@@ -1635,6 +1786,18 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "そのクッキーはユキによって作られました。", en: "The cookies were made by Yuki.", blank: "The cookies _____ made by Yuki.", answer: "were" },
                 { jp: "フランス語はカナダで話されています。", en: "French is spoken in Canada.", blank: "French is _____ in Canada.", answer: "spoken" },
                 { jp: "その教室は毎日掃除されています。", en: "The classroom is cleaned every day.", blank: "The classroom is _____ every day.", answer: "cleaned" }
+            ],
+            choiceExamples: [
+                { jp: "主語が単数なので is を使います。", en: "This story is read by many students.", blank: "This story _____ read by many students.", answer: "is", distractors: ["are", "were", "do"] },
+                { jp: "過去の受動態では was + 過去分詞です。", en: "The door was closed by Ken.", blank: "The door was _____ by Ken.", answer: "closed", distractors: ["close", "closes", "closing"] },
+                { jp: "主語が複数なので were を使います。", en: "The cookies were made by Yuki.", blank: "The cookies _____ made by Yuki.", answer: "were", distractors: ["was", "is", "are"] },
+                { jp: "speak の過去分詞は spoken です。", en: "French is spoken in Canada.", blank: "French is _____ in Canada.", answer: "spoken", distractors: ["speak", "spoke", "speaking"] },
+                { jp: "受動態の意味を確認します。", en: "The classroom is cleaned every day.", blank: "is cleaned の意味は _____.", answer: "掃除される", distractors: ["掃除する", "掃除している", "掃除したい"] }
+            ],
+            meaningExamples: [
+                { jp: "受動態は「〜される」を表します。", en: "This story is read by many students.", blank: "This story is read の意味は _____.", answer: "読まれる", distractors: ["読む", "読んでいる", "読ませる"] },
+                { jp: "過去の受動態は was / were + 過去分詞です。", en: "The door was closed by Ken.", blank: "was closed の形は _____.", answer: "was + 過去分詞", distractors: ["do + 原形", "have + 原形", "will + 原形"] },
+                { jp: "主語に合わせて be動詞を選びます。", en: "The cookies were made by Yuki.", blank: "The cookies に合う be動詞は _____.", answer: "were", distractors: ["was", "is", "am"] }
             ],
             reorderExamples: [
                 { jp: "そのクッキーはユキによって作られました。", en: "The cookies were made by Yuki.", blank: "The cookies _____ made by Yuki.", answer: "were" },
@@ -1685,6 +1848,25 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "教室をきれいに保ってください。", en: "Please keep the classroom clean.", blank: "Please keep the classroom _____.", answer: "clean" },
                 { jp: "彼らは自分たちのチームをスターズと名づけました。", en: "They named their team Stars.", blank: "They named their team _____.", answer: "Stars" },
                 { jp: "その映画は彼女を有名にしました。", en: "The movie made her famous.", blank: "The movie made her _____.", answer: "famous" }
+            ],
+            choiceExamples: [
+                { jp: "call + O + C で「OをCと呼ぶ」です。", en: "We call our teacher Mr. Brown.", blank: "We _____ our teacher Mr. Brown.", answer: "call", distractors: ["make", "keep", "help"] },
+                { jp: "過去形では made を使います。", en: "The news made us excited.", blank: "The news _____ us excited.", answer: "made", distractors: ["makes", "make", "making"] },
+                { jp: "Oは目的格 us です。", en: "The news made us excited.", blank: "The news made _____ excited.", answer: "us", distractors: ["we", "our", "ours"] },
+                { jp: "keep + O + C で「OをCのままにする」です。", en: "Please keep the classroom clean.", blank: "Please keep the classroom _____.", answer: "clean", distractors: ["cleans", "cleaning", "to clean"] },
+                { jp: "make + O + C の C を確認します。", en: "The movie made her famous.", blank: "The movie made her _____.", answer: "famous", distractors: ["fame", "famously", "to famous"] }
+            ],
+            fillExamples: [
+                { jp: "私たちは先生をブラウン先生と呼びます。", en: "We call our teacher Mr. Brown.", blank: "We _____ our teacher Mr. Brown.", answer: "call" },
+                { jp: "その知らせは私たちをわくわくさせました。", en: "The news made us excited.", blank: "The news _____ us excited.", answer: "made" },
+                { jp: "その知らせは私たちをわくわくさせました。", en: "The news made us excited.", blank: "The news made _____ excited.", answer: "us" },
+                { jp: "教室をきれいに保ってください。", en: "Please keep the classroom clean.", blank: "Please keep the classroom _____.", answer: "clean" },
+                { jp: "その映画は彼女を有名にしました。", en: "The movie made her famous.", blank: "The movie made _____ famous.", answer: "her" }
+            ],
+            meaningExamples: [
+                { jp: "SVOCでは O と C が「O = C」の関係です。", en: "The news made us excited.", blank: "The news made us excited. の O は _____.", answer: "us", distractors: ["The news", "made", "excited"] },
+                { jp: "SVOCでは O と C が「O = C」の関係です。", en: "The movie made her famous.", blank: "The movie made her famous. の C は _____.", answer: "famous", distractors: ["The movie", "made", "her"] },
+                { jp: "keep + O + C で「OをCのままにする」です。", en: "Please keep the classroom clean.", blank: "Please keep the classroom clean. の意味は _____.", answer: "教室をきれいに保つ", distractors: ["教室が掃除する", "教室を呼ぶ", "教室を有名にする"] }
             ],
             reorderExamples: [
                 { jp: "教室をきれいに保ってください。", en: "Please keep the classroom clean.", blank: "Please keep the classroom _____.", answer: "clean" },
@@ -1770,6 +1952,18 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "英語を教えている先生は親切です。", en: "The teacher who teaches English is kind.", blank: "The teacher _____ teaches English is kind.", answer: "who" },
                 { jp: "本を読んでいる少女はユキです。", en: "The girl who is reading a book is Yuki.", blank: "The girl _____ is reading a book is Yuki.", answer: "who" },
                 { jp: "私を助けてくれた男性は私のおじでした。", en: "The man who helped me was my uncle.", blank: "The man _____ helped me was my uncle.", answer: "who" }
+            ],
+            choiceExamples: [
+                { jp: "人を説明する関係代名詞は who です。", en: "I have a friend who lives in Canada.", blank: "I have a friend _____ lives in Canada.", answer: "who", distractors: ["which", "where", "what"] },
+                { jp: "先行詞は説明される名詞です。", en: "The boy who plays soccer is Ken.", blank: "この文の先行詞は _____.", answer: "The boy", distractors: ["soccer", "Ken", "plays"] },
+                { jp: "who の後ろには動詞が続きます。", en: "The teacher who teaches English is kind.", blank: "who の後ろに続く語は _____.", answer: "teaches", distractors: ["teacher", "English", "kind"] },
+                { jp: "who is reading a book が girl を説明しています。", en: "The girl who is reading a book is Yuki.", blank: "who is reading a book が説明する語は _____.", answer: "The girl", distractors: ["a book", "Yuki", "reading"] },
+                { jp: "人を説明するので who を使います。", en: "The man who helped me was my uncle.", blank: "The man _____ helped me was my uncle.", answer: "who", distractors: ["which", "where", "when"] }
+            ],
+            meaningExamples: [
+                { jp: "関係代名詞 who は人を説明します。", en: "I have a friend who lives in Canada.", blank: "who lives in Canada が説明する語は _____.", answer: "a friend", distractors: ["I", "Canada", "lives"] },
+                { jp: "who は後ろの文の主語の働きをします。", en: "The boy who plays soccer is Ken.", blank: "who が表す人は _____.", answer: "The boy", distractors: ["Ken", "soccer", "plays"] },
+                { jp: "人を説明する関係代名詞を選びます。", en: "The teacher who teaches English is kind.", blank: "人を説明するときに使う語は _____.", answer: "who", distractors: ["which", "where", "what"] }
             ]
         },
         {
@@ -1783,6 +1977,18 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "京都へ行くバスは遅れています。", en: "The bus which goes to Kyoto is late.", blank: "The bus _____ goes to Kyoto is late.", answer: "which" },
                 { jp: "寝ている犬は私のものです。", en: "The dog which is sleeping is mine.", blank: "The dog _____ is sleeping is mine.", answer: "which" },
                 { jp: "ケンが使っているカメラは新しいです。", en: "The camera which Ken uses is new.", blank: "The camera _____ Ken uses is new.", answer: "which" }
+            ],
+            choiceExamples: [
+                { jp: "物を説明する関係代名詞は which です。", en: "This is a book which has many pictures.", blank: "This is a book _____ has many pictures.", answer: "which", distractors: ["who", "where", "what"] },
+                { jp: "which Yuki sang が song を説明しています。", en: "I like the song which Yuki sang.", blank: "which Yuki sang が説明する語は _____.", answer: "the song", distractors: ["Yuki", "I", "sang"] },
+                { jp: "先行詞は The bus です。", en: "The bus which goes to Kyoto is late.", blank: "この文の先行詞は _____.", answer: "The bus", distractors: ["Kyoto", "late", "goes"] },
+                { jp: "動物を説明するときも which を使えます。", en: "The dog which is sleeping is mine.", blank: "The dog _____ is sleeping is mine.", answer: "which", distractors: ["who", "where", "when"] },
+                { jp: "which Ken uses が camera を説明しています。", en: "The camera which Ken uses is new.", blank: "which Ken uses が説明する語は _____.", answer: "The camera", distractors: ["Ken", "uses", "new"] }
+            ],
+            meaningExamples: [
+                { jp: "関係代名詞 which は物や動物を説明します。", en: "This is a book which has many pictures.", blank: "which has many pictures が説明する語は _____.", answer: "a book", distractors: ["This", "pictures", "has"] },
+                { jp: "which は先行詞を後ろから説明します。", en: "I like the song which Yuki sang.", blank: "この文で説明されている名詞は _____.", answer: "the song", distractors: ["Yuki", "I", "sang"] },
+                { jp: "物を説明する関係代名詞を選びます。", en: "The camera which Ken uses is new.", blank: "物を説明するときに使う語は _____.", answer: "which", distractors: ["who", "where", "what"] }
             ]
         },
         {
