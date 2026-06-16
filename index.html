@@ -5326,11 +5326,11 @@ const LESSONS_DB = {
             },
             {
                 id: "qB2",
-                subQuestion: "彼がいつ来るか知っていますか？",
+                subQuestion: "彼女がどこに住んでいるか知っていますか？",
                 sentenceParts: ["Do you know", "{slot}", "{slot}", "{slot}", "?"],
-                words: ["when", "he", "will come", "will he come"],
-                correctOrder: ["when", "he", "will come"],
-                explanation: "未来形 will も主語の後ろに置きます。"
+                words: ["where", "she", "lives", "does she live"],
+                correctOrder: ["where", "she", "lives"],
+                explanation: "間接疑問文では where の後ろを「主語 + 動詞」の語順にします。"
             },
             {
                 id: "qB3",
@@ -7649,17 +7649,17 @@ const LESSONS_DB = {
             { engDisplay: 'The teacher <span class="text-orange-500 font-bold">told</span> us <span class="text-blue-500 font-bold">to be</span> quiet.', engRead: "The teacher told us to be quiet.", jp: "先生は私たちに静かにするように言った。", icon: "mic-off", color: "orange" }
         ],
         quizChoiceList: [
-            { id: "qA1", subQuestion: "I want you (　　　) my homework.", options: ["do", "to do", "doing", "does"], correctIndex: 1, explanation: "want + 人 + to + 原形" },
-            { id: "qA2", subQuestion: "She asked me (　　　) the window.", options: ["close", "to close", "closing", "closes"], correctIndex: 1, explanation: "ask + 人 + to + 原形" },
-            { id: "qA3", subQuestion: "My mother told me (　　　) early.", options: ["get up", "to get up", "getting up", "gets up"], correctIndex: 1, explanation: "tell + 人 + to + 原形" }
+            { id: "qA1", subQuestion: "I (　　　) Ken to help me.", options: ["want", "ask", "tell", "make"], correctIndex: 0, explanation: "want + 人 + to + 原形 で「人に〜してほしい」を表します。" },
+            { id: "qA2", subQuestion: "The teacher asked us (　　　) our names.", options: ["write", "to write", "writing", "writes"], correctIndex: 1, explanation: "ask + 人 + to + 原形 の形です。" },
+            { id: "qA3", subQuestion: "She told (　　　) to sit down.", options: ["me", "I", "my", "mine"], correctIndex: 0, explanation: "tell の後ろには「だれに」にあたる目的語を置きます。" }
         ],
         quizFillList: [
             { id: "qB1", subQuestion: "私はあなたにいっしょにテニスをしてほしい。", sentenceParts: ["I", "{slot}", "{slot}", "{slot}", "{slot}", "tennis."], words: ["want", "to", "you", "play", "asked"], correctOrder: ["want", "you", "to", "play"], explanation: "want + 人 + to + 原形" },
-            { id: "qB2", subQuestion: "彼女は私に手伝うように頼みました。", sentenceParts: ["She", "{slot}", "{slot}", "{slot}", "{slot}", "her."], words: ["asked", "me", "to", "help", "tell"], correctOrder: ["asked", "me", "to", "help"], explanation: "ask + 人 + to + 原形" },
-            { id: "qB3", subQuestion: "父は私に部屋をそうじするように言いました。", sentenceParts: ["My father", "{slot}", "{slot}", "{slot}", "{slot}", "room."], words: ["told", "me", "to", "clean", "want"], correctOrder: ["told", "me", "to", "clean"], explanation: "tell + 人 + to + 原形" }
+            { id: "qB2", subQuestion: "先生は私たちに名前を書くように頼みました。", sentenceParts: ["The teacher", "{slot}", "{slot}", "{slot}", "{slot}", "our names."], words: ["asked", "us", "to", "write", "told"], correctOrder: ["asked", "us", "to", "write"], explanation: "ask + 人 + to + 原形" },
+            { id: "qB3", subQuestion: "父は私に自分の部屋をそうじするように言いました。", sentenceParts: ["My father", "{slot}", "{slot}", "{slot}", "{slot}", "my", "room."], words: ["told", "me", "to", "clean", "want"], correctOrder: ["told", "me", "to", "clean"], explanation: "tell + 人 + to + 原形" }
         ],
         quizSortList: [
-            { id: "qC1", subQuestion: "彼女は私に手伝うように頼みました。", words: ["She", "asked", "me", "to", "help"], explanation: "語順：ask + 人 + to + 動詞" },
+            { id: "qC1", subQuestion: "先生は私たちに静かにするように言いました。", words: ["The", "teacher", "told", "us", "to", "be", "quiet"], explanation: "語順：tell + 人 + to + 動詞" },
             { id: "qC2", subQuestion: "私はあなたに英語を勉強してほしい。", words: ["I", "want", "you", "to", "study", "English"], explanation: "語順：want + 人 + to + 動詞" }
         ],
         summary: ["動詞 + 人 + to + 動詞の原形", "want=〜してほしい / ask=頼む / tell=言う", "人は必須"]
@@ -7860,17 +7860,17 @@ const LESSONS_DB = {
         quizChoiceList: [
             {
                 id: "qA1",
-                subQuestion: "The news made me (　　　).",
-                options: ["sad", "sadly", "to sad", "saded"],
+                subQuestion: "The news (　　　) me sad.",
+                options: ["made", "helped", "let", "asked"],
                 correctIndex: 0,
-                explanation: "make + O + C(形容詞)の形。sad（悲しい）が正解。"
+                explanation: "make + O + C で「OをCにする」です。"
             },
             {
                 id: "qA2",
-                subQuestion: "This game made us (　　　).",
-                options: ["excited", "excite", "exciting", "excitement"],
+                subQuestion: "We call (　　　) Ken.",
+                options: ["him", "happy", "open", "famous"],
                 correctIndex: 0,
-                explanation: "make + O + C(形容詞) の形。excited が正解です。"
+                explanation: "call + O + C では、O に「何を・だれを」が入ります。"
             },
             {
                 id: "qA3",
@@ -7883,11 +7883,11 @@ const LESSONS_DB = {
         quizFillList: [
             {
                 id: "qB1",
-                subQuestion: "その料理は私を元気にしました。",
-                sentenceParts: ["The dish", "{slot}", "{slot}", "{slot}", "."],
-                words: ["made", "me", "cheerful", "make"],
-                correctOrder: ["made", "me", "cheerful"],
-                explanation: "make + O + C の語順で「私を元気にした」を表します。"
+                subQuestion: "その映画は私たちを眠くしました。",
+                sentenceParts: ["The movie", "{slot}", "{slot}", "{slot}", "."],
+                words: ["made", "us", "sleepy", "make"],
+                correctOrder: ["made", "us", "sleepy"],
+                explanation: "make + O + C の語順で「私たちを眠くした」を表します。"
             },
             {
                 id: "qB2",

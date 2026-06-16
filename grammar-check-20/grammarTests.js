@@ -563,6 +563,21 @@ window.GRAMMAR_CHECK_TESTS = {
             next.jp = next.jp.replace("カナダ", "日本");
         }
 
+        if (/^Japanese is spoken around the world/i.test(next.en)) {
+            next.en = next.en.replace(/^Japanese is/i, "English is");
+            next.blank = next.blank.replace(/^Japanese is/i, "English is");
+            next.jp = next.jp.replace(/^国語は世界中で話されています/, "英語は世界中で話されています");
+        }
+
+        if (/^Japanese is spoken in Canada/i.test(next.en)) {
+            next.en = next.en.replace(/^Japanese is/i, "French is");
+            next.blank = next.blank.replace(/^Japanese is/i, "French is");
+            next.jp = next.jp.replace(/^国語はカナダで話されています/, "フランス語はカナダで話されています");
+        }
+
+        next.jp = next.jp.replace(/準備ができてありません/g, "準備ができていません");
+        next.jp = next.jp.replace(/準備ができてです/g, "準備ができています");
+
         return next;
     }
 
@@ -645,7 +660,7 @@ window.GRAMMAR_CHECK_TESTS = {
 
         return {
             id: spec.id,
-            grade: "中1",
+            grade: spec.grade || (spec.id.startsWith("g3-") ? "中3" : spec.id.startsWith("g2-") ? "中2" : "中1"),
             title: spec.title,
             passScore: 16,
             perfectScore: 20,
@@ -1645,17 +1660,17 @@ window.GRAMMAR_CHECK_TESTS = {
             ],
             choiceExamples: [
                 { jp: "私はケンに私を手伝ってほしいです。", en: "I want Ken to help me.", blank: "I _____ Ken to help me.", answer: "want", distractors: ["ask", "tell", "make"] },
-                { jp: "彼女は私にドアを開けるよう頼みました。", en: "She asked me to open the door.", blank: "She asked _____ to open the door.", answer: "me", distractors: ["I", "my", "mine"] },
-                { jp: "先生は私たちに静かにするよう言いました。", en: "The teacher told us to be quiet.", blank: "The teacher told us _____ be quiet.", answer: "to", distractors: ["for", "that", "with"] },
+                { jp: "先生は私たちに名前を書くよう頼みました。", en: "The teacher asked us to write our names.", blank: "The teacher asked us _____ write our names.", answer: "to", distractors: ["for", "that", "with"] },
+                { jp: "彼女は私に座るよう言いました。", en: "She told me to sit down.", blank: "She told _____ to sit down.", answer: "me", distractors: ["I", "my", "mine"] },
                 { jp: "母は私に部屋を掃除してほしいです。", en: "My mother wants me to clean my room.", blank: "My mother _____ me to clean my room.", answer: "wants", distractors: ["want", "asking", "tell"] },
                 { jp: "私は友達に待つよう頼みました。", en: "I asked my friend to wait.", blank: "I asked my friend to _____.", answer: "wait", distractors: ["waits", "waiting", "waited"] }
             ],
             fillExamples: [
                 { jp: "私はケンに私を手伝ってほしいです。", en: "I want Ken to help me.", blank: "I _____ Ken to help me.", answer: "want" },
-                { jp: "彼女は私にドアを開けるよう頼みました。", en: "She asked me to open the door.", blank: "She asked _____ to open the door.", answer: "me" },
-                { jp: "先生は私たちに静かにするよう言いました。", en: "The teacher told us to be quiet.", blank: "The teacher told us _____ be quiet.", answer: "to" },
-                { jp: "母は私に部屋を掃除してほしいです。", en: "My mother wants me to clean my room.", blank: "My mother _____ me to clean my room.", answer: "wants" },
-                { jp: "私は友達に待つよう頼みました。", en: "I asked my friend to wait.", blank: "I asked my friend to _____.", answer: "wait" }
+                { jp: "先生は私たちに名前を書くよう頼みました。", en: "The teacher asked us to write our names.", blank: "The teacher asked us to _____ our names.", answer: "write" },
+                { jp: "彼女は私に座るよう言いました。", en: "She told me to sit down.", blank: "She told _____ to sit down.", answer: "me" },
+                { jp: "母は私に部屋を掃除してほしいです。", en: "My mother wants me to clean my room.", blank: "My mother wants me _____ clean my room.", answer: "to" },
+                { jp: "私は友達にいっしょに来てほしいです。", en: "I want my friend to come with me.", blank: "I want my friend to _____ with me.", answer: "come" }
             ],
             meaningExamples: [
                 { jp: "「人に〜するよう頼む」は ask 人 to do です。", en: "She asked me to open the door.", blank: "「人に〜するよう頼む」を表す動詞は _____.", answer: "ask", distractors: ["want", "tell", "let"] },
@@ -1683,11 +1698,11 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "ケンは私がその箱を運ぶのを手伝いました。", en: "Ken helped me carry the box.", blank: "Ken helped _____ carry the box.", answer: "me", distractors: ["I", "my", "mine"] }
             ],
             fillExamples: [
-                { jp: "私は妹が英語を勉強するのを手伝いました。", en: "I helped my sister study English.", blank: "I _____ my sister study English.", answer: "helped" },
+                { jp: "私は妹が英語を勉強するのを手伝いました。", en: "I helped my sister study English.", blank: "I helped my sister _____ English.", answer: "study" },
                 { jp: "父は私に車を使わせてくれました。", en: "My father let me use his car.", blank: "My father let _____ use his car.", answer: "me" },
-                { jp: "その知らせは私を幸せにしました。", en: "The news made me happy.", blank: "The news _____ me happy.", answer: "made" },
-                { jp: "母は私に夕食を作らせました。", en: "My mother made me cook dinner.", blank: "My mother made me _____ dinner.", answer: "cook" },
-                { jp: "ケンは私がその箱を運ぶのを手伝いました。", en: "Ken helped me carry the box.", blank: "Ken helped _____ carry the box.", answer: "me" }
+                { jp: "その知らせは私を幸せにしました。", en: "The news made me happy.", blank: "The news made me _____.", answer: "happy" },
+                { jp: "母は私に夕食を作らせました。", en: "My mother made me cook dinner.", blank: "My mother _____ me cook dinner.", answer: "made" },
+                { jp: "ケンは私がその箱を運ぶのを手伝いました。", en: "Ken helped me carry the box.", blank: "Ken helped me _____ the box.", answer: "carry" }
             ],
             meaningExamples: [
                 { jp: "help / let / make の後ろでは to を入れません。", en: "My father let me use his car.", blank: "正しい形は _____.", answer: "let me use", distractors: ["let me to use", "let I use", "let me using"] },
@@ -1709,17 +1724,17 @@ window.GRAMMAR_CHECK_TESTS = {
             ],
             choiceExamples: [
                 { jp: "その歌は私を幸せにします。", en: "The song makes me happy.", blank: "The song _____ me happy.", answer: "makes", distractors: ["make", "making", "to make"] },
-                { jp: "私たちはその犬をポチと呼びます。", en: "We call the dog Pochi.", blank: "We call _____ Pochi.", answer: "the dog", distractors: ["happy", "open", "famous"] },
+                { jp: "私たちは彼をケンと呼びます。", en: "We call him Ken.", blank: "We call _____ Ken.", answer: "him", distractors: ["happy", "open", "famous"] },
                 { jp: "彼らはその赤ちゃんをハナと名づけました。", en: "They named the baby Hana.", blank: "They _____ the baby Hana.", answer: "named", distractors: ["name", "names", "naming"] },
                 { jp: "窓を開けたままにしてください。", en: "Please keep the window open.", blank: "Please keep the window _____.", answer: "open", distractors: ["opens", "opened", "to open"] },
                 { jp: "そのニュースは彼を有名にしました。", en: "The news made him famous.", blank: "The news made _____ famous.", answer: "him", distractors: ["he", "his", "himself"] }
             ],
             fillExamples: [
-                { jp: "その歌は私を幸せにします。", en: "The song makes me happy.", blank: "The song _____ me happy.", answer: "makes" },
-                { jp: "私たちはその犬をポチと呼びます。", en: "We call the dog Pochi.", blank: "We call _____ Pochi.", answer: "the dog" },
-                { jp: "彼らはその赤ちゃんをハナと名づけました。", en: "They named the baby Hana.", blank: "They _____ the baby Hana.", answer: "named" },
+                { jp: "その歌は私を幸せにします。", en: "The song makes me happy.", blank: "The song makes me _____.", answer: "happy" },
+                { jp: "私たちは彼をケンと呼びます。", en: "We call him Ken.", blank: "We call him _____.", answer: "Ken" },
+                { jp: "彼らはその赤ちゃんをハナと名づけました。", en: "They named the baby Hana.", blank: "They named the baby _____.", answer: "Hana" },
                 { jp: "窓を開けたままにしてください。", en: "Please keep the window open.", blank: "Please keep the window _____.", answer: "open" },
-                { jp: "そのニュースは彼を有名にしました。", en: "The news made him famous.", blank: "The news made _____ famous.", answer: "him" }
+                { jp: "そのニュースは彼を有名にしました。", en: "The news made him famous.", blank: "The news _____ him famous.", answer: "made" }
             ],
             meaningExamples: [
                 { jp: "SVOCでは O と C が「O = C」の関係です。", en: "The song makes me happy.", blank: "The song makes me happy. の O は _____.", answer: "me", distractors: ["The song", "makes", "happy"] },
