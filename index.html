@@ -29,6 +29,13 @@
             opacity: 0.35;
             cursor: not-allowed;
         }
+        #draw-toolbar {
+            top: 0.75rem;
+            right: 0.75rem;
+            max-width: calc(100% - 1.5rem);
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
         #pointer-dot {
             width: 34px;
             height: 34px;
@@ -56,7 +63,7 @@
             <div id="slide-wrapper" class="w-full min-h-0 flex-1 overflow-y-auto custom-scroll p-2 md:p-6 flex flex-col"></div>
             <canvas id="draw-canvas" class="absolute inset-0 z-20 draw-disabled"></canvas>
             <div id="pointer-dot" class="hidden absolute z-30 rounded-full pointer-events-none"></div>
-            <div id="draw-toolbar" class="hidden absolute left-1/2 bottom-3 z-40 -translate-x-1/2 items-center gap-1 rounded-full border border-sky-300 bg-sky-100/90 px-2 py-1 shadow-lg backdrop-blur">
+            <div id="draw-toolbar" class="hidden absolute z-40 items-center gap-1 rounded-full border border-sky-300 bg-sky-100/90 px-2 py-1 shadow-lg backdrop-blur">
                 <button type="button" data-draw-tool="pencil" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="鉛筆" title="鉛筆">
                     <i data-lucide="pencil" class="w-5 h-5"></i>
                 </button>
@@ -8785,6 +8792,10 @@ const state = {
     lastDrawPoint: null
 };
 let speechVoice = null;
+let speechVoicesReady = false;
+let speechPrimed = false;
+let speechTimer = null;
+let speechRequestId = 0;
 
 function shuffleArray(arr) {
     const a = [...arr];
@@ -8820,6 +8831,7 @@ function setPageScrollMode(isLessonView) {
 function updateSpeechVoice() {
     if (!window.speechSynthesis) return;
     const voices = window.speechSynthesis.getVoices();
+    speechVoicesReady = voices.length > 0;
     speechVoice = voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en')) || null;
 }
 
@@ -8827,6 +8839,8 @@ function init() {
     updateSpeechVoice();
     if (window.speechSynthesis) {
         window.speechSynthesis.addEventListener('voiceschanged', updateSpeechVoice);
+        document.addEventListener('pointerdown', primeSpeechSynthesis, { once: true, passive: true });
+        document.addEventListener('keydown', primeSpeechSynthesis, { once: true });
     }
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -9470,16 +9484,55 @@ function handleDrawPointerLeave() {
     }
 }
 
-function speak(text) {
+function primeSpeechSynthesis() {
     if (!window.speechSynthesis) return;
-    updateSpeechVoice();
-    window.speechSynthesis.cancel();
+    if (!speechVoicesReady || !speechVoice) updateSpeechVoice();
+    window.speechSynthesis.resume();
+    if (speechPrimed) return;
+
+    speechPrimed = true;
+    const warmup = new SpeechSynthesisUtterance(' ');
+    warmup.lang = 'en-US';
+    warmup.volume = 0;
+    warmup.rate = 1;
+    if (speechVoice) warmup.voice = speechVoice;
+    const warmupRequestId = speechRequestId;
+
+    try {
+        window.speechSynthesis.speak(warmup);
+        setTimeout(() => {
+            if (speechRequestId === warmupRequestId && (window.speechSynthesis.speaking || window.speechSynthesis.pending)) {
+                window.speechSynthesis.cancel();
+            }
+        }, 80);
+    } catch {
+        speechPrimed = false;
+    }
+}
+
+function createSpeechUtterance(text) {
+    if (!speechVoicesReady || !speechVoice) updateSpeechVoice();
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-US';
     if (speechVoice) utterance.voice = speechVoice;
     utterance.rate = 0.9;
+    return utterance;
+}
+
+function speak(text) {
+    if (!window.speechSynthesis) return;
+    speechRequestId += 1;
+    if (speechTimer) {
+        clearTimeout(speechTimer);
+        speechTimer = null;
+    }
+    const utterance = createSpeechUtterance(text);
+    window.speechSynthesis.cancel();
     window.speechSynthesis.resume();
-    window.speechSynthesis.speak(utterance);
+    speechTimer = setTimeout(() => {
+        window.speechSynthesis.speak(utterance);
+        speechTimer = null;
+    }, 0);
 }
 
 function escapeHtmlAttr(text) {
@@ -9493,6 +9546,7 @@ function escapeHtmlAttr(text) {
 function speakFromButton(button) {
     const text = button.dataset.speak;
     if (!text) return;
+    primeSpeechSynthesis();
     speak(text);
 }
 
