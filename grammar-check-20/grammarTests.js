@@ -494,9 +494,63 @@ window.GRAMMAR_CHECK_TESTS = {
             next.jp = next.jp.replace(variant[2], variant[3]);
             next.blank = next.blank.replace(variant[0], variant[1]);
         }
-        next = addSectionContext(next, sectionType);
+        next = cleanupGeneratedExample(addSectionContext(next, sectionType));
         next.hints = getHints(next.en);
         next.answers = [next.en];
+        return next;
+    }
+
+    function cleanupGeneratedExample(example) {
+        const next = { ...example };
+        const replacements = [
+            {
+                en: /\bthe the (classroom|library|park|station) festival\b/g,
+                enTo: "the school festival",
+                jp: /(教室|図書館|公園|駅)祭/g,
+                jpTo: "学校祭"
+            },
+            {
+                en: /\byour the (classroom|library|park|station)\b/g,
+                enTo: "your school",
+                jp: /あなたの(教室|図書館|公園|駅)/g,
+                jpTo: "あなたの学校"
+            },
+            {
+                en: /\bour the (classroom|library|park|station)\b/g,
+                enTo: "our class",
+                jp: /私たちの(教室|図書館|公園|駅)/g,
+                jpTo: "私たちのクラス"
+            },
+            {
+                en: /\b(her|my|your) the (report|poster|worksheet|project)\b/g,
+                enTo: "$1 $2"
+            }
+        ];
+
+        replacements.forEach(item => {
+            next.en = next.en.replace(item.en, item.enTo);
+            next.blank = next.blank.replace(item.en, item.enTo);
+            if (item.jp) next.jp = next.jp.replace(item.jp, item.jpTo);
+        });
+
+        if (/^math is easier than math/i.test(next.en)) {
+            next.en = next.en.replace(/^math is/i, "Science is");
+            next.blank = next.blank.replace(/^math is/i, "Science is");
+            next.jp = next.jp.replace(/^数学は数学/, "理科は数学");
+        }
+
+        if (/^math is as important as math/i.test(next.en)) {
+            next.en = next.en.replace(/^math is/i, "Science is");
+            next.blank = next.blank.replace(/^math is/i, "Science is");
+            next.jp = next.jp.replace(/^数学は数学/, "理科は数学");
+        }
+
+        if (/^(math|science) is spoken around the world/i.test(next.en)) {
+            next.en = next.en.replace(/^(math|science) is/i, "English is");
+            next.blank = next.blank.replace(/^(math|science) is/i, "English is");
+            next.jp = next.jp.replace(/^(数学|理科)は世界中で話されています/, "英語は世界中で話されています");
+        }
+
         return next;
     }
 
@@ -541,12 +595,12 @@ window.GRAMMAR_CHECK_TESTS = {
     }
 
     function getSectionExamples(spec, sectionType, count) {
-        if (spec[`${sectionType}Examples`]) return spec[`${sectionType}Examples`].slice(0, count);
+        if (spec[`${sectionType}Examples`]) return spec[`${sectionType}Examples`].slice(0, count).map(cleanupGeneratedExample);
         const offset = sectionType === "fill" ? 1 : sectionType === "reorder" ? 2 : 3;
         return Array.from({ length: count }, (_, index) => {
             const base = spec.examples[(index + offset) % spec.examples.length];
             return applyVariant(base, sectionType, index);
-        });
+        }).map(cleanupGeneratedExample);
     }
 
     function makeGeneratedTest(spec) {
@@ -824,6 +878,17 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "あなたはいつテニスをしますか。", en: "When do you play tennis?", blank: "_____ do you play tennis?", answer: "When" },
                 { jp: "学校祭はいつですか。", en: "When is the school festival?", blank: "_____ is the school festival?", answer: "When" },
                 { jp: "あなたはいつ昼食を食べますか。", en: "When do you eat lunch?", blank: "_____ do you eat lunch?", answer: "When" }
+            ],
+            reorderExamples: [
+                { jp: "あなたはいつテニスをしますか。", en: "When do you play tennis?", blank: "_____ do you play tennis?", answer: "When" },
+                { jp: "公園祭はいつですか。", en: "When is the park festival?", blank: "_____ is the park festival?", answer: "When" },
+                { jp: "あなたはいつ昼食を食べますか。", en: "When do you eat lunch?", blank: "_____ do you eat lunch?", answer: "When" },
+                { jp: "あなたの誕生日はいつですか。", en: "When is your birthday?", blank: "_____ is your birthday?", answer: "When", hints: ["When", "birthday"] },
+                { jp: "あなたはいつ英語を勉強しますか。", en: "When do you study English?", blank: "_____ do you study English?", answer: "When", hints: ["When", "study"] }
+            ],
+            translationExamples: [
+                { jp: "学校祭はいつですか。", en: "When is the school festival?", blank: "_____ is the school festival?", answer: "When", hints: ["When", "is"], answers: ["When is the school festival?"] },
+                { jp: "あなたはいつ昼食を食べますか。", en: "When do you eat lunch?", blank: "_____ do you eat lunch?", answer: "When", hints: ["When", "eat"], answers: ["When do you eat lunch?"] }
             ]
         },
         {
@@ -838,6 +903,17 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "あなたはどこでサッカーをしますか。", en: "Where do you play soccer?", blank: "_____ do you play soccer?", answer: "Where" },
                 { jp: "彼はどこにいますか。", en: "Where is he?", blank: "_____ is he?", answer: "Where" },
                 { jp: "あなたの学校はどこですか。", en: "Where is your school?", blank: "_____ is your school?", answer: "Where" }
+            ],
+            reorderExamples: [
+                { jp: "あなたはどこでサッカーをしますか。", en: "Where do you play soccer?", blank: "_____ do you play soccer?", answer: "Where" },
+                { jp: "彼はどこにいますか。", en: "Where is he?", blank: "_____ is he?", answer: "Where" },
+                { jp: "公園はどこですか。", en: "Where is the park?", blank: "_____ is the park?", answer: "Where" },
+                { jp: "私のかばんはどこですか。", en: "Where is my bag?", blank: "_____ is my bag?", answer: "Where", hints: ["Where", "bag"] },
+                { jp: "あなたはどこに住んでいますか。", en: "Where do you live?", blank: "_____ do you live?", answer: "Where", hints: ["Where", "live"] }
+            ],
+            translationExamples: [
+                { jp: "私のかばんはどこですか。", en: "Where is my bag?", blank: "_____ is my bag?", answer: "Where", hints: ["Where", "bag"], answers: ["Where is my bag?"] },
+                { jp: "駅はどこですか。", en: "Where is the station?", blank: "_____ is the station?", answer: "Where", hints: ["Where", "is"], answers: ["Where is the station?"] }
             ]
         },
         {
@@ -1139,6 +1215,13 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "私たちは英語を話すことを練習しました。", en: "We practiced speaking English.", blank: "We practiced _____ English.", answer: "speaking" },
                 { jp: "ケンはテレビを見るのをやめました。", en: "Ken stopped watching TV.", blank: "Ken stopped _____ TV.", answer: "watching" },
                 { jp: "彼らは音楽を聞くことを楽しみました。", en: "They enjoyed listening to music.", blank: "They enjoyed _____ to music.", answer: "listening" }
+            ],
+            reorderExamples: [
+                { jp: "私たちは英語を話すことを練習しました。", en: "We practiced speaking English.", blank: "We practiced _____ English.", answer: "speaking" },
+                { jp: "ケンはテレビを見るのをやめました。", en: "Ken stopped watching TV.", blank: "Ken stopped _____ TV.", answer: "watching" },
+                { jp: "彼らは音楽を聞くことを楽しみました。", en: "They enjoyed listening to music.", blank: "They enjoyed _____ to music.", answer: "listening" },
+                { jp: "私は本を読むことを楽しみます。", en: "I enjoy reading books.", blank: "I enjoy _____ books.", answer: "reading" },
+                { jp: "彼女はワークシートを書くことを終えました。", en: "She finished writing her worksheet.", blank: "She finished _____ her worksheet.", answer: "writing" }
             ]
         },
         {
@@ -1230,6 +1313,13 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "私たちは英語を勉強しなければなりません。", en: "We have to study English.", blank: "We have to _____ English.", answer: "study" },
                 { jp: "ケンは部屋を掃除しなければなりません。", en: "Ken has to clean his room.", blank: "Ken has to _____ his room.", answer: "clean" },
                 { jp: "彼らは昼食を作らなければなりません。", en: "They have to make lunch.", blank: "They _____ to make lunch.", answer: "have" }
+            ],
+            reorderExamples: [
+                { jp: "私たちは英語を勉強しなければなりません。", en: "We have to study English.", blank: "We have to _____ English.", answer: "study" },
+                { jp: "ケンは部屋を掃除しなければなりません。", en: "Ken has to clean his room.", blank: "Ken has to _____ his room.", answer: "clean" },
+                { jp: "彼らは昼食を作らなければなりません。", en: "They have to make lunch.", blank: "They _____ to make lunch.", answer: "have" },
+                { jp: "私は宿題をしなければなりません。", en: "I have to do my homework.", blank: "I _____ to do my homework.", answer: "have" },
+                { jp: "彼女は早く起きなければなりません。", en: "She has to get up early.", blank: "She _____ to get up early.", answer: "has" }
             ]
         },
         {
@@ -1243,6 +1333,13 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "あなたは今宿題をしなければなりませんか。", en: "Do you have to do your homework now?", blank: "_____ you have to do your homework now?", answer: "Do" },
                 { jp: "ケンは部屋を掃除しなければなりませんか。", en: "Does Ken have to clean his room?", blank: "_____ Ken have to clean his room?", answer: "Does" },
                 { jp: "私たちはここで待つ必要はありません。", en: "We don't have to wait here.", blank: "We _____ have to wait here.", answer: "don't" }
+            ],
+            reorderExamples: [
+                { jp: "あなたは今宿題をしなければなりませんか。", en: "Do you have to do your homework now?", blank: "_____ you have to do your homework now?", answer: "Do" },
+                { jp: "ケンは部屋を掃除しなければなりませんか。", en: "Does Ken have to clean his room?", blank: "_____ Ken have to clean his room?", answer: "Does" },
+                { jp: "私たちはここで待つ必要はありません。", en: "We don't have to wait here.", blank: "We _____ have to wait here.", answer: "don't" },
+                { jp: "私は今日は早く起きる必要はありません。", en: "I don't have to get up early today.", blank: "I _____ have to get up early today.", answer: "don't" },
+                { jp: "彼女は昼食を作る必要はありません。", en: "She doesn't have to make lunch.", blank: "She _____ have to make lunch.", answer: "doesn't" }
             ]
         },
         {
@@ -1373,6 +1470,13 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "私の犬はあなたの犬より大きいです。", en: "My dog is bigger than your dog.", blank: "My dog is _____ than your dog.", answer: "bigger" },
                 { jp: "英語は数学より簡単です。", en: "English is easier than math.", blank: "English is _____ than math.", answer: "easier" },
                 { jp: "この映画はあの映画より人気があります。", en: "This movie is more popular than that one.", blank: "This movie is _____ popular than that one.", answer: "more" }
+            ],
+            reorderExamples: [
+                { jp: "私の犬はあなたの犬より大きいです。", en: "My dog is bigger than your dog.", blank: "My dog is _____ than your dog.", answer: "bigger" },
+                { jp: "理科は数学より簡単です。", en: "Science is easier than math.", blank: "Science is _____ than math.", answer: "easier" },
+                { jp: "この映画はあの映画より人気があります。", en: "This movie is more popular than that one.", blank: "This movie is _____ popular than that one.", answer: "more" },
+                { jp: "ケンはユキより背が高いです。", en: "Ken is taller than Yuki.", blank: "Ken is taller _____ Yuki.", answer: "than" },
+                { jp: "この本はあの本より新しいです。", en: "This book is newer than that one.", blank: "This book is _____ than that one.", answer: "newer" }
             ]
         },
         {
@@ -1399,6 +1503,17 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "富士山は日本で一番高い山です。", en: "Mt. Fuji is the highest mountain in Japan.", blank: "Mt. Fuji is the _____ mountain in Japan.", answer: "highest" },
                 { jp: "彼女は私たちの学校で一番人気があります。", en: "She is the most popular in our school.", blank: "She is the _____ popular in our school.", answer: "most" },
                 { jp: "これはすべての中で一番よい考えです。", en: "This is the best idea of all.", blank: "This is the _____ idea of all.", answer: "best" }
+            ],
+            reorderExamples: [
+                { jp: "富士山は日本で一番高い山です。", en: "Mt. Fuji is the highest mountain in Japan.", blank: "Mt. Fuji is the _____ mountain in Japan.", answer: "highest" },
+                { jp: "彼女は私たちのクラスで一番人気があります。", en: "She is the most popular in our class.", blank: "She is the _____ popular in our class.", answer: "most" },
+                { jp: "これはすべての中で一番よい考えです。", en: "This is the best idea of all.", blank: "This is the _____ idea of all.", answer: "best" },
+                { jp: "ケンはクラスで一番背が高いです。", en: "Ken is the tallest in his class.", blank: "Ken is the _____ in his class.", answer: "tallest" },
+                { jp: "この本は3冊の中で一番新しいです。", en: "This book is the newest of the three.", blank: "This book is the newest _____ the three.", answer: "of" }
+            ],
+            translationExamples: [
+                { jp: "彼女は私たちのクラスで一番人気があります。", en: "She is the most popular in our class.", blank: "She is the _____ popular in our class.", answer: "most", hints: ["is", "most"], answers: ["She is the most popular in our class."] },
+                { jp: "これはすべての中で一番よい考えです。", en: "This is the best idea of all.", blank: "This is the _____ idea of all.", answer: "best", hints: ["best", "idea"], answers: ["This is the best idea of all."] }
             ]
         },
         {
@@ -1425,6 +1540,13 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "私は兄ほど速く走れません。", en: "I can't run as fast as my brother.", blank: "I can't run as _____ as my brother.", answer: "fast" },
                 { jp: "この犬はあの犬ほど大きくありません。", en: "This dog is not as big as that dog.", blank: "This dog is not as _____ as that dog.", answer: "big" },
                 { jp: "英語は数学と同じくらい大切です。", en: "English is as important as math.", blank: "English is as _____ as math.", answer: "important" }
+            ],
+            reorderExamples: [
+                { jp: "私は兄ほど速く走れません。", en: "I can't run as fast as my brother.", blank: "I can't run as _____ as my brother.", answer: "fast" },
+                { jp: "この犬はあの犬ほど大きくありません。", en: "This dog is not as big as that dog.", blank: "This dog is not as _____ as that dog.", answer: "big" },
+                { jp: "理科は数学と同じくらい大切です。", en: "Science is as important as math.", blank: "Science is as _____ as math.", answer: "important" },
+                { jp: "ケンはユキと同じくらい背が高いです。", en: "Ken is as tall as Yuki.", blank: "Ken is as tall _____ Yuki.", answer: "as" },
+                { jp: "この本はあの本と同じくらいおもしろいです。", en: "This book is as interesting as that one.", blank: "This book is as _____ as that one.", answer: "interesting" }
             ]
         },
         {
@@ -1477,6 +1599,13 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "これらの写真はユキによって撮られました。", en: "These pictures were taken by Yuki.", blank: "These pictures _____ taken by Yuki.", answer: "were" },
                 { jp: "英語は世界中で話されています。", en: "English is spoken around the world.", blank: "English is _____ around the world.", answer: "spoken" },
                 { jp: "その部屋は毎日掃除されています。", en: "The room is cleaned every day.", blank: "The room is _____ every day.", answer: "cleaned" }
+            ],
+            reorderExamples: [
+                { jp: "これらの写真はユキによって撮られました。", en: "These pictures were taken by Yuki.", blank: "These pictures _____ taken by Yuki.", answer: "were" },
+                { jp: "英語は世界中で話されています。", en: "English is spoken around the world.", blank: "English is _____ around the world.", answer: "spoken" },
+                { jp: "その部屋は毎日掃除されています。", en: "The room is cleaned every day.", blank: "The room is _____ every day.", answer: "cleaned" },
+                { jp: "この本は多くの生徒に読まれています。", en: "This book is read by many students.", blank: "This book _____ read by many students.", answer: "is" },
+                { jp: "その窓はケンによって開けられました。", en: "The window was opened by Ken.", blank: "The window was _____ by Ken.", answer: "opened" }
             ]
         },
         {
@@ -1501,11 +1630,22 @@ window.GRAMMAR_CHECK_TESTS = {
             rule: "受動態は be動詞 + 過去分詞で「〜される」を表します。主語の単数・複数や時制に合わせて be動詞を選びます。",
             distractors: ["reads", "reading", "readed"],
             examples: [
-                { jp: "この本は多くの生徒に読まれています。", en: "This book is read by many students.", blank: "This book _____ read by many students.", answer: "is" },
-                { jp: "その窓はケンによって開けられました。", en: "The window was opened by Ken.", blank: "The window was _____ by Ken.", answer: "opened" },
-                { jp: "これらの写真はユキによって撮られました。", en: "These pictures were taken by Yuki.", blank: "These pictures _____ taken by Yuki.", answer: "were" },
-                { jp: "英語は世界中で話されています。", en: "English is spoken around the world.", blank: "English is _____ around the world.", answer: "spoken" },
-                { jp: "その部屋は毎日掃除されています。", en: "The room is cleaned every day.", blank: "The room is _____ every day.", answer: "cleaned" }
+                { jp: "この物語は多くの生徒に読まれています。", en: "This story is read by many students.", blank: "This story _____ read by many students.", answer: "is" },
+                { jp: "そのドアはケンによって閉められました。", en: "The door was closed by Ken.", blank: "The door was _____ by Ken.", answer: "closed" },
+                { jp: "そのクッキーはユキによって作られました。", en: "The cookies were made by Yuki.", blank: "The cookies _____ made by Yuki.", answer: "were" },
+                { jp: "フランス語はカナダで話されています。", en: "French is spoken in Canada.", blank: "French is _____ in Canada.", answer: "spoken" },
+                { jp: "その教室は毎日掃除されています。", en: "The classroom is cleaned every day.", blank: "The classroom is _____ every day.", answer: "cleaned" }
+            ],
+            reorderExamples: [
+                { jp: "そのクッキーはユキによって作られました。", en: "The cookies were made by Yuki.", blank: "The cookies _____ made by Yuki.", answer: "were" },
+                { jp: "フランス語はカナダで話されています。", en: "French is spoken in Canada.", blank: "French is _____ in Canada.", answer: "spoken" },
+                { jp: "その教室は毎日掃除されています。", en: "The classroom is cleaned every day.", blank: "The classroom is _____ every day.", answer: "cleaned" },
+                { jp: "この物語は多くの生徒に読まれています。", en: "This story is read by many students.", blank: "This story _____ read by many students.", answer: "is" },
+                { jp: "そのドアはケンによって閉められました。", en: "The door was closed by Ken.", blank: "The door was _____ by Ken.", answer: "closed" }
+            ],
+            translationExamples: [
+                { jp: "フランス語はカナダで話されています。", en: "French is spoken in Canada.", blank: "French is _____ in Canada.", answer: "spoken", hints: ["French", "spoken"], answers: ["French is spoken in Canada."] },
+                { jp: "その教室は毎日掃除されています。", en: "The classroom is cleaned every day.", blank: "The classroom is _____ every day.", answer: "cleaned", hints: ["classroom", "cleaned"], answers: ["The classroom is cleaned every day."] }
             ]
         },
         {
@@ -1540,11 +1680,18 @@ window.GRAMMAR_CHECK_TESTS = {
             rule: "SVOCの文では、目的語の後ろに補語を置き、「OをCと呼ぶ」「OをCにする」「OをCのままにする」を表します。",
             distractors: ["to happy", "happily", "happiness"],
             examples: [
-                { jp: "私たちはその犬をポチと呼びます。", en: "We call the dog Pochi.", blank: "We call the dog _____.", answer: "Pochi" },
-                { jp: "その知らせは私を幸せにしました。", en: "The news made me happy.", blank: "The news made me _____.", answer: "happy" },
-                { jp: "ドアを開けたままにしてください。", en: "Please keep the door open.", blank: "Please keep the door _____.", answer: "open" },
-                { jp: "彼らはその赤ちゃんをハナと名づけました。", en: "They named the baby Hana.", blank: "They named the baby _____.", answer: "Hana" },
-                { jp: "その物語は彼を有名にしました。", en: "The story made him famous.", blank: "The story made him _____.", answer: "famous" }
+                { jp: "私たちは先生をブラウン先生と呼びます。", en: "We call our teacher Mr. Brown.", blank: "We call our teacher _____.", answer: "Mr. Brown" },
+                { jp: "その知らせは私たちをわくわくさせました。", en: "The news made us excited.", blank: "The news made us _____.", answer: "excited" },
+                { jp: "教室をきれいに保ってください。", en: "Please keep the classroom clean.", blank: "Please keep the classroom _____.", answer: "clean" },
+                { jp: "彼らは自分たちのチームをスターズと名づけました。", en: "They named their team Stars.", blank: "They named their team _____.", answer: "Stars" },
+                { jp: "その映画は彼女を有名にしました。", en: "The movie made her famous.", blank: "The movie made her _____.", answer: "famous" }
+            ],
+            reorderExamples: [
+                { jp: "教室をきれいに保ってください。", en: "Please keep the classroom clean.", blank: "Please keep the classroom _____.", answer: "clean" },
+                { jp: "彼らは自分たちのチームをスターズと名づけました。", en: "They named their team Stars.", blank: "They named their team _____.", answer: "Stars" },
+                { jp: "その映画は彼女を有名にしました。", en: "The movie made her famous.", blank: "The movie made her _____.", answer: "famous" },
+                { jp: "私たちは先生をブラウン先生と呼びます。", en: "We call our teacher Mr. Brown.", blank: "We call our teacher _____.", answer: "Mr. Brown" },
+                { jp: "その知らせは私たちをわくわくさせました。", en: "The news made us excited.", blank: "The news made us _____.", answer: "excited" }
             ]
         },
         {
