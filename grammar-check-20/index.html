@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文法チェック20</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans selection:bg-blue-200 h-dvh overflow-hidden flex flex-col">
+    <div id="app" class="max-w-6xl mx-auto w-full h-dvh max-h-dvh min-h-0 overflow-hidden flex flex-col p-2 md:p-4">
+        <header class="flex justify-between items-center py-2 border-b border-slate-200 mb-2 flex-shrink-0">
+            <h1 class="text-lg font-bold text-slate-700 flex items-center gap-2 cursor-pointer" onclick="goHome()">
+                <i data-lucide="clipboard-check" class="w-5 h-5 text-blue-500"></i>
+                <span id="gc20-header-title">文法チェック20</span>
+            </h1>
+            <div id="gc20-status-area" class="text-xs text-slate-500 font-medium"></div>
+        </header>
+        <main class="flex-grow min-h-0 flex flex-col justify-center relative bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+            <div id="gc20-root" class="w-full min-h-0 flex-1 overflow-y-auto custom-scroll p-2 md:p-6 flex flex-col"></div>
+        </main>
+    </div>
+
+    <script src="grammarList.js"></script>
+    <script src="grammarTests.js"></script>
+    <script src="storage.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

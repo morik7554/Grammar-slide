@@ -8891,6 +8891,10 @@ function renderGradeSelect() {
                     </button>
                 `).join('')}
             </div>
+            <button onclick="openGrammarCheck20()" class="mt-6 w-full bg-orange-500 p-5 rounded-2xl border-2 border-orange-300 shadow-md hover:bg-orange-600 hover:border-orange-400 hover:shadow-lg transition-all flex items-center justify-center gap-3 text-white">
+                <i data-lucide="clipboard-check" class="w-6 h-6"></i>
+                <span class="text-xl font-black">確認テスト：文法チェック20</span>
+            </button>
         </div>
     `;
     lucide.createIcons();
@@ -8920,16 +8924,20 @@ function renderLessonSelect(grade) {
             </div>
             <div class="grid gap-3">
                 ${lessons.length > 0 ? lessons.map(lesson => `
-                    <button onclick="startLesson('${lesson.id}')" class="group flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 hover:shadow-md transition-all text-left">
-                        <div>
+                    <div class="group flex justify-between items-center gap-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 hover:shadow-md transition-all text-left">
+                        <button onclick="startLesson('${lesson.id}')" class="flex-grow min-w-0 text-left">
                             <div class="text-lg font-bold text-slate-800 group-hover:text-blue-600 flex items-center gap-2">
                                 <span>${lesson.menuTitle}</span>
                                 ${statusMap[lesson.id] === 'gold' ? '<span class="text-red-500 text-4xl">💮</span>' : statusMap[lesson.id] === 'silver' ? '<span class="text-blue-500 text-lg">⭕️</span>' : ''}
                             </div>
                             <div class="text-xs text-slate-500">${lesson.intro.subtitle}</div>
+                        </button>
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <button onclick="startLesson('${lesson.id}')" class="p-1 text-slate-300 group-hover:text-blue-500">
+                                <i data-lucide="chevron-right"></i>
+                            </button>
                         </div>
-                        <i data-lucide="chevron-right" class="text-slate-300 group-hover:text-blue-500"></i>
-                    </button>
+                    </div>
                 `).join('') : `<p class="text-center py-10 text-slate-400 italic">準備中です...</p>`}
             </div>
         </div>
@@ -9027,6 +9035,46 @@ function goToMenu() {
     window.history.replaceState({}, document.title, window.location.pathname);
     renderGradeSelect();
 }
+
+function openGrammarCheck20(testId = "") {
+    const suffix = testId ? `?test=${encodeURIComponent(testId)}` : "";
+    window.location.href = `grammar-check-20/index.html${suffix}`;
+}
+
+const LESSON_GRAMMAR_CHECK_TESTS = {
+    "be-verb-i-am": "g1-be-verb-i-am",
+    "be-verb-you-are": "g1-be-verb-you-are",
+    "be-verb-he-she-is": "g1-be-verb-he-she-is",
+    "be-verb-this-that": "g1-be-verb-this-that",
+    "be-verb-usage": "g1-be-verb-usage",
+    "be-verb-negative": "g1-be-verb-negative",
+    "be-verb-question": "g1-be-verb-question",
+    "be-verb-summary": "g1-be-verb-summary",
+    "general-verb-intro": "g1-general-verb-intro",
+    "general-verb-negative": "g1-general-verb-negative",
+    "general-verb-question": "g1-general-verb-question",
+    "general-verb-summary": "g1-general-verb-summary",
+    "question-what": "g1-question-what",
+    "question-who": "g1-question-who",
+    "question-when": "g1-question-when",
+    "question-where": "g1-question-where",
+    "plural-nouns": "g1-plural-nouns",
+    "imperative-sentence": "g1-imperative-sentence",
+    "pronoun-chart": "g1-pronoun-chart",
+    "present-continuous": "g1-present-continuous",
+    "ing-form-rules": "g1-ing-form-rules",
+    "auxiliary-can": "g1-auxiliary-can",
+    "auxiliary-can-neg-q": "g1-auxiliary-can-neg-q",
+    "past-tense-sentence": "g1-past-tense-sentence",
+    "past-tense-verb-forms": "g1-past-tense-verb-forms",
+    "third-person-singular-affirmative": "g1-third-person-singular-affirmative",
+    "third-person-singular-neg-q": "g1-third-person-singular-neg-q",
+    "identifying-third-person": "g1-identifying-third-person",
+    "present-perfect-continuous": "g3-present-perfect-continuous",
+    "present-perfect-experience": "g3-present-perfect-experience",
+    "present-perfect-completion": "g3-present-perfect-completion",
+    "present-perfect-summary": "g3-present-perfect-summary"
+};
 
 function restartLesson() {
     startLesson(state.currentLessonData.id);
@@ -9857,12 +9905,16 @@ function getQuizC_All_A_Html(l) {
 }
 
 function getSummaryHtml(l) {
+    const grammarCheckTestId = LESSON_GRAMMAR_CHECK_TESTS[l.id];
+    const grammarCheckButton = grammarCheckTestId
+        ? `<button onclick="openGrammarCheck20('${grammarCheckTestId}')" class="text-white bg-orange-500 hover:bg-orange-600 flex items-center gap-2 text-sm font-black px-4 py-2 rounded-full border border-orange-300 shadow-md"><i data-lucide="clipboard-check" class="w-4 h-4"></i> 確認テスト：文法チェック20</button>`
+        : "";
     return `<div class="flex flex-col items-center justify-center h-full space-y-6 max-w-2xl mx-auto w-full">
         <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2"><i data-lucide="check-square" class="w-6 h-6 text-green-500"></i> 本日のまとめ</h2>
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 w-full overflow-hidden">
             ${l.summary.map((t, i) => `<div class="p-4 border-b border-slate-100 last:border-0 flex items-start gap-3 hover:bg-slate-50 transition-colors"><span class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">${i+1}</span><p class="text-lg text-slate-700 font-medium">${t}</p></div>`).join('')}
         </div>
-        <div class="text-center pt-4 flex gap-4"><button onclick="restartLesson()" class="text-slate-500 hover:text-blue-600 flex items-center gap-2 text-sm font-bold bg-white px-4 py-2 rounded-full border"><i data-lucide="rotate-ccw" class="w-4 h-4"></i> もう一度解く</button><button onclick="goToMenu()" class="text-white bg-slate-700 hover:bg-slate-800 px-4 py-2 rounded-full text-sm font-bold shadow flex items-center gap-2"><i data-lucide="list" class="w-4 h-4"></i> メニューへ戻る</button></div>
+        <div class="text-center pt-4 flex flex-wrap justify-center gap-4"><button onclick="restartLesson()" class="text-slate-500 hover:text-blue-600 flex items-center gap-2 text-sm font-bold bg-white px-4 py-2 rounded-full border"><i data-lucide="rotate-ccw" class="w-4 h-4"></i> もう一度解く</button>${grammarCheckButton}<button onclick="goToMenu()" class="text-white bg-slate-700 hover:bg-slate-800 px-4 py-2 rounded-full text-sm font-bold shadow flex items-center gap-2"><i data-lucide="list" class="w-4 h-4"></i> メニューへ戻る</button></div>
     </div>`;
 }
 
