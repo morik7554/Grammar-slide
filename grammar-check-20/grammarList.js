@@ -246,17 +246,31 @@ window.GRAMMAR_CHECK_LIST = [
         grade: "中3",
         items: [
             {
-                id: "g3-passive-voice-summary",
-                title: "受動態まとめ",
+                id: "g3-passive-voice-basic",
+                title: "受け身 (受動態) の文",
                 order: 1,
-                testId: null,
-                sourceUnits: ["受け身 (受動態) の文", "受け身の否定文・疑問文", "受動態で by を使わないパターン"]
+                testId: "g3-passive-voice-basic",
+                sourceUnits: ["受け身 (受動態) の文"]
+            },
+            {
+                id: "g3-passive-voice-neg-q",
+                title: "受け身の否定文・疑問文",
+                order: 2,
+                testId: "g3-passive-voice-neg-q",
+                sourceUnits: ["受け身の否定文・疑問文"]
+            },
+            {
+                id: "g3-passive-voice-idioms",
+                title: "受動態で by を使わないパターン",
+                order: 3,
+                testId: "g3-passive-voice-idioms",
+                sourceUnits: ["受動態で by を使わないパターン"]
             },
             {
                 id: "g3-svoc-sentences",
                 title: "call / make / keep (SVOCの文)",
-                order: 2,
-                testId: null,
+                order: 4,
+                testId: "g3-svoc-sentences",
                 sourceUnits: ["call / make / keep (SVOCの文)"]
             },
             {
@@ -291,42 +305,63 @@ window.GRAMMAR_CHECK_LIST = [
                 id: "g3-interrogative-infinitive",
                 title: "疑問詞 ＋ to ＋ 動詞の原形",
                 order: 9,
-                testId: null,
+                testId: "g3-interrogative-infinitive",
                 sourceUnits: ["疑問詞 ＋ to ＋ 動詞の原形"]
             },
             {
                 id: "g3-it-is-for-to",
                 title: "It is ... for ... to ... 構文",
                 order: 10,
-                testId: null,
+                testId: "g3-it-is-for-to",
                 sourceUnits: ["It is ... for ... to ... 構文"]
             },
             {
                 id: "g3-indirect-question",
                 title: "間接疑問文",
                 order: 11,
-                testId: null,
+                testId: "g3-indirect-question",
                 sourceUnits: ["間接疑問文"]
             },
             {
-                id: "g3-participle-modifier-summary",
-                title: "後置修飾まとめ",
+                id: "g3-participle-modifier",
+                title: "後置修飾 (現在分詞・過去分詞)",
                 order: 12,
-                testId: null,
-                sourceUnits: ["後置修飾 (現在分詞・過去分詞)", "後置修飾 (名詞＋主語＋動詞)"]
+                testId: "g3-participle-modifier",
+                sourceUnits: ["後置修飾 (現在分詞・過去分詞)"]
+            },
+            {
+                id: "g3-contact-clause",
+                title: "後置修飾 (名詞＋主語＋動詞)",
+                order: 13,
+                testId: "g3-contact-clause",
+                sourceUnits: ["後置修飾 (名詞＋主語＋動詞)"]
+            },
+            {
+                id: "g3-relative-pronoun-who",
+                title: "関係代名詞 who (人)",
+                order: 14,
+                testId: "g3-relative-pronoun-who",
+                sourceUnits: ["関係代名詞 who (人)"]
+            },
+            {
+                id: "g3-relative-pronoun-which",
+                title: "関係代名詞 which (物・動物)",
+                order: 15,
+                testId: "g3-relative-pronoun-which",
+                sourceUnits: ["関係代名詞 which (物・動物)"]
             },
             {
                 id: "g3-relative-pronouns-summary",
-                title: "関係代名詞まとめ",
+                title: "関係代名詞まとめ (who / which)",
                 order: 16,
-                testId: null,
+                testId: "g3-relative-pronouns-summary",
                 sourceUnits: ["関係代名詞 who (人)", "関係代名詞 which (物・動物)", "関係代名詞まとめ (who / which)"]
             },
             {
                 id: "g3-prepositions-master",
                 title: "前置詞の使い方 (まとめ)",
                 order: 17,
-                testId: null,
+                testId: "g3-prepositions-master",
                 sourceUnits: ["前置詞の使い方 (まとめ)"]
             }
         ]

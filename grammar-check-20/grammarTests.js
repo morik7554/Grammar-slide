@@ -1494,7 +1494,179 @@ window.GRAMMAR_CHECK_TESTS = {
         }
     ];
 
-    [...grade1Specs, ...grade2Specs].forEach(spec => {
+    const grade3Specs = [
+        {
+            id: "g3-passive-voice-basic",
+            title: "受け身 (受動態) の文",
+            rule: "受動態は be動詞 + 過去分詞で「〜される」を表します。主語の単数・複数や時制に合わせて be動詞を選びます。",
+            distractors: ["reads", "reading", "readed"],
+            examples: [
+                { jp: "この本は多くの生徒に読まれています。", en: "This book is read by many students.", blank: "This book _____ read by many students.", answer: "is" },
+                { jp: "その窓はケンによって開けられました。", en: "The window was opened by Ken.", blank: "The window was _____ by Ken.", answer: "opened" },
+                { jp: "これらの写真はユキによって撮られました。", en: "These pictures were taken by Yuki.", blank: "These pictures _____ taken by Yuki.", answer: "were" },
+                { jp: "英語は世界中で話されています。", en: "English is spoken around the world.", blank: "English is _____ around the world.", answer: "spoken" },
+                { jp: "その部屋は毎日掃除されています。", en: "The room is cleaned every day.", blank: "The room is _____ every day.", answer: "cleaned" }
+            ]
+        },
+        {
+            id: "g3-passive-voice-neg-q",
+            title: "受け身の否定文・疑問文",
+            rule: "受動態の否定文は be動詞の後ろに not、疑問文は be動詞を主語の前に出します。",
+            distractors: ["do not", "did", "does"],
+            examples: [
+                { jp: "この本は多くの生徒に読まれていません。", en: "This book is not read by many students.", blank: "This book is _____ read by many students.", answer: "not" },
+                { jp: "その窓はケンによって開けられましたか。", en: "Was the window opened by Ken?", blank: "_____ the window opened by Ken?", answer: "Was" },
+                { jp: "これらの写真はユキによって撮られていません。", en: "These pictures were not taken by Yuki.", blank: "These pictures were _____ taken by Yuki.", answer: "not" },
+                { jp: "英語はカナダで話されていますか。", en: "Is English spoken in Canada?", blank: "_____ English spoken in Canada?", answer: "Is" },
+                { jp: "その部屋は毎日掃除されていません。", en: "The room is not cleaned every day.", blank: "The room is not _____ every day.", answer: "cleaned" }
+            ]
+        },
+        {
+            id: "g3-passive-voice-idioms",
+            title: "受動態で by を使わないパターン",
+            rule: "受動態でも、interested in、covered with、known to など by 以外の前置詞を使う形があります。",
+            distractors: ["interesting", "cover", "know"],
+            examples: [
+                { jp: "私は音楽に興味があります。", en: "I am interested in music.", blank: "I am _____ in music.", answer: "interested" },
+                { jp: "その机は本で覆われています。", en: "The desk is covered with books.", blank: "The desk is _____ with books.", answer: "covered" },
+                { jp: "この寺は多くの人に知られています。", en: "This temple is known to many people.", blank: "This temple is _____ to many people.", answer: "known" },
+                { jp: "彼女はその結果に満足しています。", en: "She is pleased with the result.", blank: "She is _____ with the result.", answer: "pleased" },
+                { jp: "彼はその知らせに驚きました。", en: "He was surprised at the news.", blank: "He was _____ at the news.", answer: "surprised" }
+            ]
+        },
+        {
+            id: "g3-svoc-sentences",
+            title: "call / make / keep (SVOCの文)",
+            rule: "SVOCの文では、目的語の後ろに補語を置き、「OをCと呼ぶ」「OをCにする」「OをCのままにする」を表します。",
+            distractors: ["to happy", "happily", "happiness"],
+            examples: [
+                { jp: "私たちはその犬をポチと呼びます。", en: "We call the dog Pochi.", blank: "We call the dog _____.", answer: "Pochi" },
+                { jp: "その知らせは私を幸せにしました。", en: "The news made me happy.", blank: "The news made me _____.", answer: "happy" },
+                { jp: "ドアを開けたままにしてください。", en: "Please keep the door open.", blank: "Please keep the door _____.", answer: "open" },
+                { jp: "彼らはその赤ちゃんをハナと名づけました。", en: "They named the baby Hana.", blank: "They named the baby _____.", answer: "Hana" },
+                { jp: "その物語は彼を有名にしました。", en: "The story made him famous.", blank: "The story made him _____.", answer: "famous" }
+            ]
+        },
+        {
+            id: "g3-interrogative-infinitive",
+            title: "疑問詞 ＋ to ＋ 動詞の原形",
+            rule: "疑問詞 + to + 動詞の原形で「何を〜すべきか」「どのように〜するか」などを表します。",
+            distractors: ["how I", "how can", "how do"],
+            examples: [
+                { jp: "私はこのコンピューターの使い方を知っています。", en: "I know how to use this computer.", blank: "I know _____ to use this computer.", answer: "how" },
+                { jp: "彼女は何を言えばよいかわかりません。", en: "She doesn't know what to say.", blank: "She doesn't know _____ to say.", answer: "what" },
+                { jp: "どこで会えばよいか教えてください。", en: "Tell me where to meet.", blank: "Tell me _____ to meet.", answer: "where" },
+                { jp: "ケンはいつ始めればよいかを学びました。", en: "Ken learned when to start.", blank: "Ken learned _____ to start.", answer: "when" },
+                { jp: "私たちはどのバスに乗るべきか決めました。", en: "We decided which bus to take.", blank: "We decided _____ bus to take.", answer: "which" }
+            ]
+        },
+        {
+            id: "g3-it-is-for-to",
+            title: "It is ... for ... to ... 構文",
+            rule: "It is ... for 人 to 動詞の原形で「人にとって〜することは...だ」を表します。",
+            distractors: ["of", "that", "doing"],
+            examples: [
+                { jp: "私たちにとって英語を勉強することは大切です。", en: "It is important for us to study English.", blank: "It is important _____ us to study English.", answer: "for" },
+                { jp: "ケンにとってこの本を読むことは簡単です。", en: "It is easy for Ken to read this book.", blank: "It is easy for Ken _____ read this book.", answer: "to" },
+                { jp: "私にとってこの問題を解くことは難しいです。", en: "It is difficult for me to solve this problem.", blank: "It is difficult _____ me to solve this problem.", answer: "for" },
+                { jp: "子どもたちにとって外で遊ぶことは楽しいです。", en: "It is fun for children to play outside.", blank: "It is fun for children _____ play outside.", answer: "to" },
+                { jp: "生徒にとって規則に従うことは必要です。", en: "It is necessary for students to follow the rules.", blank: "It is _____ for students to follow the rules.", answer: "necessary" }
+            ]
+        },
+        {
+            id: "g3-indirect-question",
+            title: "間接疑問文",
+            rule: "間接疑問文では、疑問詞の後ろを主語 + 動詞の語順にします。疑問文の語順にしない点に注意します。",
+            distractors: ["does he live", "where does", "where is"],
+            examples: [
+                { jp: "私は彼がどこに住んでいるか知っています。", en: "I know where he lives.", blank: "I know _____ he lives.", answer: "where" },
+                { jp: "彼女が何を欲しがっているか知っていますか。", en: "Do you know what she wants?", blank: "Do you know _____ she wants?", answer: "what" },
+                { jp: "私はケンがいつ来るかわかりません。", en: "I don't know when Ken will come.", blank: "I don't know _____ Ken will come.", answer: "when" },
+                { jp: "あなたがなぜ忙しいのか教えてください。", en: "Please tell me why you are busy.", blank: "Please tell me _____ you are busy.", answer: "why" },
+                { jp: "彼女は彼がどのように英語を勉強しているか知っています。", en: "She knows how he studies English.", blank: "She knows _____ he studies English.", answer: "how" }
+            ]
+        },
+        {
+            id: "g3-participle-modifier",
+            title: "後置修飾 (現在分詞・過去分詞)",
+            rule: "現在分詞は「〜している」、過去分詞は「〜された」の意味で、名詞の後ろから説明します。",
+            distractors: ["runs", "ran", "to run"],
+            examples: [
+                { jp: "公園で走っている少年はケンです。", en: "The boy running in the park is Ken.", blank: "The boy _____ in the park is Ken.", answer: "running" },
+                { jp: "本を読んでいる少女はユキです。", en: "The girl reading a book is Yuki.", blank: "The girl _____ a book is Yuki.", answer: "reading" },
+                { jp: "ケンによって壊された窓は修理されました。", en: "The window broken by Ken was fixed.", blank: "The window _____ by Ken was fixed.", answer: "broken" },
+                { jp: "私の父によって撮られた写真は美しいです。", en: "The pictures taken by my father are beautiful.", blank: "The pictures _____ by my father are beautiful.", answer: "taken" },
+                { jp: "テーブルの下で寝ている犬は私のものです。", en: "The dog sleeping under the table is mine.", blank: "The dog _____ under the table is mine.", answer: "sleeping" }
+            ]
+        },
+        {
+            id: "g3-contact-clause",
+            title: "後置修飾 (名詞＋主語＋動詞)",
+            rule: "名詞の後ろに主語 + 動詞を置くと、その名詞を後ろから詳しく説明できます。",
+            distractors: ["which", "who", "that is"],
+            examples: [
+                { jp: "私が昨日買った本はおもしろいです。", en: "The book I bought yesterday is interesting.", blank: "The book _____ bought yesterday is interesting.", answer: "I" },
+                { jp: "私たちが昨夜見た映画はわくわくしました。", en: "The movie we watched last night was exciting.", blank: "The movie _____ watched last night was exciting.", answer: "we" },
+                { jp: "彼女が駅で会った男性は私のおじです。", en: "The man she met at the station is my uncle.", blank: "The man _____ met at the station is my uncle.", answer: "she" },
+                { jp: "ケンが毎日使うかばんは青いです。", en: "The bag Ken uses every day is blue.", blank: "The bag _____ uses every day is blue.", answer: "Ken" },
+                { jp: "彼らが授業で歌った歌は美しかったです。", en: "The song they sang in class was beautiful.", blank: "The song _____ sang in class was beautiful.", answer: "they" }
+            ]
+        },
+        {
+            id: "g3-relative-pronoun-who",
+            title: "関係代名詞 who (人)",
+            rule: "who は人を説明する関係代名詞です。先行詞が人で、後ろの文の主語になるときに使います。",
+            distractors: ["which", "where", "what"],
+            examples: [
+                { jp: "私にはカナダに住んでいる友達がいます。", en: "I have a friend who lives in Canada.", blank: "I have a friend _____ lives in Canada.", answer: "who" },
+                { jp: "サッカーをする少年はケンです。", en: "The boy who plays soccer is Ken.", blank: "The boy _____ plays soccer is Ken.", answer: "who" },
+                { jp: "英語を教えている先生は親切です。", en: "The teacher who teaches English is kind.", blank: "The teacher _____ teaches English is kind.", answer: "who" },
+                { jp: "本を読んでいる少女はユキです。", en: "The girl who is reading a book is Yuki.", blank: "The girl _____ is reading a book is Yuki.", answer: "who" },
+                { jp: "私を助けてくれた男性は私のおじでした。", en: "The man who helped me was my uncle.", blank: "The man _____ helped me was my uncle.", answer: "who" }
+            ]
+        },
+        {
+            id: "g3-relative-pronoun-which",
+            title: "関係代名詞 which (物・動物)",
+            rule: "which は物や動物を説明する関係代名詞です。先行詞が人以外のときに使います。",
+            distractors: ["who", "where", "what"],
+            examples: [
+                { jp: "これはたくさんの写真がある本です。", en: "This is a book which has many pictures.", blank: "This is a book _____ has many pictures.", answer: "which" },
+                { jp: "私はユキが歌った歌が好きです。", en: "I like the song which Yuki sang.", blank: "I like the song _____ Yuki sang.", answer: "which" },
+                { jp: "京都へ行くバスは遅れています。", en: "The bus which goes to Kyoto is late.", blank: "The bus _____ goes to Kyoto is late.", answer: "which" },
+                { jp: "寝ている犬は私のものです。", en: "The dog which is sleeping is mine.", blank: "The dog _____ is sleeping is mine.", answer: "which" },
+                { jp: "ケンが使っているカメラは新しいです。", en: "The camera which Ken uses is new.", blank: "The camera _____ Ken uses is new.", answer: "which" }
+            ]
+        },
+        {
+            id: "g3-relative-pronouns-summary",
+            title: "関係代名詞まとめ (who / which)",
+            rule: "人を説明するときは who、物や動物を説明するときは which を使います。先行詞に注目して選びます。",
+            distractors: ["where", "when", "what"],
+            examples: [
+                { jp: "テニスをする少年は私の兄です。", en: "The boy who plays tennis is my brother.", blank: "The boy _____ plays tennis is my brother.", answer: "who" },
+                { jp: "これは父が私にくれたペンです。", en: "This is a pen which my father gave me.", blank: "This is a pen _____ my father gave me.", answer: "which" },
+                { jp: "私はフランス語を話す少女を知っています。", en: "I know a girl who speaks French.", blank: "I know a girl _____ speaks French.", answer: "who" },
+                { jp: "私たちが見た映画はわくわくしました。", en: "The movie which we watched was exciting.", blank: "The movie _____ we watched was exciting.", answer: "which" },
+                { jp: "私たちを助けてくれた先生は親切です。", en: "The teacher who helped us is kind.", blank: "The teacher _____ helped us is kind.", answer: "who" }
+            ]
+        },
+        {
+            id: "g3-prepositions-master",
+            title: "前置詞の使い方 (まとめ)",
+            rule: "前置詞は時・場所・手段・方向などの関係を表します。at、on、in、for、by などを意味に合わせて使います。",
+            distractors: ["to", "of", "with"],
+            examples: [
+                { jp: "私は7時に起きます。", en: "I get up at seven.", blank: "I get up _____ seven.", answer: "at" },
+                { jp: "私たちは日曜日にサッカーをします。", en: "We play soccer on Sunday.", blank: "We play soccer _____ Sunday.", answer: "on" },
+                { jp: "彼女は大阪に住んでいます。", en: "She lives in Osaka.", blank: "She lives _____ Osaka.", answer: "in" },
+                { jp: "このプレゼントはあなたへのものです。", en: "This present is for you.", blank: "This present is _____ you.", answer: "for" },
+                { jp: "私はバスで学校へ行きます。", en: "I go to school by bus.", blank: "I go to school _____ bus.", answer: "by" }
+            ]
+        }
+    ];
+
+    [...grade1Specs, ...grade2Specs, ...grade3Specs].forEach(spec => {
         if (!window.GRAMMAR_CHECK_TESTS[spec.id]) {
             window.GRAMMAR_CHECK_TESTS[spec.id] = makeGeneratedTest(spec);
         }
