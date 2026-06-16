@@ -1,3 +1,11 @@
+/*
+ * 文法チェック20 問題作成ルール
+ * - 20問全体を1つのテストとして見て、同じ英文・同じ日本語文の使い回しを避ける。
+ * - 大問1は文法理解、大問2は正確な語句、大問3は語順、大問4は英文作成を確認する。
+ * - 主語・動詞・場面が1つに偏りすぎないように分散させる。
+ * - 穴埋め・並び替え・和文英訳は完全一致採点に向く、答えが決まりやすい文にする。
+ * - 新規追加後は、同一テスト内の重複・類似・偏りを必ず確認する。
+ */
 window.GRAMMAR_CHECK_TESTS = {
     "g1-be-verb-i-am": {
         id: "g1-be-verb-i-am",
@@ -26,10 +34,10 @@ window.GRAMMAR_CHECK_TESTS = {
                 title: "大問2　穴埋め問題",
                 type: "fill",
                 questions: [
-                    { id: "f1", question: "I _____ Ken.", translation: "私はケンです。", answer: "am", explanation: "I の後ろには am を使います。" },
-                    { id: "f2", question: "_____ am from Japan.", translation: "私は日本出身です。", answer: "I", explanation: "自分のことを言う主語は I です。" },
-                    { id: "f3", question: "I am _____ student.", translation: "私は学生です。", answer: "a", explanation: "student は1人の人なので a student とします。" },
-                    { id: "f4", question: "I am _____ tired.", translation: "私は疲れていません。", answer: "not", explanation: "be 動詞の否定文は be 動詞の後ろに not を置きます。" },
+                    { id: "f1", question: "I _____ Kenta.", translation: "私はケンタです。", answer: "am", explanation: "I の後ろには am を使います。" },
+                    { id: "f2", question: "_____ am from Canada.", translation: "私はカナダ出身です。", answer: "I", explanation: "自分のことを言う主語は I です。" },
+                    { id: "f3", question: "I am _____ musician.", translation: "私は音楽家です。", answer: "a", explanation: "musician は1人の人なので a musician とします。" },
+                    { id: "f4", question: "I am _____ sleepy.", translation: "私は眠くありません。", answer: "not", explanation: "be 動詞の否定文は be 動詞の後ろに not を置きます。" },
                     { id: "f5", question: "_____ from Osaka.", translation: "私は大阪出身です。", answer: "I'm", explanation: "I'm は I am の短い形です。" }
                 ]
             },
@@ -50,8 +58,8 @@ window.GRAMMAR_CHECK_TESTS = {
                 title: "大問4　和文英訳",
                 type: "translation",
                 questions: [
-                    { id: "t1", question: "私は学生です。", hints: ["I", "student"], answers: ["I am a student.", "I'm a student."], explanation: "I am a student. が基本形です。I am は I'm にできます。" },
-                    { id: "t2", question: "私は日本出身です。", hints: ["from", "Japan"], answers: ["I am from Japan.", "I'm from Japan."], explanation: "「〜出身です」は am from ... を使います。" }
+                    { id: "t1", question: "私は医者です。", hints: ["I", "doctor"], answers: ["I am a doctor.", "I'm a doctor."], explanation: "I am a doctor. が基本形です。I am は I'm にできます。" },
+                    { id: "t2", question: "私は札幌出身です。", hints: ["from", "Sapporo"], answers: ["I am from Sapporo.", "I'm from Sapporo."], explanation: "「〜出身です」は am from ... を使います。" }
                 ]
             }
         ]
@@ -223,9 +231,9 @@ window.GRAMMAR_CHECK_TESTS = {
                 questions: [
                     {
                         id: "t1",
-                        question: "私はちょうど宿題を終えたところです。",
-                        hints: ["just", "finished"],
-                        answers: ["I have just finished my homework.", "I've just finished my homework."],
+                        question: "私はちょうどレポートを終えたところです。",
+                        hints: ["just", "report"],
+                        answers: ["I have just finished my report.", "I've just finished my report."],
                         explanation: "have just + 過去分詞で「ちょうど〜したところ」を表します。"
                     },
                     {
@@ -290,7 +298,7 @@ window.GRAMMAR_CHECK_TESTS = {
                 title: "大問4　和文英訳",
                 type: "translation",
                 questions: [
-                    { id: "t1", question: "私は5年間英語を勉強しています。", hints: ["for", "studied"], answers: ["I have studied English for five years.", "I've studied English for five years."], explanation: "継続は have + 過去分詞、期間は for five years です。" },
+                    { id: "t1", question: "私は4年間ピアノを練習しています。", hints: ["practiced", "four"], answers: ["I have practiced the piano for four years.", "I've practiced the piano for four years."], explanation: "継続は have + 過去分詞、期間は for four years です。" },
                     { id: "t2", question: "あなたはもう宿題を終えましたか。", hints: ["finished", "yet"], answers: ["Have you finished your homework yet?"], explanation: "完了用法の疑問文では yet を文末に置きます。" }
                 ]
             }
@@ -317,8 +325,234 @@ window.GRAMMAR_CHECK_TESTS = {
         return (words.length >= 2 ? words.slice(0, 2) : sentenceToWords(sentence).slice(0, 2));
     }
 
+    function applyVariant(example, sectionType, index) {
+        const sectionSpecificVariants = [
+            { from: "a student", jp: "学生", fill: ["a teacher", "先生"], reorder: ["a player", "選手"], translation: ["a member", "部員"], meaning: ["a leader", "リーダー"] },
+            { from: "a teacher", jp: "先生", fill: ["a doctor", "医者"], reorder: ["a coach", "コーチ"], translation: ["a writer", "作家"], meaning: ["a singer", "歌手"] },
+            { from: "my friend", jp: "私の友達", fill: ["my classmate", "私のクラスメート"], reorder: ["my teammate", "私のチームメート"], translation: ["my neighbor", "私の近所の人"], meaning: ["my cousin", "私のいとこ"] },
+            { from: "my brother", jp: "私の兄", fill: ["my uncle", "私のおじ"], reorder: ["my father", "私の父"], translation: ["my cousin", "私のいとこ"], meaning: ["my teammate", "私のチームメート"] },
+            { from: "my sister", jp: "私の妹", fill: ["my cousin", "私のいとこ"], reorder: ["my mother", "私の母"], translation: ["my classmate", "私のクラスメート"], meaning: ["my friend", "私の友達"] },
+            { from: "my book", jp: "私の本", fill: ["my notebook", "私のノート"], reorder: ["my dictionary", "私の辞書"], translation: ["my bag", "私のかばん"], meaning: ["my album", "私のアルバム"] },
+            { from: "your pen", jp: "あなたのペン", fill: ["your pencil", "あなたの鉛筆"], reorder: ["your notebook", "あなたのノート"], translation: ["your bag", "あなたのかばん"], meaning: ["your eraser", "あなたの消しゴム"] },
+            { from: "my school", jp: "私の学校", fill: ["my club", "私の部活"], reorder: ["my classroom", "私の教室"], translation: ["my house", "私の家"], meaning: ["my town", "私の町"] },
+            { from: "a cat", jp: "猫", fill: ["a dog", "犬"], reorder: ["a bird", "鳥"], translation: ["a rabbit", "うさぎ"], meaning: ["a fish", "魚"] },
+            { from: "new", jp: "新しく", fill: ["old", "古く"], reorder: ["small", "小さく"], translation: ["big", "大きく"], meaning: ["clean", "きれいでは"] },
+            { from: "kind", jp: "親切", fill: ["helpful", "手助けしてくれる人"], reorder: ["friendly", "友好的"], translation: ["popular", "人気"], meaning: ["careful", "注意深い"] },
+            { from: "happy", jp: "幸せ", fill: ["excited", "わくわくして"], reorder: ["ready", "準備ができて"], translation: ["fine", "元気"], meaning: ["sleepy", "眠い"] },
+            { from: "tired", jp: "疲れて", fill: ["hungry", "お腹がすいて"], reorder: ["sleepy", "眠く"], translation: ["happy", "幸せでは"], meaning: ["sad", "悲しく"] },
+            { from: "busy", jp: "忙しく", fill: ["ready", "準備ができて"], reorder: ["kind", "親切では"], translation: ["free", "ひまでは"], meaning: ["quiet", "静かでは"] },
+            { from: "Tokyo", jp: "東京", fill: ["Sapporo", "札幌"], reorder: ["Yokohama", "横浜"], translation: ["Nara", "奈良"], meaning: ["Nagoya", "名古屋"] },
+            { from: "soccer", jp: "サッカー", fill: ["basketball", "バスケットボール"], reorder: ["tennis", "テニス"], translation: ["volleyball", "バレーボール"], meaning: ["baseball", "野球"] },
+            { from: "tennis", jp: "テニス", fill: ["badminton", "バドミントン"], reorder: ["baseball", "野球"], translation: ["table tennis", "卓球"], meaning: ["basketball", "バスケットボール"] },
+            { from: "music", jp: "音楽", fill: ["movies", "映画"], reorder: ["English songs", "英語の歌"], translation: ["books", "本"], meaning: ["art", "美術"] },
+            { from: "English", jp: "英語", fill: ["math", "数学"], reorder: ["science", "理科"], translation: ["Japanese", "国語"], meaning: ["history", "歴史"] },
+            { from: "school", jp: "学校", fill: ["the library", "図書館"], reorder: ["the park", "公園"], translation: ["the station", "駅"], meaning: ["the classroom", "教室"] },
+            { from: "breakfast", jp: "朝食", fill: ["dinner", "夕食"], reorder: ["lunch", "昼食"], translation: ["supper", "夕食"], meaning: ["snacks", "おやつ"] },
+            { from: "dinner", jp: "夕食", fill: ["breakfast", "朝食"], reorder: ["lunch", "昼食"], translation: ["a cake", "ケーキ"], meaning: ["a sandwich", "サンドイッチ"] },
+            { from: "homework", jp: "宿題", fill: ["the report", "レポート"], reorder: ["the worksheet", "ワークシート"], translation: ["the project", "企画"], meaning: ["the poster", "ポスター"] },
+            { from: "TV", jp: "テレビ", fill: ["a movie", "映画"], reorder: ["a video", "動画"], translation: ["a soccer game", "サッカーの試合"], meaning: ["a drama", "ドラマ"] }
+        ];
+        if (example.en.includes("not tired") && example.jp.includes("疲れていません")) {
+            const replacements = {
+                fill: ["not sleepy", "眠くありません"],
+                reorder: ["not hungry", "お腹がすいていません"],
+                translation: ["not busy", "忙しくありません"],
+                meaning: ["not sad", "悲しくありません"]
+            };
+            const replacement = replacements[sectionType];
+            if (replacement) {
+                const next = { ...example };
+                next.en = next.en.replace("not tired", replacement[0]);
+                next.jp = next.jp.replace("疲れていません", replacement[1]);
+                next.blank = next.blank.replace("not tired", replacement[0]).replace("tired", replacement[0].replace("not ", ""));
+                next.hints = getHints(next.en);
+                next.answers = [next.en];
+                return next;
+            }
+        }
+        if (example.en.includes("not busy") && example.jp.includes("忙しくありません")) {
+            const replacements = {
+                fill: ["not ready", "準備ができていません"],
+                reorder: ["not quiet", "静かではありません"],
+                translation: ["not free", "ひまではありません"],
+                meaning: ["not careful", "注意深くありません"]
+            };
+            const replacement = replacements[sectionType];
+            if (replacement) {
+                const next = { ...example };
+                next.en = next.en.replace("not busy", replacement[0]);
+                next.jp = next.jp.replace("忙しくありません", replacement[1]);
+                next.blank = next.blank.replace("not busy", replacement[0]).replace("busy", replacement[0].replace("not ", ""));
+                next.hints = getHints(next.en);
+                next.answers = [next.en];
+                return next;
+            }
+        }
+        const sectionVariant = sectionSpecificVariants.find(item => nextIncludes(example, item.from, item.jp));
+        if (sectionVariant && sectionVariant[sectionType]) {
+            const [to, jpTo] = sectionVariant[sectionType];
+            const next = { ...example };
+            next.en = next.en.replace(sectionVariant.from, to);
+            next.jp = next.jp.replace(sectionVariant.jp, jpTo);
+            next.blank = next.blank.replace(sectionVariant.from, to);
+            next.hints = getHints(next.en);
+            next.answers = [next.en];
+            return next;
+        }
+
+        const commonVariants = [
+            ["a student", "a teacher", "学生", "先生"],
+            ["a teacher", "a doctor", "先生", "医者"],
+            ["my friend", "my classmate", "私の友達", "私のクラスメート"],
+            ["my brother", "my uncle", "私の兄", "私のおじ"],
+            ["my sister", "my cousin", "私の妹", "私のいとこ"],
+            ["my book", "my notebook", "私の本", "私のノート"],
+            ["your pen", "your pencil", "あなたのペン", "あなたの鉛筆"],
+            ["my school", "my club", "私の学校", "私の部活"],
+            ["a cat", "a dog", "猫", "犬"],
+            ["new", "old", "新しく", "古く"],
+            ["kind", "helpful", "親切", "手助けしてくれる人"],
+            ["happy", "excited", "幸せ", "わくわくして"],
+            ["hungry", "thirsty", "お腹がすいて", "のどがかわいて"],
+            ["busy", "ready", "忙しく", "準備ができて"],
+            ["Tokyo", "Sapporo", "東京", "札幌"],
+            ["the book", "the magazine", "その本", "その雑誌"],
+            ["homework", "the report", "宿題", "レポート"],
+            ["lunch", "breakfast", "昼食", "朝食"],
+            ["room", "desk", "部屋", "机"],
+            ["the work", "the project", "その仕事", "その企画"],
+            ["the movie", "the video", "その映画", "その動画"],
+            ["the song", "the story", "その歌", "その物語"],
+            ["Kyoto", "Nara", "京都", "奈良"],
+            ["Hokkaido", "Okinawa", "北海道", "沖縄"],
+            ["Yokohama", "Kobe", "横浜", "神戸"],
+            ["five years", "four years", "5年間", "4年間"],
+            ["three years", "two years", "3年間", "2年間"],
+            ["two hours", "thirty minutes", "2時間", "30分"],
+            ["last year", "last spring", "去年", "この前の春"],
+            ["since Monday", "since Tuesday", "月曜日から", "火曜日から"]
+        ];
+        const lexicalVariants = {
+            fill: [
+                ["soccer", "basketball", "サッカー", "バスケットボール"],
+                ["music", "movies", "音楽", "映画"],
+                ["English", "math", "英語", "数学"],
+                ["Osaka", "Kyoto", "大阪", "京都"],
+                ["Japan", "Canada", "日本", "カナダ"],
+                ["school", "the library", "学校", "図書館"],
+                ["breakfast", "dinner", "朝食", "夕食"],
+                ["tired", "hungry", "疲れて", "お腹がすいて"],
+                ["busy", "free", "忙しく", "ひまでは"]
+            ],
+            reorder: [
+                ["soccer", "tennis", "サッカー", "テニス"],
+                ["music", "English songs", "音楽", "英語の歌"],
+                ["English", "science", "英語", "理科"],
+                ["Osaka", "Yokohama", "大阪", "横浜"],
+                ["Japan", "Australia", "日本", "オーストラリア"],
+                ["school", "the park", "学校", "公園"],
+                ["breakfast", "lunch", "朝食", "昼食"],
+                ["tired", "sleepy", "疲れて", "眠く"],
+                ["busy", "kind", "忙しく", "親切では"]
+            ],
+            translation: [
+                ["soccer", "volleyball", "サッカー", "バレーボール"],
+                ["music", "books", "音楽", "本"],
+                ["English", "Japanese", "英語", "国語"],
+                ["Osaka", "Nara", "大阪", "奈良"],
+                ["Japan", "Korea", "日本", "韓国"],
+                ["school", "the station", "学校", "駅"],
+                ["breakfast", "dinner", "朝食", "夕食"],
+                ["tired", "happy", "疲れて", "幸せでは"],
+                ["busy", "ready", "忙しく", "準備ができて"]
+            ],
+            meaning: [
+                ["soccer", "baseball", "サッカー", "野球"],
+                ["music", "art", "音楽", "美術"],
+                ["English", "history", "英語", "歴史"],
+                ["Osaka", "Nagoya", "大阪", "名古屋"],
+                ["Japan", "America", "日本", "アメリカ"],
+                ["school", "the classroom", "学校", "教室"],
+                ["breakfast", "lunch", "朝食", "昼食"],
+                ["tired", "sad", "疲れて", "悲しく"],
+                ["busy", "quiet", "忙しく", "静かでは"]
+            ]
+        };
+        const variants = [...(lexicalVariants[sectionType] || []), ...commonVariants];
+        let next = { ...example };
+        const sectionOffsets = { fill: 0, reorder: 11, translation: 22, meaning: 33 };
+        const startIndex = index + (sectionOffsets[sectionType] || 0);
+        const variant = variants
+            .map((item, itemIndex) => variants[(startIndex + itemIndex) % variants.length])
+            .find(item => next.en.includes(item[0]) && next.jp.includes(item[2]));
+        if (variant) {
+            next.en = next.en.replace(variant[0], variant[1]);
+            next.jp = next.jp.replace(variant[2], variant[3]);
+            next.blank = next.blank.replace(variant[0], variant[1]);
+        }
+        next = addSectionContext(next, sectionType);
+        next.hints = getHints(next.en);
+        next.answers = [next.en];
+        return next;
+    }
+
+    function addSectionContext(example, sectionType) {
+        if (sectionType === "choice" || sectionType === "meaning") return example;
+        const contexts = {
+            fill: {
+                statement: ["today", "今日"],
+                question: ["now", "今"],
+                past: ["with my friends", "友達と"]
+            },
+            reorder: {
+                statement: ["after school", "放課後"],
+                question: ["today", "今日"],
+                past: ["at the park", "公園で"]
+            },
+            translation: {
+                statement: ["on weekends", "週末に"],
+                question: ["after class", "授業の後"],
+                past: ["after dinner", "夕食後に"]
+            }
+        };
+        const contextSet = contexts[sectionType];
+        if (!contextSet) return example;
+        const isQuestion = /\?$/.test(example.en);
+        const isPast = /\b(yesterday|last|ago)\b/.test(example.en);
+        if (/\bfrom [A-Z]/.test(example.en) || isPast) return example;
+        const [enContext, jpContext] = isPast ? contextSet.past : isQuestion ? contextSet.question : contextSet.statement;
+        const punct = isQuestion ? "?" : ".";
+        const baseEn = example.en.replace(/[.?]$/, "");
+        const baseBlank = example.blank.replace(/[.?]$/, "");
+        return {
+            ...example,
+            en: `${baseEn} ${enContext}${punct}`,
+            jp: `${jpContext}、${example.jp}`,
+            blank: `${baseBlank} ${enContext}${punct}`
+        };
+    }
+
+    function nextIncludes(example, enPart, jpPart) {
+        return example.en.includes(enPart) && example.jp.includes(jpPart);
+    }
+
+    function getSectionExamples(spec, sectionType, count) {
+        if (spec[`${sectionType}Examples`]) return spec[`${sectionType}Examples`].slice(0, count);
+        const offset = sectionType === "fill" ? 1 : sectionType === "reorder" ? 2 : 3;
+        return Array.from({ length: count }, (_, index) => {
+            const base = spec.examples[(index + offset) % spec.examples.length];
+            return applyVariant(base, sectionType, index);
+        });
+    }
+
     function makeGeneratedTest(spec) {
-        const choiceQuestions = spec.examples.map((example, index) => ({
+        const choiceExamples = getSectionExamples(spec, "choice", 5);
+        const fillExamples = getSectionExamples(spec, "fill", 5);
+        const reorderExamples = getSectionExamples(spec, "reorder", 5);
+        const translationExamples = getSectionExamples(spec, "translation", 2);
+        const sentenceChoiceExamples = getSectionExamples(spec, "meaning", 3);
+
+        const choiceQuestions = choiceExamples.map((example, index) => ({
             id: `c${index + 1}`,
             question: example.blank,
             translation: example.jp,
@@ -327,13 +561,13 @@ window.GRAMMAR_CHECK_TESTS = {
             explanation: example.explanation || spec.rule
         }));
 
-        spec.examples.slice(0, 3).forEach((example, index) => {
+        sentenceChoiceExamples.forEach((example, index) => {
             choiceQuestions.push({
                 id: `c${index + 6}`,
-                question: `Which sentence means 「${example.jp}」?`,
-                translation: "意味が合う英文を選びなさい。",
-                choices: makeChoices(example.en, spec.wrongSentences),
-                answer: example.en,
+                question: example.blank,
+                translation: example.jp,
+                choices: makeChoices(example.answer, example.distractors || spec.distractors),
+                answer: example.answer,
                 explanation: spec.rule
             });
         });
@@ -355,7 +589,7 @@ window.GRAMMAR_CHECK_TESTS = {
                     id: "fill",
                     title: "大問2　穴埋め問題",
                     type: "fill",
-                    questions: spec.examples.map((example, index) => ({
+                    questions: fillExamples.map((example, index) => ({
                         id: `f${index + 1}`,
                         question: example.blank,
                         translation: example.jp,
@@ -367,7 +601,7 @@ window.GRAMMAR_CHECK_TESTS = {
                     id: "reorder",
                     title: "大問3　並び替え問題",
                     type: "reorder",
-                    questions: spec.examples.map((example, index) => ({
+                    questions: reorderExamples.map((example, index) => ({
                         id: `r${index + 1}`,
                         question: example.jp,
                         words: sentenceToWords(example.en),
@@ -379,7 +613,7 @@ window.GRAMMAR_CHECK_TESTS = {
                     id: "translation",
                     title: "大問4　和文英訳",
                     type: "translation",
-                    questions: spec.examples.slice(0, 2).map((example, index) => ({
+                    questions: translationExamples.map((example, index) => ({
                         id: `t${index + 1}`,
                         question: example.jp,
                         hints: example.hints || getHints(example.en),
