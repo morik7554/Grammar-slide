@@ -138,6 +138,22 @@ function shuffleWordsFixed(words) {
     return shuffled;
 }
 
+function getStableChoiceOrder(question) {
+    const seed = `${appState.test?.id || ""}-${question.id}`;
+    const seedValue = [...seed].reduce((sum, char) => sum + char.charCodeAt(0), 0);
+    const choices = [...question.choices].sort((a, b) => {
+        const av = [...`${a}-${seedValue}`].reduce((sum, char) => sum + char.charCodeAt(0), 0);
+        const bv = [...`${b}-${seedValue}`].reduce((sum, char) => sum + char.charCodeAt(0), 0);
+        return av - bv;
+    });
+    const answerIndex = choices.indexOf(question.answer);
+    const targetIndex = seedValue % choices.length;
+    if (answerIndex >= 0 && answerIndex !== targetIndex) {
+        [choices[answerIndex], choices[targetIndex]] = [choices[targetIndex], choices[answerIndex]];
+    }
+    return choices;
+}
+
 function initReorderStates() {
     appState.reorderStates = {};
     appState.test.sections
@@ -188,7 +204,7 @@ function renderQuestion(section, question, index) {
                 <div class="text-base font-bold text-slate-800 mb-2"><span class="text-blue-600 text-sm mr-1.5">Q${number}.</span>${question.question}</div>
                 <div class="text-sm text-slate-500 mb-2">${question.translation}</div>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                    ${question.choices.map(choice => `
+                    ${getStableChoiceOrder(question).map(choice => `
                         <button type="button" data-choice-id="${question.id}" data-choice-value="${escapeHtmlAttr(choice)}" onclick="chooseChoiceAnswer('${question.id}', '${escapeJs(choice)}')" class="${getChoiceButtonClass(getQuestionAnswer(question) === choice)}">${choice}</button>
                     `).join("")}
                 </div>
