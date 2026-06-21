@@ -4981,6 +4981,153 @@ const LESSONS_DB = {
             "have been to（経験）と have gone to（完了）を区別する"
         ]
     },
+    "present-perfect-progressive": {
+        id: "present-perfect-progressive",
+        grade: 3,
+        menuTitle: "現在完了進行形",
+        intro: {
+            title: "現在完了進行形",
+            subtitle: "意味：過去から今までずっと〜し続けている",
+            goals: [
+                "have / has been + 動詞ing の形を覚える",
+                "for と since の使い分けを確認する",
+                "現在完了の継続用法との違いをつかむ"
+            ]
+        },
+        grammar: {
+            formula: [
+                { text: "主語", type: "box" },
+                { text: "+", type: "text" },
+                { text: "have / has", type: "red" },
+                { text: "+", type: "text" },
+                { text: "been", type: "red" },
+                { text: "+", type: "text" },
+                { text: "動詞ing", type: "blue" },
+                { text: "+", type: "text" },
+                { text: "for / since ～", type: "orange" }
+            ],
+            text: "過去に始まった動作が、今までずっと続いていることを表します。動きのあることを「ずっとし続けている」イメージです。",
+            items: [
+                { title: "have / has been ～ing", desc: "現在完了進行形の基本の形", icon: "refresh-cw", color: "blue" },
+                { title: "for + 期間", desc: "「〜の間」 (for two hours, for three days)", icon: "clock", color: "rose" },
+                { title: "since + 起点", desc: "「〜から」 (since this morning, since yesterday)", icon: "calendar", color: "orange" }
+            ]
+        },
+        points: {
+            title: "重要ポイント！",
+            color: "yellow",
+            badExample: "I am studying English for two hours. / She has playing tennis since this morning.",
+            goodExample: "I <strong>have been studying</strong> English for two hours. / She <strong>has been playing</strong> tennis since this morning.",
+            description: "今しているだけなら現在進行形ですが、「過去から今までずっと続いている」ときは have / has been ～ing を使います。"
+        },
+        examples: [
+            {
+                engDisplay: 'I <span class="text-red-600 font-bold">have been studying</span> English <span class="text-orange-600 font-bold">for</span> two hours.',
+                engRead: "I have been studying English for two hours.",
+                jp: "私は2時間ずっと英語を勉強しています。",
+                icon: "book-open",
+                color: "blue"
+            },
+            {
+                engDisplay: 'She <span class="text-rose-600 font-bold">has been playing</span> tennis <span class="text-orange-600 font-bold">since</span> this morning.',
+                engRead: "She has been playing tennis since this morning.",
+                jp: "彼女は今朝からずっとテニスをしています。",
+                icon: "activity",
+                color: "rose"
+            },
+            {
+                engDisplay: 'It <span class="text-blue-600 font-bold">has been raining</span> <span class="text-orange-600 font-bold">since</span> yesterday.',
+                engRead: "It has been raining since yesterday.",
+                jp: "昨日からずっと雨が降っています。",
+                icon: "cloud-rain",
+                color: "orange"
+            }
+        ],
+        quizChoiceList: [
+            {
+                id: "qA1",
+                subQuestion: "I (　　　) been studying for two hours.",
+                options: ["have", "has", "am", "was"],
+                correctIndex: 0,
+                explanation: "主語が I なので have been ～ing を使います。"
+            },
+            {
+                id: "qA2",
+                subQuestion: "She has been (　　　) tennis since this morning.",
+                options: ["playing", "play", "played", "plays"],
+                correctIndex: 0,
+                explanation: "been の後ろは動詞ing にします。"
+            },
+            {
+                id: "qA3",
+                subQuestion: "It has been raining (　　　) yesterday.",
+                options: ["since", "for", "from", "in"],
+                correctIndex: 0,
+                explanation: "yesterday は始まりの時点なので since を使います。"
+            }
+        ],
+        quizFillList: [
+            {
+                id: "qB1",
+                subQuestion: "彼は昨日からずっと本を読んでいます。",
+                sentenceParts: ["He", "{slot}", "{slot}", "{slot}", "a book since yesterday."],
+                words: ["has", "been", "reading", "read"],
+                correctOrder: ["has", "been", "reading"],
+                explanation: "He なので has been reading です。"
+            },
+            {
+                id: "qB2",
+                subQuestion: "私たちは3日間ずっとその部屋をそうじしています。",
+                sentenceParts: ["We", "{slot}", "{slot}", "{slot}", "the room for three days."],
+                words: ["have", "been", "cleaning", "cleaned"],
+                correctOrder: ["have", "been", "cleaning"],
+                explanation: "We なので have been cleaning を使います。"
+            },
+            {
+                id: "qB3",
+                subQuestion: "彼女は今朝からずっとピアノを練習しています。",
+                sentenceParts: ["She", "{slot}", "{slot}", "{slot}", "the piano since this morning."],
+                words: ["has", "been", "practicing", "practiced"],
+                correctOrder: ["has", "been", "practicing"],
+                explanation: "過去から今まで続く動作なので has been practicing です。"
+            }
+        ],
+        quizSortList: [
+            {
+                id: "qC1",
+                subQuestion: "私は2時間ずっと英語を勉強しています。",
+                words: ["I", "have", "been", "studying", "English", "for", "two", "hours"],
+                explanation: "I have been studying English + for two hours の語順です。"
+            },
+            {
+                id: "qC2",
+                subQuestion: "彼女は今朝からずっとテニスをしています。",
+                words: ["She", "has", "been", "playing", "tennis", "since", "this", "morning"],
+                explanation: "She has been playing tennis + since this morning の語順です。"
+            }
+        ],
+        quizTranslationList: [
+            {
+                id: "qD1",
+                subQuestion: "彼は昨日からずっと本を読んでいます。",
+                hints: ["He", "has been", "reading", "since yesterday"],
+                answer: "He has been reading a book since yesterday.",
+                explanation: "過去から今まで読み続けているので has been reading を使います。"
+            },
+            {
+                id: "qD2",
+                subQuestion: "私たちは3日間ずっとその部屋をそうじしています。",
+                hints: ["We", "have been", "cleaning", "for three days"],
+                answer: "We have been cleaning the room for three days.",
+                explanation: "We なので have been。3日間という期間なので for three days を使います。"
+            }
+        ],
+        summary: [
+            "現在完了進行形は have / has been + 動詞ing",
+            "「ずっと〜し続けている」という動作の継続を表す",
+            "have lived は状態の継続、have been studying は動作の継続"
+        ]
+    },
     "interrogative-infinitive": {
         id: "interrogative-infinitive",
         grade: 3,
@@ -8981,6 +9128,9 @@ function startLesson(id) {
         state.slides.push({ type: 'quizC_All_Q' }, { type: 'quizC_All_A' });
         l.quizSortList.forEach(q => state.quizStates[q.id] = { selected: [], pool: shuffleArray(q.words), isCorrect: false });
     }
+    if (l.quizTranslationList?.length) {
+        state.slides.push({ type: 'quizD_All_Q' }, { type: 'quizD_All_A' });
+    }
     state.slides.push({ type: 'summary' });
 
     footer.classList.remove('hidden');
@@ -9194,6 +9344,8 @@ function renderSlide(animate = true) {
         case 'quizB_All_A': html = getQuizB_All_A_Html(lesson); break;
         case 'quizC_All_Q': html = getQuizC_All_Q_Html(lesson); break;
         case 'quizC_All_A': html = getQuizC_All_A_Html(lesson); break;
+        case 'quizD_All_Q': html = getQuizD_All_Q_Html(lesson); break;
+        case 'quizD_All_A': html = getQuizD_All_A_Html(lesson); break;
         case 'summary': html = getSummaryHtml(lesson); break;
     }
 
@@ -9949,6 +10101,38 @@ function getQuizC_All_A_Html(l) {
                     </div>
                     <div class="text-slate-600 bg-slate-50 p-2 rounded text-sm border font-medium">${q.explanation}</div>
                 </div>
+            </div>`;
+        }).join('')}
+    </div></div>`;
+}
+
+function getQuizD_All_Q_Html(l) {
+    return `<div class="h-full flex flex-col"><h3 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2"><i data-lucide="languages" class="w-6 h-6 text-blue-500"></i> 練習問題 D</h3>
+    <div class="flex-grow overflow-y-auto flex flex-col gap-3 justify-center">
+        ${l.quizTranslationList.map((q, i) => `
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <div class="text-lg font-bold text-slate-800 mb-2"><span class="text-blue-600 mr-2">Q${i + 1}.</span>${q.subQuestion}</div>
+                <div class="text-sm text-slate-500 mb-3">下のヒントを使って英文を考えましょう。</div>
+                <div class="flex flex-wrap gap-2">
+                    ${(q.hints || []).map(hint => `<span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full border border-blue-100 font-bold">${hint}</span>`).join('')}
+                </div>
+            </div>
+        `).join('')}
+    </div><div class="mt-2 text-center flex-shrink-0"><button onclick="changeSlide(1)" class="px-10 py-2 bg-blue-600 text-white font-bold rounded-full shadow-lg">答えを見る</button></div></div>`;
+}
+
+function getQuizD_All_A_Html(l) {
+    return `<div class="h-full flex flex-col"><h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2 flex-shrink-0"><i data-lucide="award" class="w-6 h-6 text-yellow-500"></i> 解答・解説</h3>
+    <div class="flex-grow overflow-y-auto flex flex-col gap-3 justify-center">
+        ${l.quizTranslationList.map((q, i) => {
+            const sentenceToRead = (q.answer || "").replace(/'/g, "\\'");
+            return `<div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <div class="text-slate-500 text-sm mb-1"><span class="text-blue-600 mr-2">Q${i + 1}.</span>${q.subQuestion}</div>
+                <div class="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2">
+                    <span>${q.answer}</span>
+                    <button data-speak="${escapeHtmlAttr(sentenceToRead)}" onclick="speakFromButton(this)" class="p-1 rounded-full bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition-colors"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+                </div>
+                <div class="text-slate-600 bg-slate-50 p-2 rounded text-sm border border-slate-100">${q.explanation}</div>
             </div>`;
         }).join('')}
     </div></div>`;
