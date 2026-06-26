@@ -302,65 +302,72 @@ window.GRAMMAR_CHECK_LIST = [
                 sourceUnits: ["現在完了形 (継続)", "現在完了形 (経験)", "現在完了形 (完了)", "現在完了形まとめ (継続・経験・完了)"]
             },
             {
+                id: "g3-present-perfect-progressive",
+                title: "現在完了進行形",
+                order: 9,
+                testId: "g3-present-perfect-progressive",
+                sourceUnits: ["現在完了進行形"]
+            },
+            {
                 id: "g3-interrogative-infinitive",
                 title: "疑問詞 ＋ to ＋ 動詞の原形",
-                order: 9,
+                order: 10,
                 testId: "g3-interrogative-infinitive",
                 sourceUnits: ["疑問詞 ＋ to ＋ 動詞の原形"]
             },
             {
                 id: "g3-it-is-for-to",
                 title: "It is ... for ... to ... 構文",
-                order: 10,
+                order: 11,
                 testId: "g3-it-is-for-to",
                 sourceUnits: ["It is ... for ... to ... 構文"]
             },
             {
                 id: "g3-indirect-question",
                 title: "間接疑問文",
-                order: 11,
+                order: 12,
                 testId: "g3-indirect-question",
                 sourceUnits: ["間接疑問文"]
             },
             {
                 id: "g3-participle-modifier",
                 title: "後置修飾 (現在分詞・過去分詞)",
-                order: 12,
+                order: 13,
                 testId: "g3-participle-modifier",
                 sourceUnits: ["後置修飾 (現在分詞・過去分詞)"]
             },
             {
                 id: "g3-contact-clause",
                 title: "後置修飾 (名詞＋主語＋動詞)",
-                order: 13,
+                order: 14,
                 testId: "g3-contact-clause",
                 sourceUnits: ["後置修飾 (名詞＋主語＋動詞)"]
             },
             {
                 id: "g3-relative-pronoun-who",
                 title: "関係代名詞 who (人)",
-                order: 14,
+                order: 15,
                 testId: "g3-relative-pronoun-who",
                 sourceUnits: ["関係代名詞 who (人)"]
             },
             {
                 id: "g3-relative-pronoun-which",
                 title: "関係代名詞 which (物・動物)",
-                order: 15,
+                order: 16,
                 testId: "g3-relative-pronoun-which",
                 sourceUnits: ["関係代名詞 which (物・動物)"]
             },
             {
                 id: "g3-relative-pronouns-summary",
                 title: "関係代名詞まとめ (who / which)",
-                order: 16,
+                order: 17,
                 testId: "g3-relative-pronouns-summary",
                 sourceUnits: ["関係代名詞 who (人)", "関係代名詞 which (物・動物)", "関係代名詞まとめ (who / which)"]
             },
             {
                 id: "g3-prepositions-master",
                 title: "前置詞の使い方 (まとめ)",
-                order: 17,
+                order: 18,
                 testId: "g3-prepositions-master",
                 sourceUnits: ["前置詞の使い方 (まとめ)"]
             }

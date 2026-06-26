@@ -30,11 +30,14 @@
             cursor: not-allowed;
         }
         #draw-toolbar {
+            position: fixed;
             top: 0.75rem;
             right: 0.75rem;
-            max-width: calc(100% - 1.5rem);
-            flex-wrap: wrap;
+            width: max-content;
+            max-width: none;
+            flex-wrap: nowrap;
             justify-content: flex-end;
+            transform-origin: top left;
         }
         #pointer-dot {
             width: 34px;
@@ -5106,22 +5109,6 @@ const LESSONS_DB = {
                 explanation: "She has been playing tennis + since this morning の語順です。"
             }
         ],
-        quizTranslationList: [
-            {
-                id: "qD1",
-                subQuestion: "彼は昨日からずっと本を読んでいます。",
-                hints: ["He", "has been", "reading", "since yesterday"],
-                answer: "He has been reading a book since yesterday.",
-                explanation: "過去から今まで読み続けているので has been reading を使います。"
-            },
-            {
-                id: "qD2",
-                subQuestion: "私たちは3日間ずっとその部屋をそうじしています。",
-                hints: ["We", "have been", "cleaning", "for three days"],
-                answer: "We have been cleaning the room for three days.",
-                explanation: "We なので have been。3日間という期間なので for three days を使います。"
-            }
-        ],
         summary: [
             "現在完了進行形は have / has been + 動詞ing",
             "「ずっと〜し続けている」という動作の継続を表す",
@@ -9136,6 +9123,7 @@ function startLesson(id) {
     footer.classList.remove('hidden');
     drawToolbar.classList.remove('hidden');
     drawToolbar.classList.add('flex');
+    positionDrawToolbar();
     setDrawingTool(null);
     headerTitle.textContent = l.intro.title;
     createDots();
@@ -9265,6 +9253,7 @@ const LESSON_GRAMMAR_CHECK_TESTS = {
     "present-perfect-experience": "g3-present-perfect-experience",
     "present-perfect-completion": "g3-present-perfect-completion",
     "present-perfect-summary": "g3-present-perfect-summary",
+    "present-perfect-progressive": "g3-present-perfect-progressive",
     "interrogative-infinitive": "g3-interrogative-infinitive",
     "it-is-for-to": "g3-it-is-for-to",
     "indirect-question": "g3-indirect-question",
@@ -9363,6 +9352,7 @@ function renderSlide(animate = true) {
     updateControls();
     resizeDrawingCanvas();
     restoreCurrentDrawing();
+    positionDrawToolbar();
 }
 
 function getDrawingKey() {
@@ -9446,6 +9436,30 @@ function resizeDrawingCanvas() {
     image.src = snapshot;
 }
 
+function positionDrawToolbar() {
+    if (!drawToolbar) return;
+
+    const gap = 12;
+    const viewport = window.visualViewport;
+    const viewportTop = viewport ? viewport.offsetTop : 0;
+    const viewportLeft = viewport ? viewport.offsetLeft : 0;
+    const viewportWidth = viewport ? viewport.width : window.innerWidth;
+    const viewportScale = viewport?.scale || 1;
+    const inverseScale = 1 / viewportScale;
+    const baseToolbarWidth = drawToolbar.scrollWidth || drawToolbar.offsetWidth || 0;
+    const fitScale = baseToolbarWidth > 0
+        ? Math.min(inverseScale, (viewportWidth - gap * 2) / baseToolbarWidth, 1)
+        : inverseScale;
+    const toolbarWidth = baseToolbarWidth * fitScale;
+    const top = viewportTop + gap;
+    const left = viewportLeft + Math.max(gap, viewportWidth - toolbarWidth - gap);
+
+    drawToolbar.style.top = `${top}px`;
+    drawToolbar.style.left = `${left}px`;
+    drawToolbar.style.right = 'auto';
+    drawToolbar.style.transform = `scale(${fitScale})`;
+}
+
 function initDrawingTools() {
     drawToolbar.querySelectorAll('[data-draw-tool]').forEach(button => {
         button.addEventListener('click', () => {
@@ -9466,7 +9480,12 @@ function initDrawingTools() {
         saveCurrentDrawing();
         resizeDrawingCanvas();
         restoreCurrentDrawing();
+        positionDrawToolbar();
     });
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', positionDrawToolbar);
+        window.visualViewport.addEventListener('scroll', positionDrawToolbar);
+    }
 }
 
 function setDrawingTool(tool) {

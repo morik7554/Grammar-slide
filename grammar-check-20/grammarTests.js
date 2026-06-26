@@ -303,6 +303,63 @@ window.GRAMMAR_CHECK_TESTS = {
                 ]
             }
         ]
+    },
+    "g3-present-perfect-progressive": {
+        id: "g3-present-perfect-progressive",
+        grade: "中3",
+        title: "現在完了進行形",
+        passScore: 16,
+        perfectScore: 20,
+        sections: [
+            {
+                id: "choice",
+                title: "大問1　選択問題",
+                type: "choice",
+                questions: [
+                    { id: "c1", question: "I _____ been studying English for two hours.", translation: "私は2時間ずっと英語を勉強しています。", choices: ["have", "has", "am", "was"], answer: "have", explanation: "主語が I なので have been ～ing を使います。" },
+                    { id: "c2", question: "She has been _____ tennis since this morning.", translation: "彼女は今朝からずっとテニスをしています。", choices: ["playing", "play", "played", "plays"], answer: "playing", explanation: "been の後ろは動詞ing にします。" },
+                    { id: "c3", question: "It has been raining _____ yesterday.", translation: "昨日からずっと雨が降っています。", choices: ["since", "for", "from", "in"], answer: "since", explanation: "yesterday は始まりの時点なので since を使います。" },
+                    { id: "c4", question: "We have been cleaning the room _____ three days.", translation: "私たちは3日間ずっとその部屋を掃除しています。", choices: ["for", "since", "from", "at"], answer: "for", explanation: "three days は期間なので for を使います。" },
+                    { id: "c5", question: "He _____ been reading a book since last night.", translation: "彼は昨夜からずっと本を読んでいます。", choices: ["has", "have", "is", "was"], answer: "has", explanation: "He は三人称単数なので has been ～ing です。" },
+                    { id: "c6", question: "They have been _____ soccer since noon.", translation: "彼らは正午からずっとサッカーをしています。", choices: ["playing", "play", "played", "plays"], answer: "playing", explanation: "現在完了進行形は have been + 動詞ing です。" },
+                    { id: "c7", question: "My mother has been cooking dinner _____ an hour.", translation: "母は1時間ずっと夕食を作っています。", choices: ["for", "since", "from", "during"], answer: "for", explanation: "an hour は期間なので for を使います。" },
+                    { id: "c8", question: "Which sentence means 「彼女は朝からずっとピアノを練習しています。」?", translation: "意味が合う英文を選びなさい。", choices: ["She has been practicing the piano since this morning.", "She is practiced the piano since this morning.", "She has practiced the piano at this morning.", "She has been practiced the piano for this morning."], answer: "She has been practicing the piano since this morning.", explanation: "動作の継続は has been + 動詞ing、起点には since を使います。" }
+                ]
+            },
+            {
+                id: "fill",
+                title: "大問2　穴埋め問題",
+                type: "fill",
+                questions: [
+                    { id: "f1", question: "I have been _____ English for two hours.", translation: "私は2時間ずっと英語を勉強しています。", answer: "studying", explanation: "study は現在分詞にして studying です。" },
+                    { id: "f2", question: "She has _____ playing tennis since this morning.", translation: "彼女は今朝からずっとテニスをしています。", answer: "been", explanation: "現在完了進行形は has been + 動詞ing です。" },
+                    { id: "f3", question: "It has been raining _____ yesterday.", translation: "昨日からずっと雨が降っています。", answer: "since", explanation: "yesterday は起点なので since です。" },
+                    { id: "f4", question: "We have been cleaning the room _____ three days.", translation: "私たちは3日間ずっとその部屋を掃除しています。", answer: "for", explanation: "three days は期間なので for を使います。" },
+                    { id: "f5", question: "He _____ been reading a book since last night.", translation: "彼は昨夜からずっと本を読んでいます。", answer: "has", explanation: "He は三人称単数なので has を使います。" }
+                ]
+            },
+            {
+                id: "reorder",
+                title: "大問3　並び替え問題",
+                type: "reorder",
+                questions: [
+                    { id: "r1", question: "私は2時間ずっと英語を勉強しています。", words: ["I", "have", "been", "studying", "English", "for", "two", "hours"], answer: "I have been studying English for two hours.", explanation: "have been studying + for two hours の語順です。" },
+                    { id: "r2", question: "彼女は今朝からずっとテニスをしています。", words: ["She", "has", "been", "playing", "tennis", "since", "this", "morning"], answer: "She has been playing tennis since this morning.", explanation: "has been playing + since this morning の語順です。" },
+                    { id: "r3", question: "昨日からずっと雨が降っています。", words: ["It", "has", "been", "raining", "since", "yesterday"], answer: "It has been raining since yesterday.", explanation: "It has been raining で「ずっと雨が降っている」です。" },
+                    { id: "r4", question: "私たちは3日間ずっとその部屋を掃除しています。", words: ["We", "have", "been", "cleaning", "the", "room", "for", "three", "days"], answer: "We have been cleaning the room for three days.", explanation: "期間は for three days と置きます。" },
+                    { id: "r5", question: "彼は昨夜からずっと本を読んでいます。", words: ["He", "has", "been", "reading", "a", "book", "since", "last", "night"], answer: "He has been reading a book since last night.", explanation: "He なので has been reading を使います。" }
+                ]
+            },
+            {
+                id: "translation",
+                title: "大問4　和文英訳",
+                type: "translation",
+                questions: [
+                    { id: "t1", question: "彼は昨日からずっと本を読んでいます。", hints: ["has been", "reading"], answers: ["He has been reading a book since yesterday.", "He's been reading a book since yesterday."], explanation: "動作が続いているので has been reading を使い、起点には since yesterday を置きます。" },
+                    { id: "t2", question: "私たちは3日間ずっとその部屋を掃除しています。", hints: ["have been", "for three days"], answers: ["We have been cleaning the room for three days.", "We've been cleaning the room for three days."], explanation: "We なので have been。期間は for three days です。" }
+                ]
+            }
+        ]
     }
 };
 
