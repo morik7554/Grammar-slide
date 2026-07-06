@@ -365,7 +365,8 @@ window.GRAMMAR_CHECK_TESTS = {
 
 (function addGeneratedGrade1Tests() {
     function makeChoices(answer, distractors) {
-        const choices = [answer, ...distractors].filter((value, index, array) => array.indexOf(value) === index);
+        const fallbackDistractors = ["am", "are", "is", "be", "do", "does", "don't", "not", "play", "plays", "playing", "played"];
+        const choices = [answer, ...distractors, ...fallbackDistractors].filter((value, index, array) => array.indexOf(value) === index);
         return choices.slice(0, 4);
     }
 
@@ -394,8 +395,8 @@ window.GRAMMAR_CHECK_TESTS = {
             { from: "my school", jp: "私の学校", fill: ["my club", "私の部活"], reorder: ["my classroom", "私の教室"], translation: ["my house", "私の家"], meaning: ["my town", "私の町"] },
             { from: "a cat", jp: "猫", fill: ["a dog", "犬"], reorder: ["a bird", "鳥"], translation: ["a rabbit", "うさぎ"], meaning: ["a fish", "魚"] },
             { from: "new", jp: "新しく", fill: ["old", "古く"], reorder: ["small", "小さく"], translation: ["big", "大きく"], meaning: ["clean", "きれいでは"] },
-            { from: "kind", jp: "親切", fill: ["helpful", "手助けしてくれる人"], reorder: ["friendly", "友好的"], translation: ["popular", "人気"], meaning: ["careful", "注意深い"] },
-            { from: "happy", jp: "幸せ", fill: ["excited", "わくわくして"], reorder: ["ready", "準備ができて"], translation: ["fine", "元気"], meaning: ["sleepy", "眠い"] },
+            { from: "kind", jp: "親切", fill: ["nice", "すてき"], reorder: ["friendly", "友好的"], translation: ["popular", "人気"], meaning: ["careful", "注意深い"] },
+            { from: "happy", jp: "幸せ", fill: ["fine", "元気"], reorder: ["ready", "準備ができて"], translation: ["well", "元気"], meaning: ["sleepy", "眠い"] },
             { from: "tired", jp: "疲れて", fill: ["hungry", "お腹がすいて"], reorder: ["sleepy", "眠く"], translation: ["happy", "幸せでは"], meaning: ["sad", "悲しく"] },
             { from: "busy", jp: "忙しく", fill: ["ready", "準備ができて"], reorder: ["kind", "親切では"], translation: ["free", "ひまでは"], meaning: ["quiet", "静かでは"] },
             { from: "Tokyo", jp: "東京", fill: ["Sapporo", "札幌"], reorder: ["Yokohama", "横浜"], translation: ["Nara", "奈良"], meaning: ["Nagoya", "名古屋"] },
@@ -472,8 +473,8 @@ window.GRAMMAR_CHECK_TESTS = {
             ["my school", "my club", "私の学校", "私の部活"],
             ["a cat", "a dog", "猫", "犬"],
             ["new", "old", "新しく", "古く"],
-            ["kind", "helpful", "親切", "手助けしてくれる人"],
-            ["happy", "excited", "幸せ", "わくわくして"],
+            ["kind", "nice", "親切", "すてき"],
+            ["happy", "fine", "幸せ", "元気"],
             ["hungry", "thirsty", "お腹がすいて", "のどがかわいて"],
             ["busy", "ready", "忙しく", "準備ができて"],
             ["Tokyo", "Sapporo", "東京", "札幌"],
@@ -634,45 +635,15 @@ window.GRAMMAR_CHECK_TESTS = {
 
         next.jp = next.jp.replace(/準備ができてありません/g, "準備ができていません");
         next.jp = next.jp.replace(/準備ができてです/g, "準備ができています");
+        next.jp = next.jp.replace(/わくわくしてです/g, "わくわくしています");
+        next.jp = next.jp.replace(/手助けしてくれる人です/g, "親切です");
+        next.jp = next.jp.replace(/2本のバス/g, "2台のバス");
 
         return next;
     }
 
     function addSectionContext(example, sectionType) {
-        if (sectionType === "choice" || sectionType === "meaning") return example;
-        if (/\b(who|which)\b/.test(example.en)) return example;
-        const contexts = {
-            fill: {
-                statement: ["today", "今日"],
-                question: ["now", "今"],
-                past: ["with my friends", "友達と"]
-            },
-            reorder: {
-                statement: ["after school", "放課後"],
-                question: ["today", "今日"],
-                past: ["at the park", "公園で"]
-            },
-            translation: {
-                statement: ["on weekends", "週末に"],
-                question: ["after class", "授業の後"],
-                past: ["after dinner", "夕食後に"]
-            }
-        };
-        const contextSet = contexts[sectionType];
-        if (!contextSet) return example;
-        const isQuestion = /\?$/.test(example.en);
-        const isPast = /\b(yesterday|last|ago)\b/.test(example.en);
-        if (/\bfrom [A-Z]/.test(example.en) || isPast) return example;
-        const [enContext, jpContext] = isPast ? contextSet.past : isQuestion ? contextSet.question : contextSet.statement;
-        const punct = isQuestion ? "?" : ".";
-        const baseEn = example.en.replace(/[.?]$/, "");
-        const baseBlank = example.blank.replace(/[.?]$/, "");
-        return {
-            ...example,
-            en: `${baseEn} ${enContext}${punct}`,
-            jp: `${jpContext}、${example.jp}`,
-            blank: `${baseBlank} ${enContext}${punct}`
-        };
+        return example;
     }
 
     function nextIncludes(example, enPart, jpPart) {
@@ -693,7 +664,10 @@ window.GRAMMAR_CHECK_TESTS = {
         const fillExamples = getSectionExamples(spec, "fill", 5);
         const reorderExamples = getSectionExamples(spec, "reorder", 5);
         const translationExamples = getSectionExamples(spec, "translation", 2);
-        const sentenceChoiceExamples = getSectionExamples(spec, "meaning", 3);
+        const hasWrongSentenceChoices = (spec.wrongSentences || []).length >= 3;
+        const sentenceChoiceExamples = hasWrongSentenceChoices
+            ? spec.examples.slice(0, 3).map(cleanupGeneratedExample)
+            : getSectionExamples(spec, "meaning", 3);
 
         const choiceQuestions = choiceExamples.map((example, index) => ({
             id: `c${index + 1}`,
@@ -705,13 +679,28 @@ window.GRAMMAR_CHECK_TESTS = {
         }));
 
         sentenceChoiceExamples.forEach((example, index) => {
+            if (hasWrongSentenceChoices) {
+                const wrongChoices = spec.wrongSentences
+                    .filter(sentence => sentence !== example.en)
+                    .slice(0, 3);
+                choiceQuestions.push({
+                    id: `c${index + 6}`,
+                    question: "Which sentence is correct?",
+                    translation: "正しい英文を選びなさい。",
+                    choices: makeChoices(example.en, wrongChoices),
+                    answer: example.en,
+                    explanation: spec.rule
+                });
+                return;
+            }
+
             choiceQuestions.push({
                 id: `c${index + 6}`,
                 question: example.blank,
                 translation: example.jp,
                 choices: makeChoices(example.answer, example.distractors || spec.distractors),
                 answer: example.answer,
-                explanation: spec.rule
+                explanation: example.explanation || spec.rule
             });
         });
 
@@ -1006,13 +995,13 @@ window.GRAMMAR_CHECK_TESTS = {
             title: "名詞の複数形 (s/es)",
             rule: "2つ以上の名詞はふつう s をつけます。語尾によって es や ies になるものもあります。",
             distractors: ["cat", "box", "city"],
-            wrongSentences: ["I have two cat.", "There are three box.", "I like many city."],
+            wrongSentences: ["I have two cat.", "I have three box.", "I like many city."],
             examples: [
                 { jp: "私は2匹の猫を飼っています。", en: "I have two cats.", blank: "I have two _____.", answer: "cats", hints: ["two", "cats"] },
-                { jp: "箱が3つあります。", en: "There are three boxes.", blank: "There are three _____.", answer: "boxes", hints: ["three", "boxes"] },
+                { jp: "私は3つの箱を持っています。", en: "I have three boxes.", blank: "I have three _____.", answer: "boxes", hints: ["three", "boxes"] },
                 { jp: "私はたくさんの町が好きです。", en: "I like many cities.", blank: "I like many _____.", answer: "cities" },
                 { jp: "彼らは5冊の本を持っています。", en: "They have five books.", blank: "They have five _____.", answer: "books" },
-                { jp: "私は2本のバスを見ます。", en: "I see two buses.", blank: "I see two _____.", answer: "buses" }
+                { jp: "私は2台のバスを見ます。", en: "I see two buses.", blank: "I see two _____.", answer: "buses" }
             ]
         },
         {
@@ -1166,7 +1155,7 @@ window.GRAMMAR_CHECK_TESTS = {
                 { jp: "ユミは音楽が好きです。", en: "Yumi likes music.", blank: "Yumi _____ music.", answer: "likes", hints: ["Yumi", "likes"] },
                 { jp: "その猫は速く走ります。", en: "The cat runs fast.", blank: "The cat _____ fast.", answer: "runs" },
                 { jp: "私の父は車を持っています。", en: "My father has a car.", blank: "My father _____ a car.", answer: "has" },
-                { jp: "この本はおもしろそうに見えます。", en: "This book looks interesting.", blank: "This book _____ interesting.", answer: "looks" }
+                { jp: "私の妹は英語を勉強します。", en: "My sister studies English.", blank: "My sister _____ English.", answer: "studies" }
             ]
         }
     ];
