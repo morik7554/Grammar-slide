@@ -364,9 +364,163 @@ window.GRAMMAR_CHECK_TESTS = {
 };
 
 (function addGeneratedGrade1Tests() {
-    function makeChoices(answer, distractors) {
+    function getVerbFamily(answer) {
+        const families = [
+            ["be", "be", "am", "are", "is", "was", "were", "being", "been"],
+            ["do", "do", "does", "did", "doing", "done"],
+            ["have", "have", "has", "had", "having"],
+            ["go", "go", "goes", "went", "going", "gone"],
+            ["come", "come", "comes", "came", "coming"],
+            ["make", "make", "makes", "made", "making"],
+            ["run", "run", "runs", "ran", "running"],
+            ["study", "study", "studies", "studied", "studying", "studys"],
+            ["play", "play", "plays", "played", "playing"],
+            ["like", "like", "likes", "liked", "liking"],
+            ["eat", "eat", "eats", "ate", "eating", "eaten"],
+            ["read", "read", "reads", "readed", "reading"],
+            ["write", "write", "writes", "wrote", "writing", "written"],
+            ["swim", "swim", "swims", "swam", "swimming"],
+            ["speak", "speak", "speaks", "spoke", "speaking", "spoken"],
+            ["listen", "listen", "listens", "listened", "listening"],
+            ["watch", "watch", "watches", "watched", "watching"],
+            ["visit", "visit", "visits", "visited", "visiting"],
+            ["open", "open", "opens", "opened", "opening"],
+            ["close", "close", "closes", "closed", "closing"],
+            ["cook", "cook", "cooks", "cooked", "cooking"],
+            ["clean", "clean", "cleans", "cleaned", "cleaning"],
+            ["live", "live", "lives", "lived", "living"],
+            ["know", "know", "knows", "knew", "knowing", "known"],
+            ["see", "see", "sees", "saw", "seeing", "seen"],
+            ["take", "take", "takes", "took", "taking", "taken"],
+            ["call", "call", "calls", "called", "calling"],
+            ["name", "name", "names", "named", "naming"],
+            ["keep", "keep", "keeps", "kept", "keeping"],
+            ["help", "help", "helps", "helped", "helping"],
+            ["let", "let", "lets", "letting"],
+            ["ask", "ask", "asks", "asked", "asking"],
+            ["tell", "tell", "tells", "told", "telling"],
+            ["want", "want", "wants", "wanted", "wanting"]
+        ];
+        const normalized = String(answer).toLowerCase();
+        return families.find(family => family.slice(1).includes(normalized));
+    }
+
+    function makeRegularVerbDistractors(answer) {
+        const word = String(answer);
+        if (!/^[A-Za-z']+$/.test(word)) return [];
+        const lower = word.toLowerCase();
+        const matchCase = value => /^[A-Z]/.test(word) ? value.charAt(0).toUpperCase() + value.slice(1) : value;
+        const family = getVerbFamily(lower);
+        if (family) return family.slice(1).map(matchCase);
+
+        if (lower.endsWith("ies") && lower.length > 3) {
+            const base = `${lower.slice(0, -3)}y`;
+            return [base, `${base}ing`, `${base}ed`, `${base}s`].map(matchCase);
+        }
+        if (lower.endsWith("es") && lower.length > 2) {
+            const base = lower.replace(/es$/, "");
+            return [base, `${base}ing`, `${base}ed`].map(matchCase);
+        }
+        if (lower.endsWith("s") && lower.length > 1) {
+            const base = lower.slice(0, -1);
+            return [base, `${base}ing`, `${base}ed`].map(matchCase);
+        }
+        if (lower.endsWith("ing") && lower.length > 4) {
+            const base = lower.replace(/ing$/, "");
+            return [base, `${base}s`, `${base}ed`].map(matchCase);
+        }
+        if (lower.endsWith("ed") && lower.length > 3) {
+            const base = lower.replace(/ed$/, "");
+            return [base, `${base}s`, `${base}ing`].map(matchCase);
+        }
+        const thirdPerson = /(?:s|x|z|ch|sh|o)$/.test(lower) ? `${lower}es` : lower.endsWith("y") ? `${lower.slice(0, -1)}ies` : `${lower}s`;
+        const ing = lower.endsWith("e") && !lower.endsWith("ee") ? `${lower.slice(0, -1)}ing` : `${lower}ing`;
+        const past = lower.endsWith("e") ? `${lower}d` : lower.endsWith("y") ? `${lower.slice(0, -1)}ied` : `${lower}ed`;
+        return [thirdPerson, ing, past, `to ${lower}`].map(matchCase);
+    }
+
+    function makeAdjectiveDistractors(answer) {
+        const families = {
+            older: ["old", "oldest", "more old"],
+            oldest: ["older", "old", "most old"],
+            newer: ["new", "newest", "more new"],
+            newest: ["newer", "new", "most new"],
+            bigger: ["big", "biggest", "more big"],
+            biggest: ["bigger", "big", "most big"],
+            larger: ["large", "largest", "more large"],
+            largest: ["larger", "large", "most large"],
+            happier: ["happy", "happiest", "more happy"],
+            happiest: ["happier", "happy", "most happy"],
+            easier: ["easy", "easiest", "more easy"],
+            easiest: ["easier", "easy", "most easy"],
+            taller: ["tall", "tallest", "more tall"],
+            tallest: ["taller", "tall", "most tall"],
+            higher: ["high", "highest", "more high"],
+            highest: ["higher", "high", "most high"],
+            better: ["good", "best", "more good"],
+            best: ["better", "good", "most good"],
+            worse: ["bad", "worst", "more bad"],
+            worst: ["worse", "bad", "most bad"],
+            more: ["most", "very", "many"],
+            most: ["more", "very", "many"]
+        };
+        return families[String(answer).toLowerCase()] || [];
+    }
+
+    function makeContextualDistractors(answer, example) {
+        const answerText = String(answer);
+        if (answerText.includes(" ") || /[。！？?.,]/.test(answerText)) return [];
+
+        const candidates = [];
+        const add = (...items) => candidates.push(...items);
+        const lowerAnswer = answerText.toLowerCase();
+        const blank = example?.blank || "";
+
+        const adjectiveDistractors = makeAdjectiveDistractors(answerText);
+        const grammarWordDistractors = {
+            from: ["in", "at", "to", "of"],
+            a: ["an", "the", "some", "no"],
+            an: ["a", "the", "some", "no"],
+            no: ["a", "some", "any", "not"]
+        }[lowerAnswer] || [];
+        const needsVerbDistractors = getVerbFamily(lowerAnswer)
+            || /(?:ing|ed|ies|es|s)$/.test(lowerAnswer)
+            || /\b(can|to|will|must|should|may)\s+_____/i.test(blank)
+            || /\b_____\s+(soccer|English|fast|music|breakfast|dinner|lunch|tennis|water|the rule|the piano|this pen|the desk|a book|the magazine)/i.test(blank);
+
+        add(...grammarWordDistractors);
+        add(...adjectiveDistractors);
+        if (!grammarWordDistractors.length && !adjectiveDistractors.length && needsVerbDistractors) {
+            add(...makeRegularVerbDistractors(answerText));
+        }
+
+        if (/\b(can|to|will|must|should|may)\s+_____/i.test(blank) || /\b_____\s+(soccer|English|fast|music|breakfast|dinner|lunch|tennis)/i.test(blank)) {
+            const family = getVerbFamily(lowerAnswer);
+            if (family) add(family[1], ...family.slice(2));
+        }
+
+        if (/^Do$|^Does$|^Did$|^Can$|^Is$|^Are$|^Was$|^Were$/.test(answerText)) {
+            add("Do", "Does", "Did", "Can", "Is", "Are", "Was", "Were");
+        }
+
+        if (/n't$/.test(answerText) || ["not", "don't", "doesn't", "didn't", "can't", "won't"].includes(lowerAnswer)) {
+            add("not", "don't", "doesn't", "didn't", "can't", "isn't", "aren't");
+        }
+
+        const seen = new Set([answerText.toLowerCase()]);
+        return candidates.filter(item => {
+            if (!item) return false;
+            const key = String(item).toLowerCase();
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+    }
+
+    function makeChoices(answer, distractors, example = null) {
         const fallbackDistractors = ["am", "are", "is", "be", "do", "does", "don't", "not", "play", "plays", "playing", "played"];
-        const choices = [answer, ...distractors, ...fallbackDistractors].filter((value, index, array) => array.indexOf(value) === index);
+        const contextualDistractors = makeContextualDistractors(answer, example);
+        const choices = [answer, ...contextualDistractors, ...distractors, ...fallbackDistractors].filter((value, index, array) => array.indexOf(value) === index);
         return choices.slice(0, 4);
     }
 
@@ -560,6 +714,7 @@ window.GRAMMAR_CHECK_TESTS = {
 
     function cleanupGeneratedExample(example) {
         const next = { ...example };
+        const originalAnswers = next.answers ? [...next.answers] : null;
         const replacements = [
             {
                 en: /\bthe the (classroom|library|park|station) festival\b/g,
@@ -633,11 +788,40 @@ window.GRAMMAR_CHECK_TESTS = {
             next.jp = next.jp.replace(/^国語はカナダで話されています/, "フランス語はカナダで話されています");
         }
 
+        if (/^(math|science|history|Japanese) is spoken in Canada/i.test(next.en)) {
+            next.en = next.en.replace(/^(math|science|history|Japanese) is/i, "French is");
+            next.blank = next.blank.replace(/^(math|science|history|Japanese) is/i, "French is");
+            next.jp = next.jp.replace(/^(数学|理科|歴史|国語)はカナダで話されています/, "フランス語はカナダで話されています");
+        }
+
+        if (/^Is (math|science|history|Japanese) spoken in Canada\?/i.test(next.en)) {
+            next.en = next.en.replace(/^Is (math|science|history|Japanese) spoken/i, "Is French spoken");
+            next.blank = next.blank.replace(/^_____ (math|science|history|Japanese) spoken/i, "_____ French spoken");
+            next.jp = next.jp.replace(/^(数学|理科|歴史|国語)はカナダで話されていますか/, "フランス語はカナダで話されていますか");
+        }
+
+        if (/^The letter was written in (math|science|history)\./i.test(next.en)) {
+            next.en = next.en.replace(/in (math|science|history)\./i, "in English.");
+            next.blank = next.blank.replace(/in (math|science|history)\./i, "in English.");
+            next.jp = next.jp.replace(/(数学|理科|歴史)で書かれました/, "英語で書かれました");
+        }
+
+        if (/\benter the desk\b/i.test(next.en)) {
+            next.en = next.en.replace(/\benter the desk\b/gi, "enter the classroom");
+            next.blank = next.blank.replace(/\benter the desk\b/gi, "enter the classroom");
+            next.blank = next.blank.replace(/\b_____\s+the desk\b/gi, "_____ the classroom");
+            next.jp = next.jp.replace(/机に入ってもよい/, "教室に入ってもよい");
+        }
+
         next.jp = next.jp.replace(/準備ができてありません/g, "準備ができていません");
         next.jp = next.jp.replace(/準備ができてです/g, "準備ができています");
         next.jp = next.jp.replace(/わくわくしてです/g, "わくわくしています");
         next.jp = next.jp.replace(/手助けしてくれる人です/g, "親切です");
         next.jp = next.jp.replace(/2本のバス/g, "2台のバス");
+
+        if (originalAnswers && originalAnswers.length === 1 && originalAnswers[0] === example.en) {
+            next.answers = [next.en];
+        }
 
         return next;
     }
@@ -673,7 +857,7 @@ window.GRAMMAR_CHECK_TESTS = {
             id: `c${index + 1}`,
             question: example.blank,
             translation: example.jp,
-            choices: makeChoices(example.answer, example.distractors || spec.distractors),
+            choices: makeChoices(example.answer, example.distractors || spec.distractors, example),
             answer: example.answer,
             explanation: example.explanation || spec.rule
         }));
@@ -687,7 +871,7 @@ window.GRAMMAR_CHECK_TESTS = {
                     id: `c${index + 6}`,
                     question: "Which sentence is correct?",
                     translation: "正しい英文を選びなさい。",
-                    choices: makeChoices(example.en, wrongChoices),
+                    choices: makeChoices(example.en, wrongChoices, example),
                     answer: example.en,
                     explanation: spec.rule
                 });
@@ -698,7 +882,7 @@ window.GRAMMAR_CHECK_TESTS = {
                 id: `c${index + 6}`,
                 question: example.blank,
                 translation: example.jp,
-                choices: makeChoices(example.answer, example.distractors || spec.distractors),
+                choices: makeChoices(example.answer, example.distractors || spec.distractors, example),
                 answer: example.answer,
                 explanation: example.explanation || spec.rule
             });
