@@ -47,11 +47,79 @@
             border: 3px solid rgba(220, 38, 38, 0.9);
             box-shadow: 0 0 20px rgba(239, 68, 68, 0.55);
         }
+        #learning-layout {
+            grid-template-columns: minmax(320px, var(--video-pane-width, 50%)) 10px minmax(380px, 1fr);
+        }
+        #learning-layout.problem-mode {
+            grid-template-columns: 0 0 minmax(0, 1fr);
+        }
+        #learning-layout.video-mode {
+            grid-template-columns: minmax(0, 1fr) 0 0;
+        }
+        #learning-layout.problem-mode #video-pane,
+        #learning-layout.problem-mode #pane-resizer,
+        #learning-layout.video-mode #slide-pane,
+        #learning-layout.video-mode #pane-resizer {
+            display: none;
+        }
+        #pane-resizer {
+            cursor: col-resize;
+        }
+        #pane-resizer::before {
+            content: "";
+            width: 3px;
+            height: 44px;
+            border-radius: 999px;
+            background: #cbd5e1;
+        }
+        .layout-mode-active {
+            background: #2563eb;
+            color: #fff;
+            border-color: #2563eb;
+        }
+        .video-shell {
+            aspect-ratio: 16 / 9;
+        }
+        @media (max-width: 767px) {
+            body {
+                height: auto;
+                min-height: 100dvh;
+            }
+            #app {
+                height: auto;
+                min-height: 100dvh;
+                max-height: none;
+                overflow: visible;
+            }
+            #learning-layout,
+            #learning-layout.problem-mode,
+            #learning-layout.video-mode {
+                display: flex;
+                flex-direction: column;
+                grid-template-columns: none;
+                overflow: visible;
+            }
+            #learning-layout.video-mode #slide-pane,
+            #learning-layout.problem-mode #video-pane {
+                display: none;
+            }
+            #pane-resizer {
+                display: none;
+            }
+            #video-pane,
+            #slide-pane,
+            #main-container {
+                min-height: auto;
+            }
+            #slide-pane {
+                height: 70dvh;
+            }
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans selection:bg-blue-200 h-dvh overflow-hidden flex flex-col">
 
-    <div id="app" class="max-w-6xl mx-auto w-full h-dvh max-h-dvh min-h-0 overflow-hidden flex flex-col p-2 md:p-4">
+    <div id="app" class="max-w-none mx-auto w-full h-dvh max-h-dvh min-h-0 overflow-hidden flex flex-col p-2 md:p-4">
         <!-- ヘッダー -->
         <header class="flex justify-between items-center py-2 border-b border-slate-200 mb-2 flex-shrink-0">
             <h1 class="text-lg font-bold text-slate-700 flex items-center gap-2 cursor-pointer" onclick="goToMenu()">
@@ -61,59 +129,92 @@
             <div id="status-area" class="text-xs text-slate-500 font-medium"></div>
         </header>
 
-        <!-- メインコンテンツ -->
-        <main id="main-container" class="flex-grow min-h-0 flex flex-col justify-center relative bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-            <div id="slide-wrapper" class="w-full min-h-0 flex-1 overflow-y-auto custom-scroll p-2 md:p-6 flex flex-col"></div>
-            <canvas id="draw-canvas" class="absolute inset-0 z-20 draw-disabled"></canvas>
-            <div id="pointer-dot" class="hidden absolute z-30 rounded-full pointer-events-none"></div>
-            <div id="draw-toolbar" class="hidden absolute z-40 items-center gap-1 rounded-full border border-sky-300 bg-sky-100/90 px-2 py-1 shadow-lg backdrop-blur">
-                <button type="button" data-draw-tool="pencil" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="鉛筆" title="鉛筆">
-                    <i data-lucide="pencil" class="w-5 h-5"></i>
+        <div class="mb-2 flex flex-wrap items-center justify-between gap-2 flex-shrink-0">
+            <div class="flex items-center gap-1 rounded-full border border-slate-200 bg-white p-1 shadow-sm">
+                <button type="button" data-layout-mode="split" class="layout-mode-btn layout-mode-active flex items-center gap-1 rounded-full border border-transparent px-3 py-1.5 text-xs font-bold text-slate-600 hover:bg-slate-50">
+                    <i data-lucide="columns-2" class="w-3.5 h-3.5"></i><span>左右</span>
                 </button>
-                <button type="button" data-draw-tool="highlighter" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="蛍光ペン" title="蛍光ペン">
-                    <i data-lucide="highlighter" class="w-5 h-5"></i>
+                <button type="button" data-layout-mode="video" class="layout-mode-btn flex items-center gap-1 rounded-full border border-transparent px-3 py-1.5 text-xs font-bold text-slate-600 hover:bg-slate-50">
+                    <i data-lucide="play" class="w-3.5 h-3.5"></i><span>動画</span>
                 </button>
-                <button type="button" data-draw-action="ruler" class="draw-action-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="定規" title="定規">
-                    <i data-lucide="ruler" class="w-5 h-5"></i>
-                </button>
-                <button type="button" data-draw-tool="eraser" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="消しゴム" title="消しゴム">
-                    <i data-lucide="eraser" class="w-5 h-5"></i>
-                </button>
-                <button type="button" data-draw-tool="objectEraser" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="線ごと消しゴム" title="線ごと消しゴム">
-                    <i data-lucide="trash-2" class="w-5 h-5"></i>
-                </button>
-                <button type="button" data-draw-tool="pointer" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="ポインター" title="ポインター">
-                    <i data-lucide="mouse-pointer-2" class="w-5 h-5"></i>
-                </button>
-                <div class="h-7 w-px bg-sky-300/80 mx-1"></div>
-                <button type="button" data-draw-action="undo" class="draw-action-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="戻す" title="戻す">
-                    <i data-lucide="undo-2" class="w-5 h-5"></i>
-                </button>
-                <button type="button" data-draw-action="redo" class="draw-action-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="やり直し" title="やり直し">
-                    <i data-lucide="redo-2" class="w-5 h-5"></i>
+                <button type="button" data-layout-mode="problem" class="layout-mode-btn flex items-center gap-1 rounded-full border border-transparent px-3 py-1.5 text-xs font-bold text-slate-600 hover:bg-slate-50">
+                    <i data-lucide="pencil-line" class="w-3.5 h-3.5"></i><span>問題</span>
                 </button>
             </div>
-        </main>
+            <div class="text-xs font-bold text-slate-500 bg-white border border-slate-200 rounded-full px-3 py-1.5 shadow-sm">見る → 止める → 解く → 再生 → 確認</div>
+        </div>
 
-        <!-- ナビゲーション -->
-        <footer id="nav-footer" class="py-2 mt-2 flex justify-between items-center flex-shrink-0 hidden">
-            <div class="flex items-center gap-2">
-                <button id="btn-prev" class="flex items-center gap-1 px-4 py-2 rounded-full bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-sm">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                    <span>戻る</span>
-                </button>
-                <!-- リンクコピーボタン -->
-                <button id="btn-copy-link" onclick="copyCurrentLink()" class="flex items-center gap-1 px-3 py-2 rounded-full bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition-colors text-xs border border-transparent">
-                    <i data-lucide="link" class="w-3.5 h-3.5"></i>
-                    <span id="copy-text">リンクをコピー</span>
-                </button>
-            </div>
-            <div class="flex gap-1 overflow-hidden px-2" id="dots-container"></div>
-            <button id="btn-next" class="flex items-center gap-1 px-4 py-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed text-sm">
-                <span>次へ</span>
-                <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </button>
-        </footer>
+        <div id="learning-layout" class="grid flex-grow min-h-0 overflow-hidden">
+            <aside id="video-pane" class="min-h-0 overflow-hidden rounded-xl border border-slate-100 bg-white shadow-sm flex flex-col">
+                <div class="flex items-center justify-between gap-2 border-b border-slate-100 px-3 py-2 flex-shrink-0">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <i data-lucide="youtube" class="w-4 h-4 text-red-500 flex-shrink-0"></i>
+                        <span class="text-sm font-bold text-slate-700 truncate">解説動画</span>
+                    </div>
+                    <button type="button" onclick="setLearningMode(state.layoutMode === 'video' ? 'split' : 'video')" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600 hover:bg-blue-100 hover:text-blue-700">動画を大きく</button>
+                </div>
+                <div id="video-content" class="flex-1 min-h-0 p-3 flex flex-col justify-center"></div>
+                <div class="border-t border-slate-100 px-3 py-2 text-xs font-medium text-slate-500 flex-shrink-0">動画で問題が出たら、一度止めて右の問題に挑戦しよう。</div>
+            </aside>
+
+            <div id="pane-resizer" class="flex items-center justify-center" aria-label="左右幅を変更"></div>
+
+            <section id="slide-pane" class="min-h-0 flex flex-col overflow-hidden">
+                <!-- メインコンテンツ -->
+                <main id="main-container" class="flex-grow min-h-0 flex flex-col justify-center relative bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                    <div id="slide-wrapper" class="w-full min-h-0 flex-1 overflow-y-auto custom-scroll p-2 md:p-6 flex flex-col"></div>
+                    <canvas id="draw-canvas" class="absolute inset-0 z-20 draw-disabled"></canvas>
+                    <div id="pointer-dot" class="hidden absolute z-30 rounded-full pointer-events-none"></div>
+                    <div id="draw-toolbar" class="hidden absolute z-40 items-center gap-1 rounded-full border border-sky-300 bg-sky-100/90 px-2 py-1 shadow-lg backdrop-blur">
+                        <button type="button" data-draw-tool="pencil" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="鉛筆" title="鉛筆">
+                            <i data-lucide="pencil" class="w-5 h-5"></i>
+                        </button>
+                        <button type="button" data-draw-tool="highlighter" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="蛍光ペン" title="蛍光ペン">
+                            <i data-lucide="highlighter" class="w-5 h-5"></i>
+                        </button>
+                        <button type="button" data-draw-action="ruler" class="draw-action-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="定規" title="定規">
+                            <i data-lucide="ruler" class="w-5 h-5"></i>
+                        </button>
+                        <button type="button" data-draw-tool="eraser" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="消しゴム" title="消しゴム">
+                            <i data-lucide="eraser" class="w-5 h-5"></i>
+                        </button>
+                        <button type="button" data-draw-tool="objectEraser" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="線ごと消しゴム" title="線ごと消しゴム">
+                            <i data-lucide="trash-2" class="w-5 h-5"></i>
+                        </button>
+                        <button type="button" data-draw-tool="pointer" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="ポインター" title="ポインター">
+                            <i data-lucide="mouse-pointer-2" class="w-5 h-5"></i>
+                        </button>
+                        <div class="h-7 w-px bg-sky-300/80 mx-1"></div>
+                        <button type="button" data-draw-action="undo" class="draw-action-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="戻す" title="戻す">
+                            <i data-lucide="undo-2" class="w-5 h-5"></i>
+                        </button>
+                        <button type="button" data-draw-action="redo" class="draw-action-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="やり直し" title="やり直し">
+                            <i data-lucide="redo-2" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </main>
+
+                <!-- ナビゲーション -->
+                <footer id="nav-footer" class="py-2 mt-2 flex justify-between items-center flex-shrink-0 hidden">
+                    <div class="flex items-center gap-2">
+                        <button id="btn-prev" class="flex items-center gap-1 px-4 py-2 rounded-full bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-sm">
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                            <span>戻る</span>
+                        </button>
+                        <!-- リンクコピーボタン -->
+                        <button id="btn-copy-link" onclick="copyCurrentLink()" class="flex items-center gap-1 px-3 py-2 rounded-full bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition-colors text-xs border border-transparent">
+                            <i data-lucide="link" class="w-3.5 h-3.5"></i>
+                            <span id="copy-text">リンクをコピー</span>
+                        </button>
+                    </div>
+                    <div class="flex gap-1 overflow-hidden px-2" id="dots-container"></div>
+                    <button id="btn-next" class="flex items-center gap-1 px-4 py-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed text-sm">
+                        <span>次へ</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </footer>
+            </section>
+        </div>
     </div>
 
 <script>
@@ -8877,12 +8978,50 @@ const LESSONS_DB = {
     }
 };
 
+const LESSON_YOUTUBE_VIDEO_IDS = {
+    "be-verb-i-am": "DcrdsAee2dI",
+    "be-verb-you-are": "7oIqklWIQxo",
+    "be-verb-he-she-is": "cnLmgBIsxfY",
+    "be-verb-this-that": "CK_p6Jf9Suw",
+    "be-verb-usage": "txH74x8h58A",
+    "be-verb-negative": "F1YnyE31W7U",
+    "be-verb-question": "OPsTpML9HBQ",
+    "be-verb-summary": "QZRm7cxuTyM",
+    "general-verb-intro": "JIbpBosLVCM",
+    "general-verb-negative": "mVx6Yv3ixaE",
+    "general-verb-question": "8HyLJZggyic",
+    "general-verb-summary": "yd0N5yLwtKI",
+    "question-what": "2P_BHKliVuY",
+    "question-who": "e-vsgjSvw2o",
+    "question-when": "zxdwNFVDG28",
+    "question-where": "kJHYF1EY7mI",
+    "plural-nouns": "X7YiTDL9qB8",
+    "imperative-sentence": "_Y2fd-pBLmM",
+    "pronoun-chart": "GwQ1qPjfaVA",
+    "present-continuous": "Z9BSHP73guk",
+    "ing-form-rules": "TTwjserzGGE",
+    "auxiliary-can": "xOfKH3NGiA8",
+    "auxiliary-can-neg-q": "FzimmPdYfqE",
+    "past-tense-sentence": "Cz0ofzfCbvI",
+    "past-tense-verb-forms": "HOKoBXlQXu0",
+    "third-person-singular-affirmative": "yDTt7m8kUPc",
+    "third-person-singular-neg-q": "Q4wmnHcIWmo",
+    "identifying-third-person": "lp0bbSZQWOU"
+};
+
+Object.entries(LESSON_YOUTUBE_VIDEO_IDS).forEach(([lessonId, videoId]) => {
+    if (LESSONS_DB[lessonId]) {
+        LESSONS_DB[lessonId].youtubeVideoId = videoId;
+    }
+});
+
 /**
  * --------------------------------------------------------------------------
  * アプリロジック
  * --------------------------------------------------------------------------
  */
 const STATUS_KEY = 'english_app_status';
+const VIDEO_SPLIT_KEY = 'english_app_video_split';
 
 function loadStatusMap() {
     try {
@@ -8923,7 +9062,8 @@ const state = {
     rulerMode: false,
     objectEraseHistoryRecorded: false,
     isDrawing: false,
-    lastDrawPoint: null
+    lastDrawPoint: null,
+    layoutMode: 'split'
 };
 let speechVoice = null;
 let speechVoicesReady = false;
@@ -8940,12 +9080,138 @@ function shuffleArray(arr) {
     return a;
 }
 
+function normalizeYouTubeVideoId(value) {
+    if (!value) return null;
+    const text = String(value).trim();
+    const directId = text.match(/^[A-Za-z0-9_-]{11}$/);
+    if (directId) return text;
+
+    const patterns = [
+        /[?&]v=([A-Za-z0-9_-]{11})/,
+        /youtu\.be\/([A-Za-z0-9_-]{11})/,
+        /youtube\.com\/embed\/([A-Za-z0-9_-]{11})/,
+        /youtube\.com\/shorts\/([A-Za-z0-9_-]{11})/,
+        /studio\.youtube\.com\/video\/([A-Za-z0-9_-]{11})/
+    ];
+    for (const pattern of patterns) {
+        const match = text.match(pattern);
+        if (match) return match[1];
+    }
+    return null;
+}
+
+function getLessonVideoId(lesson) {
+    return normalizeYouTubeVideoId(lesson?.youtubeVideoId || lesson?.youtubeUrl);
+}
+
+function renderVideoPane(lesson = null) {
+    if (!videoContent) return;
+    const videoId = getLessonVideoId(lesson);
+
+    if (videoId) {
+        videoContent.innerHTML = `
+            <div class="video-shell w-full overflow-hidden rounded-xl bg-slate-950 shadow-inner">
+                <iframe
+                    class="w-full h-full"
+                    src="https://www.youtube.com/embed/${videoId}"
+                    title="${escapeHtmlAttr(lesson?.menuTitle || 'YouTube video')}"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
+            </div>
+        `;
+        return;
+    }
+
+    const title = lesson
+        ? "この文法の動画は現在準備中です。"
+        : "学習する文法を選ぶと、ここに解説動画が表示されます。";
+    const detail = lesson
+        ? "Grammar Slideだけでも学習できます。"
+        : "左で動画、右で問題を同時に使えます。";
+
+    videoContent.innerHTML = `
+        <div class="h-full min-h-[220px] flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-slate-50 p-6 text-center">
+            <div class="mb-3 rounded-full bg-white p-3 shadow-sm"><i data-lucide="play-circle" class="w-8 h-8 text-blue-500"></i></div>
+            <p class="text-base font-bold text-slate-700">${title}</p>
+            <p class="mt-1 text-sm text-slate-500">${detail}</p>
+        </div>
+    `;
+    lucide.createIcons();
+}
+
+function refreshLearningLayout() {
+    if (!learningLayout) return;
+    learningLayout.classList.toggle('video-mode', state.layoutMode === 'video');
+    learningLayout.classList.toggle('problem-mode', state.layoutMode === 'problem');
+    layoutModeButtons.forEach(button => {
+        const isActive = button.dataset.layoutMode === state.layoutMode;
+        button.classList.toggle('layout-mode-active', isActive);
+        button.classList.toggle('text-slate-600', !isActive);
+    });
+    requestAnimationFrame(() => {
+        saveCurrentDrawing();
+        resizeDrawingCanvas();
+        restoreCurrentDrawing();
+        positionDrawToolbar();
+    });
+}
+
+function setLearningMode(mode) {
+    state.layoutMode = ['split', 'video', 'problem'].includes(mode) ? mode : 'split';
+    refreshLearningLayout();
+}
+
+function setVideoPaneWidth(percent) {
+    const clamped = Math.max(30, Math.min(70, percent));
+    learningLayout.style.setProperty('--video-pane-width', `${clamped}%`);
+    localStorage.setItem(VIDEO_SPLIT_KEY, String(clamped));
+    saveCurrentDrawing();
+    resizeDrawingCanvas();
+    restoreCurrentDrawing();
+}
+
+function initLearningLayoutControls() {
+    const savedWidth = Number(localStorage.getItem(VIDEO_SPLIT_KEY));
+    if (Number.isFinite(savedWidth)) {
+        learningLayout.style.setProperty('--video-pane-width', `${Math.max(30, Math.min(70, savedWidth))}%`);
+    }
+
+    layoutModeButtons.forEach(button => {
+        button.addEventListener('click', () => setLearningMode(button.dataset.layoutMode));
+    });
+
+    let dragging = false;
+    paneResizer.addEventListener('pointerdown', event => {
+        if (window.matchMedia('(max-width: 767px)').matches) return;
+        dragging = true;
+        paneResizer.setPointerCapture(event.pointerId);
+        document.body.style.userSelect = 'none';
+    });
+    paneResizer.addEventListener('pointermove', event => {
+        if (!dragging) return;
+        const rect = learningLayout.getBoundingClientRect();
+        const percent = ((event.clientX - rect.left) / rect.width) * 100;
+        setVideoPaneWidth(percent);
+    });
+    paneResizer.addEventListener('pointerup', event => {
+        dragging = false;
+        document.body.style.userSelect = '';
+        if (paneResizer.hasPointerCapture(event.pointerId)) {
+            paneResizer.releasePointerCapture(event.pointerId);
+        }
+    });
+}
+
 const wrapper = document.getElementById('slide-wrapper');
 const mainContainer = document.getElementById('main-container');
 const footer = document.getElementById('nav-footer');
 const statusArea = document.getElementById('status-area');
 const headerTitle = document.getElementById('header-title');
 const bodyEl = document.body;
+const learningLayout = document.getElementById('learning-layout');
+const videoContent = document.getElementById('video-content');
+const paneResizer = document.getElementById('pane-resizer');
+const layoutModeButtons = document.querySelectorAll('[data-layout-mode]');
 const drawCanvas = document.getElementById('draw-canvas');
 const drawCtx = drawCanvas.getContext('2d');
 const drawToolbar = document.getElementById('draw-toolbar');
@@ -8980,6 +9246,8 @@ function init() {
     const urlParams = new URLSearchParams(window.location.search);
     const unitId = urlParams.get('unit');
 
+    initLearningLayoutControls();
+
     if (unitId && LESSONS_DB[unitId]) {
         startLesson(unitId);
     } else {
@@ -8989,12 +9257,15 @@ function init() {
     document.getElementById('btn-prev').addEventListener('click', () => changeSlide(-1));
     document.getElementById('btn-next').addEventListener('click', () => changeSlide(1));
     document.addEventListener('keydown', handleSlideKeydown);
+    refreshLearningLayout();
     initDrawingTools();
 }
 
 function renderGradeSelect() {
     saveCurrentDrawing();
     state.view = 'gradeSelect';
+    renderVideoPane(null);
+    setLearningMode('split');
     setPageScrollMode(false);
     footer.classList.add('hidden');
     drawToolbar.classList.add('hidden');
@@ -9037,6 +9308,8 @@ function renderGradeSelect() {
 function renderLessonSelect(grade) {
     saveCurrentDrawing();
     state.view = 'lessonSelect';
+    renderVideoPane(null);
+    setLearningMode('split');
     setPageScrollMode(false);
     drawToolbar.classList.add('hidden');
     drawToolbar.classList.remove('flex');
@@ -9083,6 +9356,8 @@ function startLesson(id) {
     saveCurrentDrawing();
     const l = LESSONS_DB[id];
     state.view = 'lesson';
+    renderVideoPane(l);
+    setLearningMode('split');
     setPageScrollMode(true);
     state.currentLessonData = l;
     state.currentSlide = 0;
