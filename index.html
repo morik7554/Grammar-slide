@@ -50,12 +50,26 @@
         #learning-layout {
             grid-template-columns: minmax(320px, var(--video-pane-width, 50%)) 10px minmax(380px, 1fr);
         }
+        #learning-layout.menu-mode {
+            grid-template-columns: minmax(0, 1fr);
+        }
         #learning-layout.problem-mode {
             grid-template-columns: 0 0 minmax(0, 1fr);
         }
         #learning-layout.video-mode {
             grid-template-columns: minmax(0, 1fr) 0 0;
         }
+        #learning-layout.menu-mode #slide-pane {
+            grid-column: 1;
+        }
+        #learning-layout.problem-mode #slide-pane {
+            grid-column: 3;
+        }
+        #learning-layout.video-mode #video-pane {
+            grid-column: 1;
+        }
+        #learning-layout.menu-mode #video-pane,
+        #learning-layout.menu-mode #pane-resizer,
         #learning-layout.problem-mode #video-pane,
         #learning-layout.problem-mode #pane-resizer,
         #learning-layout.video-mode #slide-pane,
@@ -92,6 +106,7 @@
                 overflow: visible;
             }
             #learning-layout,
+            #learning-layout.menu-mode,
             #learning-layout.problem-mode,
             #learning-layout.video-mode {
                 display: flex;
@@ -99,6 +114,8 @@
                 grid-template-columns: none;
                 overflow: visible;
             }
+            #learning-layout.menu-mode #video-pane,
+            #learning-layout.menu-mode #pane-resizer,
             #learning-layout.video-mode #slide-pane,
             #learning-layout.problem-mode #video-pane {
                 display: none;
@@ -129,16 +146,16 @@
             <div id="status-area" class="text-xs text-slate-500 font-medium"></div>
         </header>
 
-        <div class="mb-2 flex flex-wrap items-center justify-between gap-2 flex-shrink-0">
+        <div id="lesson-layout-toolbar" class="mb-2 hidden flex-wrap items-center justify-between gap-2 flex-shrink-0">
             <div class="flex items-center gap-1 rounded-full border border-slate-200 bg-white p-1 shadow-sm">
-                <button type="button" data-layout-mode="split" class="layout-mode-btn layout-mode-active flex items-center gap-1 rounded-full border border-transparent px-3 py-1.5 text-xs font-bold text-slate-600 hover:bg-slate-50">
-                    <i data-lucide="columns-2" class="w-3.5 h-3.5"></i><span>左右</span>
-                </button>
                 <button type="button" data-layout-mode="video" class="layout-mode-btn flex items-center gap-1 rounded-full border border-transparent px-3 py-1.5 text-xs font-bold text-slate-600 hover:bg-slate-50">
                     <i data-lucide="play" class="w-3.5 h-3.5"></i><span>動画</span>
                 </button>
                 <button type="button" data-layout-mode="problem" class="layout-mode-btn flex items-center gap-1 rounded-full border border-transparent px-3 py-1.5 text-xs font-bold text-slate-600 hover:bg-slate-50">
                     <i data-lucide="pencil-line" class="w-3.5 h-3.5"></i><span>問題</span>
+                </button>
+                <button type="button" data-layout-mode="split" class="layout-mode-btn layout-mode-active flex items-center gap-1 rounded-full border border-transparent px-3 py-1.5 text-xs font-bold text-slate-600 hover:bg-slate-50">
+                    <i data-lucide="columns-2" class="w-3.5 h-3.5"></i><span>動画＋問題</span>
                 </button>
             </div>
             <div class="text-xs font-bold text-slate-500 bg-white border border-slate-200 rounded-full px-3 py-1.5 shadow-sm">見る → 止める → 解く → 再生 → 確認</div>
@@ -151,7 +168,10 @@
                         <i data-lucide="youtube" class="w-4 h-4 text-red-500 flex-shrink-0"></i>
                         <span class="text-sm font-bold text-slate-700 truncate">解説動画</span>
                     </div>
-                    <button type="button" onclick="setLearningMode(state.layoutMode === 'video' ? 'split' : 'video')" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600 hover:bg-blue-100 hover:text-blue-700">動画を大きく</button>
+                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                        <button type="button" onclick="setLearningMode(state.layoutMode === 'video' ? 'split' : 'video')" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600 hover:bg-blue-100 hover:text-blue-700">動画を大きく</button>
+                        <button type="button" onclick="setLearningMode('problem')" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600 hover:bg-rose-100 hover:text-rose-700">動画を消す</button>
+                    </div>
                 </div>
                 <div id="video-content" class="flex-1 min-h-0 p-3 flex flex-col justify-center"></div>
                 <div class="border-t border-slate-100 px-3 py-2 text-xs font-medium text-slate-500 flex-shrink-0">動画で問題が出たら、一度止めて右の問題に挑戦しよう。</div>
@@ -9127,17 +9147,54 @@ function getLessonVideoId(lesson) {
     return normalizeYouTubeVideoId(lesson?.youtubeVideoId || lesson?.youtubeUrl);
 }
 
+function getYouTubeWatchUrl(videoId) {
+    return `https://www.youtube.com/watch?v=${videoId}`;
+}
+
+function getYouTubeEmbedUrl(videoId) {
+    const params = new URLSearchParams({
+        rel: '0',
+        modestbranding: '1',
+        playsinline: '1'
+    });
+    if (window.location.origin && window.location.origin !== 'null') {
+        params.set('origin', window.location.origin);
+    }
+    return `https://www.youtube.com/embed/${videoId}?${params.toString()}`;
+}
+
 function renderVideoPane(lesson = null) {
     if (!videoContent) return;
     const videoId = getLessonVideoId(lesson);
 
     if (videoId) {
+        const watchUrl = getYouTubeWatchUrl(videoId);
+        if (window.location.protocol === 'file:') {
+            videoContent.innerHTML = `
+                <div class="rounded-xl border border-amber-200 bg-amber-50 p-5 text-center shadow-sm">
+                    <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white text-amber-600">
+                        <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+                    </div>
+                    <p class="mb-2 text-sm font-bold text-slate-800">動画はローカルサーバーまたは本番URLで表示してください。</p>
+                    <p class="mb-4 text-xs font-medium leading-relaxed text-slate-600">file:// で開くと、YouTube側で埋め込み再生が止まることがあります。</p>
+                    <a href="${escapeHtmlAttr(watchUrl)}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-sm font-bold text-white hover:bg-blue-700">
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                        YouTubeで開く
+                    </a>
+                </div>
+            `;
+            lucide.createIcons();
+            return;
+        }
+
+        const embedUrl = getYouTubeEmbedUrl(videoId);
         videoContent.innerHTML = `
             <div class="video-shell w-full overflow-hidden rounded-xl bg-slate-950 shadow-inner">
                 <iframe
                     class="w-full h-full"
-                    src="https://www.youtube.com/embed/${videoId}"
+                    src="${escapeHtmlAttr(embedUrl)}"
                     title="${escapeHtmlAttr(lesson?.menuTitle || 'YouTube video')}"
+                    referrerpolicy="strict-origin-when-cross-origin"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen></iframe>
             </div>
@@ -9164,6 +9221,9 @@ function renderVideoPane(lesson = null) {
 
 function refreshLearningLayout() {
     if (!learningLayout) return;
+    learningLayout.classList.toggle('menu-mode', state.view !== 'lesson');
+    lessonLayoutToolbar?.classList.toggle('hidden', state.view !== 'lesson');
+    lessonLayoutToolbar?.classList.toggle('flex', state.view === 'lesson');
     learningLayout.classList.toggle('video-mode', state.layoutMode === 'video');
     learningLayout.classList.toggle('problem-mode', state.layoutMode === 'problem');
     layoutModeButtons.forEach(button => {
@@ -9232,6 +9292,7 @@ const statusArea = document.getElementById('status-area');
 const headerTitle = document.getElementById('header-title');
 const bodyEl = document.body;
 const learningLayout = document.getElementById('learning-layout');
+const lessonLayoutToolbar = document.getElementById('lesson-layout-toolbar');
 const videoContent = document.getElementById('video-content');
 const paneResizer = document.getElementById('pane-resizer');
 const layoutModeButtons = document.querySelectorAll('[data-layout-mode]');
