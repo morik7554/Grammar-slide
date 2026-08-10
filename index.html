@@ -169,7 +169,7 @@
                         <span class="text-sm font-bold text-slate-700 truncate">解説動画</span>
                     </div>
                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                        <button type="button" onclick="setLearningMode(state.layoutMode === 'video' ? 'split' : 'video')" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600 hover:bg-blue-100 hover:text-blue-700">動画を大きく</button>
+                        <button id="btn-expand-video" type="button" onclick="setLearningMode(state.layoutMode === 'video' ? 'split' : 'video')" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600 hover:bg-blue-100 hover:text-blue-700">動画を大きく</button>
                         <button type="button" onclick="setLearningMode('problem')" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600 hover:bg-rose-100 hover:text-rose-700">動画を消す</button>
                     </div>
                 </div>
@@ -9198,7 +9198,12 @@ function renderVideoPane(lesson = null) {
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen></iframe>
             </div>
+            <a href="${escapeHtmlAttr(watchUrl)}" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1.5 text-xs font-bold text-slate-500 hover:text-blue-600">
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                YouTubeで開く
+            </a>
         `;
+        lucide.createIcons();
         return;
     }
 
@@ -9226,6 +9231,7 @@ function refreshLearningLayout() {
     lessonLayoutToolbar?.classList.toggle('flex', state.view === 'lesson');
     learningLayout.classList.toggle('video-mode', state.layoutMode === 'video');
     learningLayout.classList.toggle('problem-mode', state.layoutMode === 'problem');
+    expandVideoButton.textContent = state.layoutMode === 'video' ? '元に戻す' : '動画を大きく';
     layoutModeButtons.forEach(button => {
         const isActive = button.dataset.layoutMode === state.layoutMode;
         button.classList.toggle('layout-mode-active', isActive);
@@ -9295,6 +9301,7 @@ const learningLayout = document.getElementById('learning-layout');
 const lessonLayoutToolbar = document.getElementById('lesson-layout-toolbar');
 const videoContent = document.getElementById('video-content');
 const paneResizer = document.getElementById('pane-resizer');
+const expandVideoButton = document.getElementById('btn-expand-video');
 const layoutModeButtons = document.querySelectorAll('[data-layout-mode]');
 const drawCanvas = document.getElementById('draw-canvas');
 const drawCtx = drawCanvas.getContext('2d');
@@ -9491,7 +9498,10 @@ function startLesson(id) {
 
 async function copyCurrentLink() {
     if (!state.currentLessonData) return;
-    const url = window.location.origin + window.location.pathname + '?unit=' + state.currentLessonData.id;
+    const baseUrl = window.location.protocol === 'file:'
+        ? 'https://grammar-slide.vercel.app/'
+        : window.location.origin + window.location.pathname;
+    const url = baseUrl + '?unit=' + state.currentLessonData.id;
 
     let copied = false;
     if (navigator.clipboard?.writeText) {
