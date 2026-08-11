@@ -39,6 +39,14 @@
             justify-content: flex-end;
             transform-origin: top left;
         }
+        #draw-toolbar.draw-toolbar-minimized {
+            padding: 0.25rem;
+            gap: 0;
+        }
+        #draw-toolbar.draw-toolbar-minimized [data-draw-toolbar-control],
+        #draw-toolbar.draw-toolbar-minimized .draw-toolbar-divider {
+            display: none;
+        }
         #pointer-dot {
             width: 34px;
             height: 34px;
@@ -186,29 +194,33 @@
                     <canvas id="draw-canvas" class="absolute inset-0 z-20 draw-disabled"></canvas>
                     <div id="pointer-dot" class="hidden absolute z-30 rounded-full pointer-events-none"></div>
                     <div id="draw-toolbar" class="hidden absolute z-40 items-center gap-1 rounded-full border border-sky-300 bg-sky-100/90 px-2 py-1 shadow-lg backdrop-blur">
-                        <button type="button" data-draw-tool="pencil" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="鉛筆" title="鉛筆">
+                        <button type="button" data-draw-toolbar-toggle class="draw-action-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="描画ツールを隠す" title="描画ツールを隠す">
+                            <i data-lucide="eye-off" class="w-5 h-5"></i>
+                        </button>
+                        <div class="draw-toolbar-divider h-7 w-px bg-sky-300/80 mx-1"></div>
+                        <button type="button" data-draw-toolbar-control data-draw-tool="pencil" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="鉛筆" title="鉛筆">
                             <i data-lucide="pencil" class="w-5 h-5"></i>
                         </button>
-                        <button type="button" data-draw-tool="highlighter" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="蛍光ペン" title="蛍光ペン">
+                        <button type="button" data-draw-toolbar-control data-draw-tool="highlighter" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="蛍光ペン" title="蛍光ペン">
                             <i data-lucide="highlighter" class="w-5 h-5"></i>
                         </button>
-                        <button type="button" data-draw-action="ruler" class="draw-action-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="定規" title="定規">
+                        <button type="button" data-draw-toolbar-control data-draw-action="ruler" class="draw-action-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="定規" title="定規">
                             <i data-lucide="ruler" class="w-5 h-5"></i>
                         </button>
-                        <button type="button" data-draw-tool="eraser" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="消しゴム" title="消しゴム">
+                        <button type="button" data-draw-toolbar-control data-draw-tool="eraser" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="消しゴム" title="消しゴム">
                             <i data-lucide="eraser" class="w-5 h-5"></i>
                         </button>
-                        <button type="button" data-draw-tool="objectEraser" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="線ごと消しゴム" title="線ごと消しゴム">
+                        <button type="button" data-draw-toolbar-control data-draw-tool="objectEraser" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="線ごと消しゴム" title="線ごと消しゴム">
                             <i data-lucide="trash-2" class="w-5 h-5"></i>
                         </button>
-                        <button type="button" data-draw-tool="pointer" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="ポインター" title="ポインター">
+                        <button type="button" data-draw-toolbar-control data-draw-tool="pointer" class="draw-tool-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="ポインター" title="ポインター">
                             <i data-lucide="mouse-pointer-2" class="w-5 h-5"></i>
                         </button>
-                        <div class="h-7 w-px bg-sky-300/80 mx-1"></div>
-                        <button type="button" data-draw-action="undo" class="draw-action-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="戻す" title="戻す">
+                        <div class="draw-toolbar-divider h-7 w-px bg-sky-300/80 mx-1"></div>
+                        <button type="button" data-draw-toolbar-control data-draw-action="undo" class="draw-action-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="戻す" title="戻す">
                             <i data-lucide="undo-2" class="w-5 h-5"></i>
                         </button>
-                        <button type="button" data-draw-action="redo" class="draw-action-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="やり直し" title="やり直し">
+                        <button type="button" data-draw-toolbar-control data-draw-action="redo" class="draw-action-btn p-2 rounded-full border border-transparent text-slate-700 hover:bg-white/80" aria-label="やり直し" title="やり直し">
                             <i data-lucide="redo-2" class="w-5 h-5"></i>
                         </button>
                     </div>
@@ -9103,6 +9115,7 @@ const state = {
     undoStack: [],
     redoStack: [],
     rulerMode: false,
+    drawToolbarMinimized: false,
     objectEraseHistoryRecorded: false,
     isDrawing: false,
     lastDrawPoint: null,
@@ -9306,6 +9319,7 @@ const layoutModeButtons = document.querySelectorAll('[data-layout-mode]');
 const drawCanvas = document.getElementById('draw-canvas');
 const drawCtx = drawCanvas.getContext('2d');
 const drawToolbar = document.getElementById('draw-toolbar');
+const drawToolbarToggleButton = drawToolbar.querySelector('[data-draw-toolbar-toggle]');
 const pointerDot = document.getElementById('pointer-dot');
 const DRAW_TOOLS = {
     pencil: { color: '#ef4444', width: 4, alpha: 1, composite: 'source-over' },
@@ -9830,6 +9844,10 @@ function positionDrawToolbar() {
 }
 
 function initDrawingTools() {
+    drawToolbarToggleButton.addEventListener('click', () => {
+        setDrawToolbarMinimized(!state.drawToolbarMinimized);
+    });
+
     drawToolbar.querySelectorAll('[data-draw-tool]').forEach(button => {
         button.addEventListener('click', () => {
             const nextTool = button.dataset.drawTool;
@@ -9855,6 +9873,23 @@ function initDrawingTools() {
         window.visualViewport.addEventListener('resize', positionDrawToolbar);
         window.visualViewport.addEventListener('scroll', positionDrawToolbar);
     }
+}
+
+function setDrawToolbarMinimized(isMinimized) {
+    state.drawToolbarMinimized = isMinimized;
+    if (isMinimized) {
+        state.rulerMode = false;
+        setDrawingTool(null);
+    }
+
+    drawToolbar.classList.toggle('draw-toolbar-minimized', isMinimized);
+    drawToolbarToggleButton.setAttribute('aria-label', isMinimized ? '描画ツールを表示' : '描画ツールを隠す');
+    drawToolbarToggleButton.setAttribute('title', isMinimized ? '描画ツールを表示' : '描画ツールを隠す');
+    drawToolbarToggleButton.innerHTML = isMinimized
+        ? '<i data-lucide="eye" class="w-5 h-5"></i>'
+        : '<i data-lucide="eye-off" class="w-5 h-5"></i>';
+    lucide.createIcons();
+    positionDrawToolbar();
 }
 
 function setDrawingTool(tool) {
