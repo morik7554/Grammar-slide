@@ -9419,28 +9419,243 @@ function renderGradeSelect() {
     const gradeButtons = [
         { id: 1, label: "1年", title: "英語の学習をはじめる", theme: "blue" },
         { id: 2, label: "2年", title: "英語の学習をはじめる", theme: "blue" },
-        { id: 3, label: "3年", title: "英語の学習をはじめる", theme: "blue" },
-        { id: "basic", label: "英語のド基礎", title: "超基礎からスタート", theme: "amber" }
+        { id: 3, label: "3年", title: "英語の学習をはじめる", theme: "blue" }
     ];
 
     wrapper.innerHTML = `
-        <div class="fade-in max-w-2xl mx-auto w-full py-4 text-center">
-            <h2 class="text-2xl font-bold mb-8 text-slate-800 flex items-center justify-center gap-2">
+        <div class="fade-in max-w-2xl mx-auto w-full py-2 text-center">
+            <h2 class="text-2xl font-bold mb-4 text-slate-800 flex items-center justify-center gap-2">
                 <i data-lucide="layout"></i> コース一覧
             </h2>
-            <div class="grid gap-6">
+            <div class="grid gap-3">
                 ${gradeButtons.map(g => `
-                    <button onclick="renderLessonSelect('${g.id}')" class="group relative flex items-center justify-center bg-white p-8 rounded-2xl border-2 border-slate-200 shadow-sm hover:border-${g.theme}-500 hover:shadow-md transition-all">
+                    <button onclick="renderLessonSelect('${g.id}')" class="group relative flex items-center justify-center bg-white px-8 py-6 rounded-2xl border-2 border-slate-200 shadow-sm hover:border-${g.theme}-500 hover:shadow-md transition-all">
                         <div class="text-3xl font-black text-${g.theme}-600 mr-4 group-hover:scale-110 transition-transform">${g.label}</div>
-                        <div class="text-xl font-bold text-slate-700">${g.title}</div>
+                        <div class="text-lg font-bold text-slate-700">${g.title}</div>
                         <i data-lucide="chevron-right" class="absolute right-6 text-slate-300 group-hover:text-${g.theme}-500 group-hover:translate-x-1 transition-all"></i>
                     </button>
                 `).join('')}
             </div>
-            <button onclick="openGrammarCheck20()" class="mt-6 w-full bg-orange-500 p-5 rounded-2xl border-2 border-orange-300 shadow-md hover:bg-orange-600 hover:border-orange-400 hover:shadow-lg transition-all flex items-center justify-center gap-3 text-white">
-                <i data-lucide="clipboard-check" class="w-6 h-6"></i>
-                <span class="text-xl font-black">確認テスト：文法チェック20</span>
-            </button>
+            <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button onclick="renderLessonSelect('basic')" class="group flex items-center justify-center gap-2 rounded-2xl border-2 border-amber-100 bg-amber-50 px-4 py-3 text-amber-700 shadow-sm hover:border-amber-300 hover:bg-amber-100 transition-all">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                    <span class="text-sm font-black">英語のド基礎</span>
+                </button>
+                <button onclick="openGrammarCheck20()" class="group flex items-center justify-center gap-2 rounded-2xl border-2 border-orange-300 bg-orange-500 px-4 py-3 text-white shadow-sm hover:bg-orange-600 hover:border-orange-400 transition-all">
+                    <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+                    <span class="text-sm font-black">確認テスト</span>
+                </button>
+                <button onclick="renderHowToUse()" class="group flex items-center justify-center gap-2 rounded-2xl border-2 border-blue-100 bg-white px-4 py-3 text-blue-700 shadow-sm hover:border-blue-400 hover:bg-blue-50 transition-all">
+                    <i data-lucide="help-circle" class="w-5 h-5"></i>
+                    <span class="text-sm font-black">このサイトの使い方</span>
+                </button>
+            </div>
+        </div>
+    `;
+    lucide.createIcons();
+}
+
+const HOW_TO_USE_SLIDES = [
+    {
+        step: 1,
+        title: "学年を選ぶ",
+        image: "assets/how-to/step1-title.png",
+        alt: "Grammar Slide のタイトル画面",
+        instruction: "最初に、学習したい学年を1つ選びます。",
+        detail: "中3でも、中1・中2の内容に戻って学び直せます。今の自分に必要な場所から始めて大丈夫です。",
+        focus: { x: 21, y: 27, w: 54, h: 47, label: "ここから選ぶ", pointerX: 78, pointerY: 34, radius: 20 }
+    },
+    {
+        step: 2,
+        title: "文法項目を選ぶ",
+        image: "assets/how-to/step2-lesson-select.png",
+        alt: "文法項目を選ぶ画面",
+        instruction: "次に、学習したい文法項目を選びます。",
+        detail: "わからないところ、復習したいところを選びます。上から順番に進めても、苦手な単元だけ選んでも使えます。",
+        focus: { x: 23, y: 23, w: 52, h: 11, label: "文法項目", pointerX: 78, pointerY: 29, radius: 14 }
+    },
+    {
+        step: 3,
+        title: "動画＋問題で学習する",
+        image: "assets/how-to/step3-video-plus-question.png",
+        alt: "動画と問題を同じ画面で学習する画面",
+        instruction: "文法項目を開いたら、まずは「動画＋問題」で始めます。",
+        detail: "左の動画で説明を見て、右の問題に取り組みます。見る、止める、解く、もう一度見る流れを同じ画面でできます。",
+        focus: { x: 14, y: 8, w: 11, h: 5, label: "動画＋問題", pointerX: 31, pointerY: 10, radius: 999 }
+    },
+    {
+        step: 4,
+        title: "表示を切り替える",
+        image: "assets/how-to/step4-display-switch.png",
+        alt: "動画、問題、動画＋問題の表示切り替えボタン",
+        instruction: "画面上のボタンで、表示を切り替えます。",
+        detail: "動画だけ見たい時は「動画」。問題だけに集中したい時は「問題」。説明と問題を並べたい時は「動画＋問題」を選びます。",
+        focus: { x: 1.3, y: 8.5, w: 18.5, h: 5.5, label: "表示切替", pointerX: 25, pointerY: 10, radius: 999 }
+    },
+    {
+        step: 5,
+        title: "スライドを進める・戻る",
+        image: "assets/how-to/step5-slide-navigation.png",
+        alt: "前のスライド、次へ、タイトルへ戻るボタン",
+        instruction: "画面下のボタンで、スライドを進めたり戻ったりします。",
+        detail: "「前のスライド」は今の単元内を戻ります。「タイトルへ戻る」は、学年や文法項目を選ぶ最初の画面に戻ります。",
+        focus: { x: 31, y: 92, w: 62, h: 6, label: "下のボタン", pointerX: 78, pointerY: 88, radius: 999 }
+    },
+    {
+        step: 6,
+        title: "音声を聞く",
+        image: "assets/how-to/step6-audio-buttons.png",
+        alt: "例文の音声ボタンが表示された画面",
+        instruction: "音声ボタンを押すと、英語の文や単語が流れます。",
+        detail: "文字だけでなく、音でも確認できます。発音や英語のリズムを聞きながら学習できます。",
+        focus: { x: 33.5, y: 38, w: 5, h: 36, label: "音声ボタン", pointerX: 44, pointerY: 42, radius: 999 }
+    },
+    {
+        step: 7,
+        title: "書き込みながら考える",
+        image: "assets/how-to/step7-drawing-tools.png",
+        alt: "描画ツールが表示された学習画面",
+        instruction: "描画ツールで、スライドに書き込みます。",
+        detail: "大事なところに線を引いたり、考えたことをメモしたりできます。必要ない時は、描画ツールを隠せます。",
+        focus: { x: 68.5, y: 1.2, w: 31, h: 7, label: "描画ツール", pointerX: 64, pointerY: 10, radius: 999 }
+    },
+    {
+        step: 8,
+        title: "進み具合を確認する",
+        image: "assets/how-to/step8-progress-marks.png",
+        alt: "単元一覧に丸と花丸が表示された画面",
+        instruction: "取り組んだ単元には○、全問正解した単元には花丸がつきます。",
+        detail: "どこまで学習したか、どの単元がしっかりできたかを見ながら進められます。",
+        focus: { x: 38.5, y: 24, w: 9, h: 19, label: "○・花丸", pointerX: 52, pointerY: 27, radius: 999 }
+    },
+    {
+        step: 9,
+        title: "リンクをコピーする",
+        image: "assets/how-to/step9-copy-link.png",
+        alt: "リンクをコピーするボタンが表示された画面",
+        instruction: "「リンクをコピー」で、今開いている文法項目のリンクをコピーします。",
+        detail: "家で同じ単元を復習したい時や、先生が生徒に単元リンクを共有したい時に使えます。",
+        focus: { x: 50, y: 92, w: 10, h: 6, label: "リンクコピー", pointerX: 63, pointerY: 88, radius: 999 }
+    },
+    {
+        step: 10,
+        type: "message",
+        title: "こんなふうに使ってほしい",
+        image: "assets/how-to/grammar-slide-character.png",
+        alt: "Grammar Slide のキャラクター",
+        instruction: "わからないところまで戻って、そこからもう一度始めよう。",
+        detail: "動画を見る。止める。問題を解く。もう一度確認する。自分で「ここがわからない」を見つけて、自分で学び直せる場所にしたいと思って作りました。",
+        closing: "いつでも　どこでも　だれでも　学び直せる"
+    }
+];
+
+function renderHowToUse(stepIndex = 0) {
+    saveCurrentDrawing();
+    state.view = 'howToUse';
+    state.howToUseSlide = Math.max(0, Math.min(stepIndex, HOW_TO_USE_SLIDES.length - 1));
+    renderVideoPane(null);
+    setLearningMode('split');
+    setPageScrollMode(false);
+    footer.classList.add('hidden');
+    drawToolbar.classList.add('hidden');
+    drawToolbar.classList.remove('flex');
+    setDrawingTool(null);
+    clearCanvas();
+    headerTitle.textContent = "Grammar Slide の使い方";
+    statusArea.innerHTML = "";
+
+    renderHowToUseSlide();
+}
+
+function changeHowToUseSlide(direction) {
+    const next = state.howToUseSlide + direction;
+    if (next < 0 || next >= HOW_TO_USE_SLIDES.length) return;
+    state.howToUseSlide = next;
+    renderHowToUseSlide();
+}
+
+function getHowToUseFocusHtml(focus) {
+    if (!focus) return "";
+    const radius = focus.radius ?? 18;
+    return `
+        <div class="absolute pointer-events-none border-4 border-red-500 bg-red-500/5" style="left: ${focus.x}%; top: ${focus.y}%; width: ${focus.w}%; height: ${focus.h}%; border-radius: ${radius}px; box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.10), 0 0 18px rgba(239, 68, 68, 0.50);"></div>
+        <div class="absolute pointer-events-none -translate-x-1/2 -translate-y-1/2 flex items-center gap-1 rounded-full bg-red-600 px-2.5 py-1.5 text-xs font-black text-white shadow-lg ring-2 ring-white" style="left: ${focus.pointerX}%; top: ${focus.pointerY}%;">
+            <i data-lucide="mouse-pointer-click" class="w-4 h-4"></i>
+            <span>${focus.label}</span>
+        </div>
+    `;
+}
+
+function renderHowToUseSlide() {
+    const slide = HOW_TO_USE_SLIDES[state.howToUseSlide];
+    const isFirst = state.howToUseSlide === 0;
+    const isLast = state.howToUseSlide === HOW_TO_USE_SLIDES.length - 1;
+    const slideContentHtml = slide.type === 'message' ? `
+        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="grid lg:grid-cols-[380px_minmax(0,1fr)]">
+                <div class="bg-blue-50 border-b lg:border-b-0 lg:border-r border-blue-100 p-6 flex items-center justify-center">
+                    <img src="${slide.image}" alt="${slide.alt}" class="w-full max-w-[300px] rounded-full border-8 border-white shadow-lg">
+                </div>
+                <div class="p-8 flex flex-col justify-center">
+                    <div class="inline-flex items-center gap-2 text-blue-600 font-black text-sm mb-5">
+                        <span class="px-3 py-1 rounded-full bg-blue-50">STEP ${slide.step} / ${HOW_TO_USE_SLIDES.length}</span>
+                    </div>
+                    <h2 class="text-3xl font-black text-slate-800 mb-5">${slide.title}</h2>
+                    <div class="rounded-2xl bg-slate-50 border border-slate-200 p-5 mb-5">
+                        <p class="text-2xl font-black text-slate-800 leading-relaxed">${slide.instruction}</p>
+                    </div>
+                    <p class="text-base text-slate-600 leading-relaxed mb-6">${slide.detail}</p>
+                    <p class="text-3xl font-black text-blue-600 leading-relaxed">${slide.closing}</p>
+                </div>
+            </div>
+        </section>
+    ` : `
+        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="grid lg:grid-cols-[minmax(0,1fr)_360px]">
+                <div class="bg-slate-50 border-b lg:border-b-0 lg:border-r border-slate-200 p-4">
+                    <div class="relative rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+                        <img src="${slide.image}" alt="${slide.alt}" class="w-full aspect-video object-cover object-top">
+                        ${getHowToUseFocusHtml(slide.focus)}
+                    </div>
+                </div>
+                <div class="p-6 flex flex-col justify-center">
+                    <div class="inline-flex items-center gap-2 text-blue-600 font-black text-sm mb-4">
+                        <span class="px-3 py-1 rounded-full bg-blue-50">STEP ${slide.step} / ${HOW_TO_USE_SLIDES.length}</span>
+                    </div>
+                    <h2 class="text-3xl font-black text-slate-800 mb-4">${slide.title}</h2>
+                    <p class="text-xl font-bold text-slate-700 leading-relaxed mb-4">${slide.instruction}</p>
+                    <p class="text-sm text-slate-500 leading-relaxed">${slide.detail}</p>
+                </div>
+            </div>
+        </section>
+    `;
+
+    wrapper.innerHTML = `
+        <div class="fade-in max-w-6xl mx-auto w-full py-4">
+            <div class="flex items-center justify-between gap-4 mb-4">
+                <button onclick="renderGradeSelect()" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors shadow-sm text-sm font-bold">
+                    <i data-lucide="home" class="w-4 h-4"></i>
+                    タイトルへ戻る
+                </button>
+                <div class="flex items-center gap-1">
+                    ${HOW_TO_USE_SLIDES.map((_, i) => `
+                        <span class="block rounded-full transition-all ${i === state.howToUseSlide ? 'w-8 h-2 bg-blue-600' : 'w-2 h-2 bg-slate-300'}"></span>
+                    `).join('')}
+                </div>
+            </div>
+
+            ${slideContentHtml}
+
+            <div class="flex items-center justify-between gap-3 mt-4">
+                <button onclick="changeHowToUseSlide(-1)" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors shadow-sm font-bold disabled:opacity-40 disabled:cursor-not-allowed" ${isFirst ? 'disabled' : ''}>
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    前へ
+                </button>
+                <button onclick="${isLast ? 'renderGradeSelect()' : 'changeHowToUseSlide(1)'}" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-md font-bold">
+                    <span>${isLast ? 'タイトルへ戻る' : '次へ'}</span>
+                    <i data-lucide="${isLast ? 'home' : 'arrow-right'}" class="w-5 h-5"></i>
+                </button>
+            </div>
         </div>
     `;
     lucide.createIcons();
