@@ -9203,6 +9203,95 @@ Object.entries(LESSON_KAHOOT_LINKS).forEach(([lessonId, kahootUrl]) => {
     }
 });
 
+const ENGLISH_KNOCKS_BASE_URL = "https://new-english-100knocks.vercel.app";
+const LESSON_ENGLISH_KNOCKS_COURSES = {
+    "be-verb-i-am": "g1_i_am",
+    "be-verb-you-are": "g1_you_are",
+    "be-verb-he-she-is": "g1_he_she",
+    "be-verb-this-that": "g1_this_that_it",
+    "be-verb-usage": "g1_be",
+    "be-verb-negative": "g1_be",
+    "be-verb-question": "g1_be",
+    "be-verb-summary": "g1_be",
+    "general-verb-intro": "g1_general_verbs_affirm",
+    "general-verb-negative": "g1_general_verbs_negative",
+    "general-verb-question": "g1_general_verbs_question",
+    "general-verb-summary": "g1_general_verbs_mixed",
+    "question-what": "g1_wh_what",
+    "question-who": "g1_wh_who",
+    "question-when": "g1_wh_when",
+    "question-where": "g1_wh_where",
+    "imperative-sentence": "g1_imperatives",
+    "pronoun-chart": "g1_pronouns_forms",
+    "present-continuous": "g1_present_continuous",
+    "ing-form-rules": "g1_present_continuous",
+    "auxiliary-can": "g1_modals_can",
+    "auxiliary-can-neg-q": "g1_modals_can",
+    "past-tense-sentence": "g1_past_simple",
+    "past-tense-verb-forms": "g1_past_simple",
+    "third-person-singular-affirmative": "g1_third_person_s",
+    "third-person-singular-neg-q": "g1_third_person_s",
+    "identifying-third-person": "g1_third_person_s",
+    "past-tense-regular": "g2_past",
+    "past-continuous": "g2_past_cont",
+    "sensory-verbs": "g2_svc",
+    "be-going-to": "g2_going_to",
+    "svoo-sentence": "g2_svoo",
+    "svoo-rewrite-to": "g2_svoo_rewrite_to",
+    "svoo-rewrite-for": "g2_svoo_rewrite_for",
+    "infinitive-noun": "g2_inf_noun",
+    "gerund-basic": "g2_gerund",
+    "gerund-megafeps": "g2_gerund",
+    "infinitive-adjective": "g2_inf_adj",
+    "infinitive-adverb-purpose": "g2_inf_adv",
+    "infinitive-adverb-emotion": "g2_inf_emotion",
+    "future-will": "g2_will_mix",
+    "will-negative-and-question": "g2_will_mix",
+    "have-to": "g2_have_to",
+    "have-to-negative-and-question": "g2_have_to",
+    "auxiliary-must": "g2_must",
+    "must-negative-and-question": "g2_must",
+    "auxiliary-may": "g2_modals_conv",
+    "auxiliary-should": "g2_modals_conv",
+    "conjunction-when": "g2_conjunctions",
+    "there-is-are": "g2_there",
+    "conjunction-because": "g2_conjunctions",
+    "conjunction-if": "g2_conjunctions",
+    "that-clause-i-think": "g2_conjunctions",
+    "comparative": "g2_comparative",
+    "comparative-rules": "g2_comparative",
+    "superlative": "g2_superlative",
+    "superlative-rules": "g2_superlative",
+    "as-as-comparison": "g2_as_as",
+    "want-ask-tell": "g3_verb_person_to",
+    "help-let-make": "g3_let_help_person_verb",
+    "svoc-make-call": "g3_svoc_call_make_name",
+    "passive-voice": "g3_passive",
+    "passive-voice-basic": "g3_passive",
+    "passive-voice-neg-q": "g3_passive",
+    "passive-voice-idioms": "g3_passive",
+    "svoc-sentences": "g3_svoc_call_make_name",
+    "present-perfect-continuous": "g3_present_perfect_continuation",
+    "present-perfect-experience": "g3_present_perfect_experience",
+    "present-perfect-completion": "g3_present_perfect_completion",
+    "present-perfect-summary": "g3_present_perfect_continuation",
+    "present-perfect-progressive": "g3_present_perfect_progressive",
+    "interrogative-infinitive": "g3_wh_to_infinitive",
+    "it-is-for-to": "g3_it_adj_for_to",
+    "indirect-question": "g3_indirect_questions",
+    "participle-modifier": "g3_postmodifier_mixed",
+    "contact-clause": "g3_postmodifier_subject_verb",
+    "relative-pronoun-who": "g3_relative_pronouns",
+    "relative-pronoun-which": "g3_relative_pronouns",
+    "relative-pronouns-summary": "g3_relative_pronouns"
+};
+
+Object.entries(LESSON_ENGLISH_KNOCKS_COURSES).forEach(([lessonId, courseId]) => {
+    if (LESSONS_DB[lessonId]) {
+        LESSONS_DB[lessonId].englishKnocksUrl = `${ENGLISH_KNOCKS_BASE_URL}?course=${encodeURIComponent(courseId)}`;
+    }
+});
+
 /**
  * --------------------------------------------------------------------------
  * アプリロジック
@@ -10917,6 +11006,18 @@ function getSummaryHtml(l) {
     const kahootButton = l.kahootUrl
         ? `<a href="${escapeHtmlAttr(l.kahootUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;min-width:150px;padding:0.75rem 1.25rem;border-radius:9999px;background-color:#7c3aed;color:#ffffff;font-size:0.875rem;font-weight:900;box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1),0 2px 4px -2px rgb(0 0 0 / 0.1);" class="transition-all hover:brightness-95"><i data-lucide="gamepad-2" class="w-4 h-4"></i> Kahoot!</a>`
         : "";
+    const englishKnocksButton = l.englishKnocksUrl
+        ? `<a href="${escapeHtmlAttr(l.englishKnocksUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;min-width:150px;padding:0.75rem 1.25rem;border-radius:9999px;background-color:#0891b2;color:#ffffff;font-size:0.875rem;font-weight:900;box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1),0 2px 4px -2px rgb(0 0 0 / 0.1);" class="transition-all hover:brightness-95"><i data-lucide="dumbbell" class="w-4 h-4"></i> English-Knocks</a>`
+        : "";
+    const practiceChoices = kahootButton || englishKnocksButton
+        ? `<div class="flex w-full flex-col items-center gap-3">
+            <button onclick="document.getElementById('practice-options-${l.id}').classList.toggle('hidden')" style="display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;min-width:150px;padding:0.75rem 1.25rem;border-radius:9999px;background-color:#2563eb;color:#ffffff;font-size:0.875rem;font-weight:900;box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1),0 2px 4px -2px rgb(0 0 0 / 0.1);" class="transition-all hover:brightness-95"><i data-lucide="plus-circle" class="w-4 h-4"></i> もっと練習する</button>
+            <div id="practice-options-${l.id}" class="hidden flex w-full flex-wrap justify-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3">
+                ${kahootButton}
+                ${englishKnocksButton}
+            </div>
+        </div>`
+        : "";
     return `<div class="flex flex-col items-center justify-center h-full space-y-5 max-w-2xl mx-auto w-full">
         <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2"><i data-lucide="check-square" class="w-6 h-6 text-green-500"></i> 本日のまとめ</h2>
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 w-full overflow-hidden">
@@ -10925,7 +11026,7 @@ function getSummaryHtml(l) {
         <div class="flex w-full flex-wrap justify-center gap-3 pt-3">
             <button onclick="restartLesson()" class="inline-flex min-w-[150px] items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-black text-slate-600 shadow-sm transition-colors hover:bg-blue-50 hover:text-blue-600"><i data-lucide="rotate-ccw" class="w-4 h-4"></i> もう一度解く</button>
             ${grammarCheckButton}
-            ${kahootButton}
+            ${practiceChoices}
         </div>
         <button onclick="goToMenu()" class="inline-flex items-center gap-2 rounded-full bg-slate-700 px-4 py-2 text-sm font-bold text-white shadow transition-colors hover:bg-slate-800"><i data-lucide="list" class="w-4 h-4"></i> メニューへ戻る</button>
     </div>`;
