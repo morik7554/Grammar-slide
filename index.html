@@ -9111,6 +9111,98 @@ Object.entries(LESSON_YOUTUBE_VIDEO_IDS).forEach(([lessonId, videoId]) => {
     }
 });
 
+const LESSON_KAHOOT_LINKS = {
+    "be-verb-i-am": "https://create.kahoot.it/share/grammar-slide/0a8cb67a-7d65-41b5-b852-5f887abc5f95",
+    "be-verb-you-are": "https://create.kahoot.it/share/grammar-slide/509af2cc-99a8-4e54-ba01-2ca172e11180",
+    "be-verb-he-she-is": "https://create.kahoot.it/share/grammar-slide/e1cd0494-e517-4675-a37f-cf1346f330ab",
+    "be-verb-this-that": "https://create.kahoot.it/share/grammar-slide/0740d95e-ff2b-443f-94fe-4104db494116",
+    "be-verb-usage": "https://create.kahoot.it/share/grammar-slide/9436b6a1-f54d-478e-ad49-dbebf98bb4cb",
+    "be-verb-negative": "https://create.kahoot.it/share/grammar-slide/02f1d42f-0e1b-4b48-981c-668e45c6d42b",
+    "be-verb-question": "https://create.kahoot.it/share/grammar-slide/3f4994fb-58e1-4106-b37f-b5df3e8d8c2f",
+    "be-verb-summary": "https://create.kahoot.it/share/grammar-slide/8e1ba529-656a-4e73-b384-f9779c84208d",
+    "general-verb-intro": "https://create.kahoot.it/share/grammar-slide/c22831c0-f29b-452d-9981-cc9ffccb9aab",
+    "general-verb-negative": "https://create.kahoot.it/share/grammar-slide/9fb1d1b4-7cb6-4fcc-a383-fd261b7dc1aa",
+    "general-verb-question": "https://create.kahoot.it/share/grammar-slide/c27786b4-1ca5-4ec2-a3bf-d0a0a9400269",
+    "general-verb-summary": "https://create.kahoot.it/share/grammar-slide/75615e06-a5d8-4765-9007-f133cc7cb97f",
+    "question-what": "https://create.kahoot.it/share/grammar-slide/c5774678-fe13-40c3-b59e-4724ce72786a",
+    "question-who": "https://create.kahoot.it/share/grammar-slide/a151f8a7-0605-4445-8660-e7a45b83e8b7",
+    "question-when": "https://create.kahoot.it/share/grammar-slide/b0d23c51-ed96-4be0-aed1-d71d805269d1",
+    "question-where": "https://create.kahoot.it/share/grammar-slide/1b50007a-7a35-4019-a686-e8cceffec799",
+    "plural-nouns": "https://create.kahoot.it/share/grammar-slide/90425bf3-9dda-48f2-b5a6-30987b208e81",
+    "imperative-sentence": "https://create.kahoot.it/share/grammar-slide/934edfa5-8812-440c-9fe9-1c2d5d637e60",
+    "pronoun-chart": "https://create.kahoot.it/share/grammar-slide/77a2d6fd-d80f-40b2-b580-173ee053f97c",
+    "present-continuous": "https://create.kahoot.it/share/grammar-slide/af882fcd-8aa3-4930-9ec0-1657563cd5f1",
+    "ing-form-rules": "https://create.kahoot.it/share/grammar-slide/3288e40a-f972-416e-a150-5960b554bd5f",
+    "auxiliary-can": "https://create.kahoot.it/share/grammar-slide/7adee5ea-c9c4-431d-b54e-472f34d45e60",
+    "auxiliary-can-neg-q": "https://create.kahoot.it/share/grammar-slide/6d5aa8be-4f0c-44a7-b1c5-6c0d91f71b39",
+    "past-tense-sentence": "https://create.kahoot.it/share/grammar-slide/83ca6da2-08b8-4def-921d-8c3e31189911",
+    "past-tense-verb-forms": "https://create.kahoot.it/share/grammar-slide/f41fd2cb-8ffe-4724-9a8b-be66268396e4",
+    "third-person-singular-affirmative": "https://create.kahoot.it/share/grammar-slide/11a515d2-2686-4fb6-a4f8-f79181fdd86e",
+    "third-person-singular-neg-q": "https://create.kahoot.it/share/grammar-slide/7c80ba0f-9d41-4af8-8c79-186185e1a8ce",
+    "identifying-third-person": "https://create.kahoot.it/share/grammar-slide/4e558374-4210-4f32-a791-98878ed526e8",
+    "past-tense-regular": "https://create.kahoot.it/share/grammar-slide/f19fa9bb-2258-4b91-99f9-d907d19fc383",
+    "past-continuous": "https://create.kahoot.it/share/grammar-slide/432dab59-b30c-4859-bec7-9667c45bf08d",
+    "sensory-verbs": "https://create.kahoot.it/share/grammar-slide/32358049-0992-4c29-8cc6-0d7fb8dce40f",
+    "be-going-to": "https://create.kahoot.it/share/grammar-slide/44fb3729-3d37-4350-acd6-6c13b1cc6acc",
+    "svoo-sentence": "https://create.kahoot.it/share/grammar-slide/7c71dca5-a58a-4575-a201-c701bd8b2e11",
+    "svoo-rewrite-to": "https://create.kahoot.it/share/grammar-slide/2137533c-07dd-4437-8b17-b9c8c2689c23",
+    "svoo-rewrite-for": "https://create.kahoot.it/share/grammar-slide/4dd07e00-3151-417f-ada2-c32866eaa7db",
+    "infinitive-noun": "https://create.kahoot.it/share/grammar-slide/cd50db60-e081-457f-b823-aaec51d26ed3",
+    "gerund-basic": "https://create.kahoot.it/share/grammar-slide/00234533-f456-4e66-bcce-47e50a540e0f",
+    "gerund-megafeps": "https://create.kahoot.it/share/grammar-slide/33719835-3b93-4d75-b429-644c206f8846",
+    "infinitive-only-verbs": "https://create.kahoot.it/share/grammar-slide/c17bcfe6-76a3-4c25-8b7f-9e3a6a85b3a8",
+    "infinitive-adjective": "https://create.kahoot.it/share/grammar-slide/a9fbf87c-2634-444c-80f2-cc616e7cad58",
+    "infinitive-adverb-purpose": "https://create.kahoot.it/share/grammar-slide/8e551e8a-2094-4932-ae71-01ea191c4e73",
+    "infinitive-adverb-emotion": "https://create.kahoot.it/share/grammar-slide/491c2756-1523-4b45-94fd-af98efd63a31",
+    "future-will": "https://create.kahoot.it/share/grammar-slide/a5297198-8724-47b6-9d12-8bae87dbdab1",
+    "will-negative-and-question": "https://create.kahoot.it/share/grammar-slide/3b3ef014-f272-4ebc-8243-254723ebf704",
+    "have-to": "https://create.kahoot.it/share/grammar-slide/5c9c7317-90d5-40cc-aaa6-e3a0e5d21cbe",
+    "have-to-negative-and-question": "https://create.kahoot.it/share/grammar-slide/a4dafeeb-e20d-4d67-a6c2-5b3ce486e574",
+    "auxiliary-must": "https://create.kahoot.it/share/grammar-slide/0ac4b962-0254-47be-813a-b34ebb8e9388",
+    "must-negative-and-question": "https://create.kahoot.it/share/grammar-slide/743073ba-5356-4f9b-9ca9-f12278665217",
+    "auxiliary-may": "https://create.kahoot.it/share/grammar-slide/1c01684b-bd6b-48a5-85b6-b9710c4bf9c0",
+    "auxiliary-should": "https://create.kahoot.it/share/grammar-slide/6a5f1376-b697-4835-9e3e-76c5a6b99e7c",
+    "conjunction-when": "https://create.kahoot.it/share/grammar-slide/40fa8679-552a-48b2-8efd-cbf9928967b3",
+    "there-is-are": "https://create.kahoot.it/share/grammar-slide/e9b7e097-fc1f-4c90-bac7-ec1a1a864989",
+    "conjunction-because": "https://create.kahoot.it/share/grammar-slide/7352e7df-743f-41eb-a446-21f3986ac725",
+    "conjunction-if": "https://create.kahoot.it/share/grammar-slide/1ff3d249-f353-45ec-8e50-87bd6714f569",
+    "that-clause-i-think": "https://create.kahoot.it/share/grammar-slide/693b917d-54c8-473f-ae3b-eec81f71127b",
+    "comparative": "https://create.kahoot.it/share/grammar-slide/9f92bdb7-3c8b-4fd6-898c-625803932d6a",
+    "comparative-rules": "https://create.kahoot.it/share/grammar-slide/ea77ebc1-f6f6-444a-bcd0-019e3ee8f512",
+    "superlative": "https://create.kahoot.it/share/grammar-slide/602eb8d4-433f-4ddc-a512-218283ab5ec4",
+    "superlative-rules": "https://create.kahoot.it/share/grammar-slide/d188a015-0f60-446d-8c1c-bc4d4aec01f4",
+    "as-as-comparison": "https://create.kahoot.it/share/grammar-slide/763cc0ed-ae77-406d-92c5-9cdf245d11d1",
+    "want-ask-tell": "https://create.kahoot.it/share/grammar-slide/4cd6c0e4-b617-4e82-8b81-df36eab827d6",
+    "help-let-make": "https://create.kahoot.it/share/grammar-slide/c44deb84-9c4d-4dfa-85a1-81bd5f0e2050",
+    "svoc-make-call": "https://create.kahoot.it/share/grammar-slide/bc63c5d9-4371-48a0-9d5d-36768ee7e31b",
+    "passive-voice": "https://create.kahoot.it/share/grammar-slide/26830092-c1a5-4e66-a98b-7b9c1cf66476",
+    "passive-verb-rules": "https://create.kahoot.it/share/grammar-slide/b2523b21-9743-48e1-803a-7f6326ab5374",
+    "passive-voice-basic": "https://create.kahoot.it/share/grammar-slide/b2bda87d-4e57-4c60-99bc-4f557e2b78df",
+    "passive-voice-neg-q": "https://create.kahoot.it/share/grammar-slide/b5244bd1-7a7c-4a4b-a59d-72067e98da32",
+    "passive-voice-idioms": "https://create.kahoot.it/share/grammar-slide/2dcdb3e3-9ced-486b-ae67-bc7274af6b0e",
+    "svoc-sentences": "https://create.kahoot.it/share/grammar-slide/4ac0bd09-1e25-470e-b1ce-640565c67890",
+    "present-perfect-continuous": "https://create.kahoot.it/share/grammar-slide/83374f90-b1b6-4b2a-a8c5-bca11890684e",
+    "present-perfect-experience": "https://create.kahoot.it/share/grammar-slide/68c3617a-1ada-451b-bf42-aad6c2b7c2b7",
+    "present-perfect-completion": "https://create.kahoot.it/share/grammar-slide/196f4d3a-4125-4e00-928b-4a6b4d98d52f",
+    "present-perfect-summary": "https://create.kahoot.it/share/grammar-slide/e97ee8fa-a275-44bc-a8d7-576910561028",
+    "present-perfect-progressive": "https://create.kahoot.it/share/grammar-slide/0e6632b3-d944-46ea-aee6-491d7f63f8cd",
+    "interrogative-infinitive": "https://create.kahoot.it/share/grammar-slide/cb01a067-596c-4194-92ba-9fb50db94ee2",
+    "it-is-for-to": "https://create.kahoot.it/share/grammar-slide/a7627629-56fe-43a9-aaa8-4edb8838e2b2",
+    "indirect-question": "https://create.kahoot.it/share/grammar-slide/dafeecc5-e3bd-4ba9-8d33-8af4ec35b71b",
+    "participle-modifier": "https://create.kahoot.it/share/grammar-slide/23cdec46-6d81-40b5-b3d2-823543c9f358",
+    "contact-clause": "https://create.kahoot.it/share/grammar-slide/6edf5935-ccb2-494a-a8ff-19a236688efb",
+    "relative-pronoun-who": "https://create.kahoot.it/share/grammar-slide/95cac093-1fff-4cb0-bfef-72b93cb4febc",
+    "relative-pronoun-which": "https://create.kahoot.it/share/grammar-slide/ff4ab37e-3bff-42ed-a071-2efff1c216d5",
+    "relative-pronouns-summary": "https://create.kahoot.it/share/grammar-slide/4efdf2c8-0955-4554-b0ae-bb701b9ca105",
+    "prepositions-master": "https://create.kahoot.it/share/grammar-slide/8869f643-d583-43e9-8789-67a80f49788e"
+};
+
+Object.entries(LESSON_KAHOOT_LINKS).forEach(([lessonId, kahootUrl]) => {
+    if (LESSONS_DB[lessonId]) {
+        LESSONS_DB[lessonId].kahootUrl = kahootUrl;
+    }
+});
+
 /**
  * --------------------------------------------------------------------------
  * アプリロジック
@@ -10820,14 +10912,22 @@ function getQuizD_All_A_Html(l) {
 function getSummaryHtml(l) {
     const grammarCheckTestId = LESSON_GRAMMAR_CHECK_TESTS[l.id];
     const grammarCheckButton = grammarCheckTestId
-        ? `<button onclick="openGrammarCheck20('${grammarCheckTestId}')" class="text-white bg-orange-500 hover:bg-orange-600 flex items-center gap-2 text-sm font-black px-4 py-2 rounded-full border border-orange-300 shadow-md"><i data-lucide="clipboard-check" class="w-4 h-4"></i> 確認テスト：文法チェック20</button>`
+        ? `<button onclick="openGrammarCheck20('${grammarCheckTestId}')" style="display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;min-width:150px;padding:0.75rem 1.25rem;border-radius:9999px;border:1px solid #fdba74;background-color:#f97316;color:#ffffff;font-size:0.875rem;font-weight:900;box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1),0 2px 4px -2px rgb(0 0 0 / 0.1);" class="transition-all hover:brightness-95"><i data-lucide="clipboard-check" class="w-4 h-4"></i> 確認テスト</button>`
         : "";
-    return `<div class="flex flex-col items-center justify-center h-full space-y-6 max-w-2xl mx-auto w-full">
+    const kahootButton = l.kahootUrl
+        ? `<a href="${escapeHtmlAttr(l.kahootUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;min-width:150px;padding:0.75rem 1.25rem;border-radius:9999px;background-color:#7c3aed;color:#ffffff;font-size:0.875rem;font-weight:900;box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1),0 2px 4px -2px rgb(0 0 0 / 0.1);" class="transition-all hover:brightness-95"><i data-lucide="gamepad-2" class="w-4 h-4"></i> Kahoot!</a>`
+        : "";
+    return `<div class="flex flex-col items-center justify-center h-full space-y-5 max-w-2xl mx-auto w-full">
         <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2"><i data-lucide="check-square" class="w-6 h-6 text-green-500"></i> 本日のまとめ</h2>
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 w-full overflow-hidden">
             ${l.summary.map((t, i) => `<div class="p-4 border-b border-slate-100 last:border-0 flex items-start gap-3 hover:bg-slate-50 transition-colors"><span class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">${i+1}</span><p class="text-lg text-slate-700 font-medium">${t}</p></div>`).join('')}
         </div>
-        <div class="text-center pt-4 flex flex-wrap justify-center gap-4"><button onclick="restartLesson()" class="text-slate-500 hover:text-blue-600 flex items-center gap-2 text-sm font-bold bg-white px-4 py-2 rounded-full border"><i data-lucide="rotate-ccw" class="w-4 h-4"></i> もう一度解く</button>${grammarCheckButton}<button onclick="goToMenu()" class="text-white bg-slate-700 hover:bg-slate-800 px-4 py-2 rounded-full text-sm font-bold shadow flex items-center gap-2"><i data-lucide="list" class="w-4 h-4"></i> メニューへ戻る</button></div>
+        <div class="flex w-full flex-wrap justify-center gap-3 pt-3">
+            <button onclick="restartLesson()" class="inline-flex min-w-[150px] items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-black text-slate-600 shadow-sm transition-colors hover:bg-blue-50 hover:text-blue-600"><i data-lucide="rotate-ccw" class="w-4 h-4"></i> もう一度解く</button>
+            ${grammarCheckButton}
+            ${kahootButton}
+        </div>
+        <button onclick="goToMenu()" class="inline-flex items-center gap-2 rounded-full bg-slate-700 px-4 py-2 text-sm font-bold text-white shadow transition-colors hover:bg-slate-800"><i data-lucide="list" class="w-4 h-4"></i> メニューへ戻る</button>
     </div>`;
 }
 
